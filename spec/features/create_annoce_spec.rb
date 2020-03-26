@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require 'rails_helper'
 
 feature 'User create ad', %q{
 Authenticated user can
