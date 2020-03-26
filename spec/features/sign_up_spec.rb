@@ -18,13 +18,24 @@ about sell equipment
       open_email('unique_email@mail.ru')
       current_email.click_link 'Confirm my account'
 
-      # current_email.save_and_open
       expect(page).to have_content 'Your email address has been successfully confirmed.'
 
     end
   end
 
-  # describe 'can not sign up' do
-  #   scenario 'with not unique email'
-  # end
+  describe 'can not sign up' do
+    given!(:user) { create(:user, email: 'not_unique_email@mail.ru') }
+    background do
+    end
+    scenario 'with not unique email' do
+      visit new_user_registration_path
+      fill_in 'Email', with: 'not_unique_email@mail.ru'
+      fill_in 'Password', with: '123456'
+      fill_in 'Password confirmation', with: '123456'
+      click_on 'Sign up'
+
+      # current_email.save_and_open
+      expect(page).to have_content '1 error prohibited this user from being saved'
+    end
+  end
 end
