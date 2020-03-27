@@ -25,8 +25,6 @@ about sell equipment
 
   describe 'can not sign up' do
     given!(:user) { create(:user, email: 'not_unique_email@mail.ru') }
-    background do
-    end
     scenario 'with not unique email' do
       visit new_user_registration_path
       fill_in 'Email', with: 'not_unique_email@mail.ru'
