@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'ads/index'
   default_url_options host: "localhost:3000"
 
   root to: 'ads#index'
