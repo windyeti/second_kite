@@ -1,2 +1,3 @@
 h1 Ads#index
-p Find me in app/views/ads/index.html.slim
+p = render @ads
+p = link_to 'Add ad', new_ad_path

@@ -10,12 +10,15 @@ feature 'User create an ad' do
     scenario 'can create an ad with valid data' do
       visit ads_path
 
-      click_on 'Add ad'
-
-      expect(page).to have_content 'Create new ad'
+      expect(page).to have_content 'Add ad'
     end
-    scenario 'can not create an ad with invalid data'
   end
 
-  scenario 'Guest can not create an ad'
+  describe 'Unauthorized user' do
+    scenario 'Guest can not create an ad' do
+      visit ads_path
+
+      expect(page).to_not have_content 'Add ad'
+    end
+  end
 end
