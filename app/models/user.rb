@@ -6,6 +6,6 @@ class User < ApplicationRecord
          :confirmable
 
   def admin?
-    type === 'Admin'
+    role === 'Admin'
   end
 end

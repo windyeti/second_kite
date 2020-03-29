@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-feature 'User create an ad' do
+feature 'User sees a button Add ad' do
   describe 'Authorized user' do
       given(:user) { create(:user) }
 
       background do
         sign_in(user)
       end
-    scenario 'can create an ad with valid data' do
+    scenario 'can sees a button Add ad' do
       visit ads_path
 
       expect(page).to have_content 'Add ad'
@@ -15,7 +15,7 @@ feature 'User create an ad' do
   end
 
   describe 'Unauthorized user' do
-    scenario 'Guest can not create an ad' do
+    scenario 'can not sees a button Add ad' do
       visit ads_path
 
       expect(page).to_not have_content 'Add ad'

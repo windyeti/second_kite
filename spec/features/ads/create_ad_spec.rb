@@ -8,9 +8,8 @@ feature 'User create an ad' do
         sign_in(user)
       end
     scenario 'can create an ad with valid data' do
-      visit ads_path
+      visit new_ad_path
 
-      click_on 'Add ad'
 
       expect(page).to have_content 'Create new ad'
 
