@@ -3,5 +3,5 @@
   .block-control-button.ml-auto
     - if can? :edit, ad
       =< link_to t('.edit'), edit_ad_path(ad), class: "btn btn-outline-secondary btn-sm"
-    - if can? :edit, ad
+    - if can? :destroy, ad
       =< link_to t('.delete'), ad_path(ad), method: :delete, confirmation: { message: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm"
