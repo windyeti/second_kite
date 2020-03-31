@@ -56,5 +56,6 @@ The user can edit his ad to update information.
       visit ads_path
       expect(page).to_not have_selector :link_or_button, 'Edit'
     end
+
   end
 end
