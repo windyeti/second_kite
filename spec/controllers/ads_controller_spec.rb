@@ -59,14 +59,14 @@ RSpec.describe AdsController, type: :controller do
     end
   end
 
-  describe "GET #create" do
+  describe "POST #create" do
     context 'Authenticated user' do
         let(:user) { create(:user) }
         before do
           login(user)
         end
 
-      context ' can create ad with valid data' do
+      context 'can create ad with valid data' do
 
         it 'ads count be more' do
           expect do
@@ -139,6 +139,121 @@ RSpec.describe AdsController, type: :controller do
 
       it 'assigns ad' do
         expect(assigns(:ad)).to eq ad
+      end
+    end
+  end
+
+  describe "GET #edit" do
+    context 'Authenticated user' do
+      let(:user) { create(:user) }
+      let(:ad) { create(:ad, user: user) }
+      before do
+        login(user)
+      end
+
+      context 'can edit' do
+
+        it 'assigns ad' do
+          get :edit, params: { id: ad }
+          expect(assigns(:ad)).to eq ad
+        end
+
+        it 'render template edit' do
+          get :edit, params: { id: ad }
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'Guest' do
+      let(:user) { create(:user) }
+      let(:ad) { create(:ad, user: user) }
+
+      context 'can not edit' do
+
+        it 'assigns ad' do
+          get :edit, params: { id: ad }
+          expect(assigns(:ad)).to be_nil
+        end
+
+        it 'redirect to log in' do
+          get :edit, params: { id: ad }
+          expect(response).to redirect_to new_user_session_path
+        end
+      end
+    end
+  end
+
+  describe "PATCH #update" do
+    context 'Authenticated user' do
+      let(:user) { create(:user) }
+      let(:ad) { create(:ad, user: user, title: 'Old title') }
+      before do
+        login(user)
+      end
+      context 'can update ad with valid data' do
+        it 'title is updated' do
+          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          ad.reload
+          expect(ad.title).to eq 'New title'
+        end
+        it 'redirect to ad' do
+          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          expect(response).to redirect_to ad_path(ad)
+        end
+        it 'return status redirect' do
+          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          expect(response).to be_redirect
+        end
+      end
+      context 'can not update ad with invalid data' do
+        it 'title is not updated' do
+          patch :update, params: { id: ad, ad: { title: '' } }
+          ad.reload
+          expect(ad.title).to eq 'Old title'
+        end
+        it 'render template edit' do
+          patch :update, params: { id: ad, ad: { title: '' } }
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'Authenticated user not author' do
+      let(:user_author) { create(:user, email: 'author@mail.com') }
+      let(:user) { create(:user) }
+      let(:ad) { create(:ad, user: user_author, title: 'Old title') }
+      before do
+        login(user)
+      end
+
+      it 'can not update' do
+        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        ad.reload
+        expect(ad.title).to eq 'Old title'
+      end
+      it 'redirect to root' do
+        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        expect(response).to redirect_to root_path
+      end
+      it 'return status redirect' do
+        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        expect(response).to be_redirect
+      end
+    end
+
+    context 'Guest' do
+      let(:user) { create(:user) }
+      let(:ad) { create(:ad, user: user, title: 'Old title') }
+
+      it 'can not update ad' do
+        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        ad.reload
+        expect(ad.title).to eq 'Old title'
+      end
+      it 'redirect to log in' do
+        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end

@@ -1,6 +1,6 @@
 class AdsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :load_ad, only: [:show]
+  before_action :load_ad, only: [:show, :edit, :update]
   authorize_resource
 
   def index
@@ -22,6 +22,17 @@ class AdsController < ApplicationController
   end
 
   def show; end
+
+  def edit; end
+
+  def update
+    if @ad.update(ad_params)
+      redirect_to @ad, notice: "Ad #{@ad.title} updated"
+    else
+      flash.now[:alert] = 'Something went wrong'
+      render :edit
+    end
+  end
 
   private
 

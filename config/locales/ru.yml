@@ -1,0 +1,8 @@
+ru:
+  ads:
+    index:
+      head: "Все объявления"
+
+    ad:
+      edit: 'редак.'
+      delete: 'удалить'

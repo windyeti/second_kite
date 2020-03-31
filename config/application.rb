@@ -24,5 +24,7 @@ module SecondKite
                        roting_specs: false,
                        request_specs: false
     end
+
+    config.i18n.default_locale = :en # !!!!!!!! После тестирования поменять на :ru
   end
 end
