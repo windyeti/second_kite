@@ -1,0 +1,7 @@
+.ad.pb-2.d-flex.border-bottom
+  => link_to ad.title, ad, data: { ad_id: "#{ad.id}" }
+  .block-control-button.ml-auto
+    - if can? :edit, ad
+      =< link_to t('.edit'), edit_ad_path(ad), class: "btn btn-outline-secondary btn-sm"
+    - if can? :destroy, ad
+      =< link_to t('.delete'), ad_path(ad), method: :delete, confirmation: { message: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm"

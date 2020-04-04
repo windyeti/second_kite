@@ -1,0 +1,8 @@
+en:
+  ads:
+    index:
+      head: "List of ads"
+
+    ad:
+      edit: 'edit'
+      delete: 'delete'
