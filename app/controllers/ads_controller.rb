@@ -1,6 +1,6 @@
 class AdsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :load_ad, only: [:show, :edit, :update]
+  before_action :load_ad, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
   def index
@@ -32,6 +32,11 @@ class AdsController < ApplicationController
       flash.now[:alert] = 'Something went wrong'
       render :edit
     end
+  end
+
+  def destroy
+    @ad.destroy
+    redirect_to ads_path
   end
 
   private

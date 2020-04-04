@@ -258,4 +258,61 @@ RSpec.describe AdsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    context 'Authenticated user' do
+      let(:author_user) { create(:user, email: 'author@mail.com') }
+      let!(:ad) { create(:ad, user: author_user) }
+
+      context 'author can' do
+        before { login(author_user) }
+
+        it 'delete ad' do
+          expect do
+            delete :destroy, params: { id: ad }
+          end.to change(Ad, :count).by(-1)
+        end
+        it 'assigns ad' do
+          delete :destroy, params: { id: ad }
+          expect(assigns(:ad)).to eq ad
+        end
+        it 'redirect to ads' do
+          delete :destroy, params: { id: ad }
+          expect(response).to redirect_to ads_path
+        end
+      end
+
+      context 'not author' do
+       before { login(user) }
+
+        it 'can not delete ad' do
+          expect do
+            delete :destroy, params: { id: ad }
+          end.to_not change(Ad, :count)
+        end
+        it 'redirect to root' do
+          delete :destroy, params: { id: ad }
+          expect(response).to redirect_to root_path
+        end
+      end
+    end
+
+    context 'Guest' do
+      let!(:ad) { create(:ad, user: user) }
+
+      it 'can not delete ad' do
+        expect do
+          delete :destroy, params: { id: ad }
+        end.to_not change(Ad, :count)
+      end
+      it 'redirect to log in' do
+        delete :destroy, params: { id: ad }
+        expect(response).to redirect_to new_user_session_path
+      end
+      it 'ad is nil' do
+        delete :destroy, params: { id: ad }
+        expect(assigns(:ad)).to be_nil
+      end
+    end
+  end
+
 end
