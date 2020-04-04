@@ -1,5 +1,5 @@
 .ad.pb-2.d-flex.border-bottom
-  => link_to ad.title, ad, data: { ad_id: "#{ad.id}" }
+  => link_to ad.title, ad, data: { ad_id: "#{ad.id}" }, class: 'nodecoration'
   .block-control-button.ml-auto
     - if can? :edit, ad
       =< link_to t('.edit'), edit_ad_path(ad), class: "btn btn-outline-secondary btn-sm"
