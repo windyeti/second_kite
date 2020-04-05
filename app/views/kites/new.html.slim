@@ -1,0 +1,15 @@
+.col.col-md-8.mx-auto
+  h1 Create kite
+  = form_with model: @kite do |f|
+    .form-group
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+    .form-group
+      = f.label :total_price
+      = f.text_field :total_price, class: 'form-control'
+    .form-group
+      = f.label :year, 'Year'
+      = f.collection_select(:year, (1990..Time.now.year), :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+    .form-group
+      = f.submit 'Create kite', class: 'btn btn-primary'
+

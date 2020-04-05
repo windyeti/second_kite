@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :confirmable
 
   has_many :ads, dependent: :destroy
+  has_many :kites, dependent: :destroy
 
   def admin?
     role === 'Admin'

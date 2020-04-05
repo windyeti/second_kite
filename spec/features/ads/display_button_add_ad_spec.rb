@@ -10,7 +10,7 @@ feature 'User sees a button Add ad' do
     scenario 'can sees a button Add ad' do
       visit ads_path
 
-      expect(page).to have_content 'Add ad'
+      expect(page).to have_content 'create new ad'
     end
   end
 
@@ -18,7 +18,7 @@ feature 'User sees a button Add ad' do
     scenario 'can not sees a button Add ad' do
       visit ads_path
 
-      expect(page).to_not have_content 'Add ad'
+      expect(page).to_not have_content 'create new ad'
     end
   end
 end
