@@ -1,5 +1,4 @@
-.col.col-md-8.mx-auto
-  - if flash.present?
-    ul.flash
-      - flash.each do |key, message|
-        li(class= flash_style(key) ) = message
+- if flash.present?
+  ul.flash
+    - flash.each do |key, message|
+      li(class= flash_style(key) ) = message
