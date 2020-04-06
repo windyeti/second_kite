@@ -1,3 +1,7 @@
-.col-md-8.mx-auto
-  header.header
-    / = render ''
+header.header.mb-4
+  .container-fluid
+    .row
+      .col.col-md-8.mx-auto
+        .d-flex
+          = render 'shared/logotype'
+          = render 'shared/login'
