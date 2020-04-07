@@ -9,11 +9,3 @@ tr
           =< link_to t('.delete'), ad_path(ad), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm ad__delete-button"
   td
     = "#{ad.total_price}&nbsp;руб.".html_safe
-
-/ .ad.pb-2.pt-2.d-flex.border-bottom
-/   => link_to ad.title, ad, data: { ad_id: "#{ad.id}" }, class: 'nodecoration'
-/   .block-control-button.ml-auto
-/     - if can? :edit, ad
-/       =< link_to t('.edit'), edit_ad_path(ad), class: "btn btn-outline-secondary btn-sm"
-/     - if can? :destroy, ad
-/       =< link_to t('.delete'), ad_path(ad), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary btn-sm ad__delete-button"

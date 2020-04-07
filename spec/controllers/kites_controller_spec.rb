@@ -42,7 +42,7 @@ RSpec.describe KitesController, type: :controller do
       end
       context 'with invalid data' do
 
-        it 'change count kites by 1' do
+        it 'does not change count kites' do
           expect do
             post :create, params: { kite: attributes_for(:kite, :invalid) }
           end.to_not change(Kite, :count)

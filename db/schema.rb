@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_162545) do
+ActiveRecord::Schema.define(version: 2020_04_06_162025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_162545) do
   create_table "ads", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
-    t.float "total_price", null: false
+    t.decimal "total_price", null: false
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -26,12 +26,22 @@ ActiveRecord::Schema.define(version: 2020_04_05_162545) do
   end
 
   create_table "kites", force: :cascade do |t|
-    t.string "title"
-    t.float "total_price"
-    t.integer "year"
+    t.bigint "user_id"
+    t.string "brand", null: false
+    t.string "name", null: false
+    t.decimal "year", null: false
+    t.decimal "size", null: false
+    t.string "type"
+    t.string "sling_system"
+    t.decimal "length_slim"
+    t.boolean "one_pump"
+    t.decimal "price", null: false
+    t.decimal "quality", null: false
+    t.string "city"
+    t.boolean "cargoable"
+    t.string "origin_site"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.index ["user_id"], name: "index_kites_on_user_id"
   end
 

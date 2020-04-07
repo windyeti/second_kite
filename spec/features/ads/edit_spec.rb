@@ -13,7 +13,7 @@ The user can edit his ad to update information.
 
       visit ads_path
 
-      within '.block-control-button' do
+      within 'td:first-child' do
         click_on 'edit'
       end
 
@@ -29,7 +29,7 @@ The user can edit his ad to update information.
 
       visit ads_path
 
-      within '.block-control-button' do
+      within 'td:first-child' do
       click_on 'edit'
       end
 

@@ -22,6 +22,20 @@ class KitesController < ApplicationController
   private
 
   def kite_params
-    params.require(:kite).permit(:title, :total_price, :year)
+    params.require(:kite).permit(
+                                  :brand,
+                                  :name,
+                                  :year,
+                                  :size,
+                                  :type,
+                                  :sling_system,
+                                  :length_slim,
+                                  :one_pump,
+                                  :price,
+                                  :quality,
+                                  :city,
+                                  :cargoable,
+                                  :origin_site
+                                )
   end
 end
