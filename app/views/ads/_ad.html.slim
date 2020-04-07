@@ -8,4 +8,5 @@ tr
         - if can? :destroy, ad
           =< link_to t('.delete'), ad_path(ad), method: :delete, data: {confirm: 'Are you sure?'}, class: "btn btn-outline-secondary btn-sm ad__delete-button"
   td
-    = "#{ad.total_price}&nbsp;руб.".html_safe
+    span #{ad.total_price}
+    span.product__rub.text-muted = "&#8381;".html_safe
