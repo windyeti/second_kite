@@ -4,11 +4,10 @@
       = link_to 'Log out', destroy_user_session_path, method: :delete, class: 'btn btn-outline-warning btn-sm'
     - else
       = link_to 'Log in', new_user_session_path, class: 'btn btn-outline-warning btn-sm'
-  - if current_user
-    .login__account
-      = link_to 'account', account_path, class: 'btn btn-warning'
-  - else
-    .login__down.text-right
+  .login__down.text-right
+    - if current_user
+      = link_to 'account', current_user.account, class: 'btn btn-warning'
+    - else
       = link_to 'Sign up', new_user_registration_path, class: 'btn btn-warning'
 
 

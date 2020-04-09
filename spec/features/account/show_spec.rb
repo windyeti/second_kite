@@ -7,13 +7,19 @@ feature '' do
 
     scenario 'can see his account' do
       visit root_path
-      within '.login__account' do
+      within '.login__down.text-right' do
         click_on 'account'
       end
 
       expect(page).to have_content "Hello, #{user.email}"
     end
   end
-  describe 'Guest'
-    scenario 'can not see account'
+  describe 'Guest' do
+    scenario 'can not see account' do
+      visit root_path
+      within '.login__down.text-right' do
+        expect(page).to_not have_content 'account'
+      end
+    end
+  end
 end
