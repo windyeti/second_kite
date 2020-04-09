@@ -1,1 +1,22 @@
-h1 = "Hello, #{@account.user.email}"
+h3 = "Hello, #{@account.user.email}"
+.account__info
+  p
+    span nick:
+    span = @account.nickname
+  p
+    span city:
+    span = @account.city
+  p
+    span phone:
+    span = @account.phone
+.account__ad
+  p = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-success btn-sm btn-block'
+.account__kites.mt-6
+  .account__kites__list
+    h5 List of kites that can be added to the ad
+    = render current_user.kites
+  .account__kites__add
+    p = link_to 'Add kite', new_kite_path, class: 'btn btn-outline-success btn-sm'
+.account__boards
+.account__bars
+.account__stuff
