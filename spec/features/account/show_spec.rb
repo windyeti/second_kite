@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature '' do
+feature 'User can see his account' do
   describe 'Authenticated user' do
     given(:user) { create(:user) }
     background { sign_in(user) }
