@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'type_equipments/new'
   default_url_options host: "localhost:3000"
 
   root to: 'ads#index'
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   resources :kites, only: [:new, :create, :show]
   resources :accounts, only: [:show]
   resources :brands, only: [:new, :create]
+  resources :type_equipments, only: [:new, :create, :show]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -3,9 +3,6 @@ require 'rails_helper'
 feature 'Admin can create brand' do
   context 'Admin' do
     given(:admin_user) { create(:user, role: 'Admin') }
-    given!(:kite1) { create(:kite, user: admin_user) }
-    given!(:kite2) { create(:kite, user: admin_user) }
-    given!(:kite3) { create(:kite, user: admin_user) }
     background { sign_in(admin_user) }
 
     scenario 'can create with valid data' do
@@ -13,10 +10,7 @@ feature 'Admin can create brand' do
       within '.admin_panel' do
         click_on 'Add brand'
       end
-p '>>>>>>>>>>>>>>>'
-p Kite.all
-      p '>>>>>>>>>>>>>>>'
-save_and_open_page
+
       fill_in 'Name', with: 'F-One'
       find(:css, "#brand_kite[value=kite]").set(true)
 
