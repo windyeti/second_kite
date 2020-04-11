@@ -19,11 +19,26 @@ feature 'Admin can create brand' do
 
       click_on 'Create Brand'
 
-      within 'h3' do
+      within 'h4' do
         expect(page).to have_content 'F-One'
       end
     end
-    scenario 'can not create with invalid data'
+
+    scenario 'can not create with invalid data' do
+      visit root_path
+      within '.admin_panel' do
+        click_on 'Add brand'
+      end
+
+      fill_in 'Name', with: ''
+      find(:css, "#brand_type_equipment_#{type_equipment_bar.id}").set(true)
+
+      click_on 'Create Brand'
+
+      within 'h1' do
+        expect(page).to have_content 'New brand'
+      end
+    end
   end
   context 'Authenticated user' do
     scenario 'can not create with invalid data' do
