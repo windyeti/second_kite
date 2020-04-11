@@ -1,7 +1,9 @@
 FactoryBot.define do
+  sequence :name do |n|
+    "My Type equipment #{n}"
+  end
   factory :type_equipment do
-    name { "My Type equipment" }
-
+    name
     trait :invalid do
       name { nil }
     end

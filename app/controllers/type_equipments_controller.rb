@@ -18,6 +18,10 @@ class TypeEquipmentsController < ApplicationController
     @type_equipment = TypeEquipment.find(params[:id])
   end
 
+  def index
+    @type_equipments = TypeEquipment.all
+  end
+
   private
 
   def type_equipment_params

@@ -2,6 +2,55 @@ require 'rails_helper'
 
 RSpec.describe TypeEquipmentsController, type: :controller do
 
+  describe "GET #index" do
+    let!(:type_equipments) { create_list(:type_equipment, 3) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+        get :index
+      end
+
+      it "render template index" do
+        expect(response).to render_template :index
+      end
+
+      it "assigns var type_equipments" do
+        expect(assigns(:type_equipments)).to eq type_equipments
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+        get :index
+      end
+
+      it "redirect to root" do
+        expect(response).to redirect_to root_path
+      end
+
+      it "var type_equipments is nil" do
+        expect(assigns(:type_equipments)).to be_nil
+      end
+    end
+    context 'Guest' do
+      before do
+        get :index
+      end
+
+      it "redirect to log in" do
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it "var type_equipments is nil" do
+        expect(assigns(:type_equipments)).to be_nil
+      end
+    end
+  end
+
+
   describe "GET #new" do
     context 'Admin' do
       let(:admin_user) { create(:user, role: 'Admin') }
