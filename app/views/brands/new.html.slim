@@ -2,10 +2,10 @@ h1 New brand
 = form_with model: @brand do |f|
   .form-group
     = f.label :name
-    = f.text_field :name
+    = f.text_field :name, class: 'form-control'
 
   .form-group
-    = f.collection_check_boxes :type_equipment, TypeEquipment.all, :id, :name do |b|
+    = f.collection_check_boxes :type_equipment_ids, TypeEquipment.all, :id, :name do |b|
       .control-group
         = b.label do
           = b.text

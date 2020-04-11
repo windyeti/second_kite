@@ -21,6 +21,7 @@ class BrandsController < ApplicationController
   private
 
   def brand_params
-    params.require(:brand).permit(:name)
+    params[:brand][:type_equipment_ids].reject!(&:blank?)
+    params.require(:brand).permit(:name, :type_equipment_ids => [])
   end
 end

@@ -1,3 +1,9 @@
 h4
-  span.text-muted Название бренда:
+  span.text-muted.pr-2 Название бренда:
   span = @brand.name
+
+- unless @brand.type_equipments.empty?
+  h5 Присутствует в экипах:
+  ul
+    - @brand.type_equipments.each do |e|
+      li = e.name
