@@ -15,12 +15,15 @@ feature 'Admin can create brand' do
       end
 
       fill_in 'Name', with: 'F-One'
-      find(:css, "#brand_type_equipment_#{type_equipment_kite.id}").set(true)
+      find(:css, "#brand_type_equipment_ids_#{type_equipment_kite.id}").set(true)
 
       click_on 'Create Brand'
 
       within 'h4' do
         expect(page).to have_content 'F-One'
+      end
+      within '.type-equipment__name' do
+        expect(page).to have_content type_equipment_kite.name
       end
     end
 
@@ -31,7 +34,7 @@ feature 'Admin can create brand' do
       end
 
       fill_in 'Name', with: ''
-      find(:css, "#brand_type_equipment_#{type_equipment_bar.id}").set(true)
+      find(:css, "#brand_type_equipment_ids_#{type_equipment_bar.id}").set(true)
 
       click_on 'Create Brand'
 

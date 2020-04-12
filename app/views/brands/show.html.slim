@@ -4,6 +4,6 @@ h4
 
 - unless @brand.type_equipments.empty?
   h5 Присутствует в экипах:
-  ul
+  ul.type-equipments
     - @brand.type_equipments.each do |e|
-      li = e.name
+      li.type-equipment__name = e.name
