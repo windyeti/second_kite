@@ -179,11 +179,6 @@ RSpec.describe TypeEquipmentsController, type: :controller do
       let(:user) { create(:user) }
       before { login(user) }
 
-      it 'type_equipment is nil' do
-        get :show, params: { id: type_equipment }
-        expect(assigns(:type_equipment)).to be_nil
-      end
-
       it 'redirect to root' do
         get :show, params: { id: type_equipment }
         expect(response).to redirect_to root_path
@@ -228,10 +223,6 @@ RSpec.describe TypeEquipmentsController, type: :controller do
       before do
         login(user)
         get :edit, params: { id: type_equipment }
-      end
-
-      it 'assigns var type equipment' do
-        expect(assigns(:type_equipment)).to be_nil
       end
 
       it 'redirect to root' do
@@ -332,6 +323,67 @@ RSpec.describe TypeEquipmentsController, type: :controller do
         patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
         expect(response).to redirect_to new_user_session_path
       end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:type_equipment) { create(:type_equipment, name: 'My Type equipment 123456') }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+      end
+
+      it 'assigns var type_equipment' do
+        delete :destroy, params: { id: type_equipment }
+        expect(assigns(:type_equipment)).to eq type_equipment
+      end
+
+      it 'change count type equipment' do
+        expect do
+          delete :destroy, params: { id: type_equipment }
+        end.to change(TypeEquipment, :count).by(-1)
+      end
+
+      it 'redirect to list type equipment' do
+        delete :destroy, params: { id: type_equipment }
+        expect(response).to redirect_to type_equipments_path
+      end
+
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+      end
+
+      it 'does not change count type equipment' do
+        expect do
+          delete :destroy, params: { id: type_equipment }
+        end.to_not change(TypeEquipment, :count)
+      end
+
+      it 'redirect to root' do
+        delete :destroy, params: { id: type_equipment }
+        expect(response).to redirect_to root_path
+      end
+
+    end
+
+    context 'Guest' do
+
+      it 'does not change count type equipment' do
+      expect do
+        delete :destroy, params: { id: type_equipment }
+      end.to_not change(TypeEquipment, :count)
+    end
+
+    it 'redirect to log in' do
+      delete :destroy, params: { id: type_equipment }
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    end
   end
 
 end

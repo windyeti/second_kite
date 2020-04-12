@@ -1,5 +1,5 @@
-.list-group-item
-  span = link_to "#{type_equipment.name}", type_equipment
+.list-group-item.d-flex
+  span.mr-auto = link_to "#{type_equipment.name}", type_equipment
 
-  span = link_to 'edit', edit_type_equipment_path(type_equipment), class: 'btn btn-outline-secondary btn-sm'
-  span =
+  span.link-edit = link_to 'edit', edit_type_equipment_path(type_equipment), class: 'btn btn-outline-secondary btn-sm'
+  span.link-delete = link_to 'delete', type_equipment_path(type_equipment), method: :delete, class: 'btn btn-outline-secondary btn-sm'

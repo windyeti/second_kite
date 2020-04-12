@@ -6,7 +6,7 @@ class BrandsController < ApplicationController
   end
 
   def create
-    @brand = Brand.create(brand_params)
+    @brand = Brand.new(brand_params)
     if @brand.save
       redirect_to @brand
     else

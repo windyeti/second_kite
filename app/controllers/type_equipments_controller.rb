@@ -1,5 +1,5 @@
 class TypeEquipmentsController < ApplicationController
-  before_action :load_type_equipment, only: [:show, :edit, :update]
+  before_action :load_type_equipment, only: [:show, :edit, :update, :destroy]
 
   authorize_resource
 
@@ -30,6 +30,11 @@ class TypeEquipmentsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @type_equipment.destroy
+    redirect_to type_equipments_path
   end
 
   private
