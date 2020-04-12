@@ -1,5 +1,11 @@
 .list-group-item.d-flex
   span.mr-auto = link_to "#{type_equipment.name}", type_equipment
 
-  span.link-edit = link_to 'edit', edit_type_equipment_path(type_equipment), class: 'btn btn-outline-secondary btn-sm'
-  span.link-delete = link_to 'delete', type_equipment_path(type_equipment), method: :delete, class: 'btn btn-outline-secondary btn-sm'
+  span.link-delete.mr-2 = link_to 'delete',
+                                  type_equipment_path(type_equipment),
+                                  method: :delete,
+                                  data: { confirm: "Are you sure?" },
+                                  class: 'btn btn-outline-danger btn-sm'
+  span.link-edit = link_to 'edit',
+                            edit_type_equipment_path(type_equipment),
+                            class: 'btn btn-outline-secondary btn-sm'
