@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :kites, only: [:new, :create, :show]
   resources :accounts, only: [:show]
   resources :brands, only: [:new, :create, :show]
-  resources :type_equipments, only: [:index, :new, :create, :show]
+  resources :type_equipments, only: [:index, :new, :create, :show, :edit, :update]
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

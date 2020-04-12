@@ -1,4 +1,5 @@
-h3 List of type equipment
-= render @type_equipments
-.link_add
-  = link_to 'Add type equipment', new_type_equipment_path
+.card
+  .card-header List of type equipment
+  .list-group.list-group-flush = render @type_equipments
+.link_add.mt-4
+  = link_to 'Add type equipment', new_type_equipment_path, class: 'btn btn-outline-success btn-sm'

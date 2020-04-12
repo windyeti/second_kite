@@ -1,5 +1,5 @@
-p
+.list-group-item
   span = link_to "#{type_equipment.name}", type_equipment
-  /TODO доделать ссылки на edit delete
-  / span =
-  / span =
+
+  span = link_to 'edit', edit_type_equipment_path(type_equipment), class: 'btn btn-outline-secondary btn-sm'
+  span =

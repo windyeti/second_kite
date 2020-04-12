@@ -203,4 +203,135 @@ RSpec.describe TypeEquipmentsController, type: :controller do
     end
   end
 
+  describe 'GET #edit' do
+    let!(:type_equipment) { create(:type_equipment) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+        get :edit, params: { id: type_equipment }
+      end
+
+      it 'assigns var type equipment' do
+        expect(assigns(:type_equipment)).to eq type_equipment
+      end
+
+      it 'render template edit' do
+        expect(response).to render_template :edit
+      end
+
+    end
+
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+        get :edit, params: { id: type_equipment }
+      end
+
+      it 'assigns var type equipment' do
+        expect(assigns(:type_equipment)).to be_nil
+      end
+
+      it 'redirect to root' do
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'Guest' do
+      before do
+        get :edit, params: { id: type_equipment }
+      end
+
+      it 'assigns var type equipment' do
+        expect(assigns(:type_equipment)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+  let!(:type_equipment) { create(:type_equipment, name: 'My Type equipment 123456') }
+
+  context 'Admin' do
+    let(:admin_user) { create(:user, role: 'Admin') }
+    before do
+      login(admin_user)
+    end
+
+      context 'with valid data can update' do
+
+        let(:name) do
+          patch :update, params: {id: type_equipment, type_equipment: {name: 'New Type Equipment'}}
+        end
+
+        it 'assigns var type equipment' do
+          patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+          expect(assigns(:type_equipment).name).to eq 'New Type Equipment'
+        end
+
+        it 'change name type_equipment' do
+          patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+          type_equipment.reload
+
+          expect(type_equipment.name).to eq 'New Type Equipment'
+        end
+        it 'redirect to type equipment' do
+          name
+          expect(response).to redirect_to type_equipment
+        end
+      end
+
+      context 'with invalid data can not update' do
+
+        it 'does not change name type_equipment' do
+          patch :update, params: { id: type_equipment, type_equipment: { name: '' } }
+          type_equipment.reload
+
+          expect(type_equipment.name).to eq 'My Type equipment 123456'
+        end
+        it 'render template edit' do
+          patch :update, params: { id: type_equipment, type_equipment: { name: '' } }
+          expect(response).to render_template :edit
+        end
+      end
+  end
+
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+      end
+
+      it 'does not change type equipment' do
+        patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+        type_equipment.reload
+
+        expect(type_equipment.name).to eq 'My Type equipment 123456'
+      end
+      it 'redirect to root' do
+        patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'Guest'
+
+      it 'does not change type equipment' do
+        patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+        type_equipment.reload
+
+        expect(type_equipment.name).to eq 'My Type equipment 123456'
+      end
+
+      it 'redirect to log in' do
+        patch :update, params: { id: type_equipment, type_equipment: { name: 'New Type Equipment' } }
+        expect(response).to redirect_to new_user_session_path
+      end
+  end
+
 end
