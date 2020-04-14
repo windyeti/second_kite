@@ -6,6 +6,7 @@ feature 'User create an ad' do
 
       background do
         sign_in(user)
+        # TODO тут надо сделать заход в личный кабинет, а уже там жать кнопку Создать кайт
         visit new_ad_path
       end
     scenario 'can create an ad with valid data' do

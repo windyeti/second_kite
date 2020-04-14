@@ -1,4 +1,4 @@
 - if flash.present?
   ul.flash
     - flash.each do |key, message|
-      li(class="flash__message flash__message_#{key}") = message
+      li(class= flash_style(key) ) = message

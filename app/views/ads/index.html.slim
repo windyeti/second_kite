@@ -1,5 +1,9 @@
-.col-md-8.mx-auto
-  h3 = t('.head')
-  .ads.mt-4.pb-3 = render @ads
-  - if can? :create, Ad
-    p = link_to 'Add ad', new_ad_path
+h3 = t('.head')
+table.table
+  tr
+    th Объявление
+    th Цена
+  = render @ads
+- if can? :create, Ad
+  .ads__footer
+    p = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-success btn-sm'

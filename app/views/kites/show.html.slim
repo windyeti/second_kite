@@ -1,0 +1,12 @@
+h1.mb-4.d-flex.product__head
+  span.mr-auto Кайт #{@kite.name}
+  span => "#{@kite.price}"
+  span.product__rub.text-muted = "&#8381;".html_safe
+
+p
+  span.text-muted Бренд:
+  span =< "#{@kite.brand}"
+
+p
+  span.text-muted Модель:
+  span =< "#{@kite.name}"
