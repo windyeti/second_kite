@@ -205,4 +205,51 @@ RSpec.describe BrandsController, type: :controller do
     end
   end
 
+  describe "GET #edit" do
+    let(:brand) { create(:brand) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+        get :edit, params: { id: brand }
+      end
+
+      it 'render template edit' do
+        expect(response).to render_template :edit
+      end
+
+      it 'assigns brand' do
+        expect(assigns(:brand)).to eq brand
+      end
+    end
+
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+        get :edit, params: { id: brand }
+      end
+
+      it 'redirect to root' do
+        expect(response).to redirect_to root_path
+      end
+
+    end
+
+    context 'Guest' do
+      before do
+        get :edit, params: { id: brand }
+      end
+
+      it 'redirect to log in' do
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'assigns brand' do
+        expect(assigns(:brand)).to be_nil
+      end
+    end
+  end
+
 end

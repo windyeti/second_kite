@@ -12,7 +12,7 @@ feature 'Admin can edit brand' do
 
       expect(page).to have_content 'Gaastra'
 
-      within '.brand' do
+      within '.link-edit' do
         click_on 'edit'
       end
 

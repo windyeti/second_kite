@@ -1,4 +1,6 @@
 class BrandsController < ApplicationController
+  before_action :load_brand, only: [:show, :edit]
+
   authorize_resource
 
   def new
@@ -14,15 +16,19 @@ class BrandsController < ApplicationController
     end
   end
 
-  def show
-    @brand = Brand.find(params[:id])
-  end
+  def show; end
 
   def index
     @brands = Brand.all
   end
 
+  def edit; end
+
   private
+
+  def load_brand
+    @brand = Brand.find(params[:id])
+  end
 
   def brand_params
     params[:brand][:type_equipment_ids].reject!(&:blank?)

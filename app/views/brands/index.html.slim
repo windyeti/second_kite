@@ -1,0 +1,5 @@
+.card
+  .card-header List of brands
+  .list-group.list-group-flush = render @brands
+.link_add.mt-4
+  = link_to 'Add brand', new_brand_path, class: 'btn btn-outline-success btn-sm'
