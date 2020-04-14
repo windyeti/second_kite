@@ -18,6 +18,10 @@ class BrandsController < ApplicationController
     @brand = Brand.find(params[:id])
   end
 
+  def index
+    @brands = Brand.all
+  end
+
   private
 
   def brand_params
