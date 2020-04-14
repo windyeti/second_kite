@@ -252,4 +252,93 @@ RSpec.describe BrandsController, type: :controller do
     end
   end
 
+  describe "PATCH #update" do
+    let(:brand) { create(:brand) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+      end
+
+      context 'with valid data can update' do
+
+        it 'assigns brand' do
+          patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+          expect(assigns(:brand)).to eq brand
+        end
+
+        it 'change brand' do
+          expect do
+            patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+            brand.reload
+          end.to change(brand, :name)
+        end
+
+        it 'redirect to brand' do
+          patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+          expect(response).to redirect_to brand
+        end
+
+      end
+
+      context 'with invalid data can not update' do
+
+        it 'assigns brand' do
+          patch :update, params: { id: brand, brand: { name: '' } }
+          expect(assigns(:brand)).to eq brand
+        end
+
+        it 'does not change brand' do
+          expect do
+            patch :update, params: { id: brand, brand: { name: '' } }
+            brand.reload
+          end.to_not change(brand, :name)
+        end
+
+        it 'render template edit' do
+          patch :update, params: { id: brand, brand: { name: '' } }
+          expect(response).to render_template :edit
+        end
+
+      end
+
+    end
+
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+      end
+
+      it 'does not change brand' do
+        expect do
+          patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+          brand.reload
+        end.to_not change(brand, :name)
+      end
+
+      it 'redirect to root' do
+        patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+        expect(response).to redirect_to root_path
+      end
+
+    end
+
+    context 'Guest' do
+
+      it 'does not change brand' do
+        expect do
+          patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+          brand.reload
+        end.to_not change(brand, :name)
+      end
+
+      it 'redirect to log in' do
+        patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
 end

@@ -1,5 +1,5 @@
 class BrandsController < ApplicationController
-  before_action :load_brand, only: [:show, :edit]
+  before_action :load_brand, only: [:show, :edit, :update]
 
   authorize_resource
 
@@ -24,6 +24,14 @@ class BrandsController < ApplicationController
 
   def edit; end
 
+  def update
+    if @brand.update(brand_params)
+      redirect_to @brand
+    else
+      render :edit
+    end
+  end
+
   private
 
   def load_brand
@@ -31,7 +39,7 @@ class BrandsController < ApplicationController
   end
 
   def brand_params
-    params[:brand][:type_equipment_ids].reject!(&:blank?)
+    params[:brand][:type_equipment_ids]&.reject!(&:blank?)
     params.require(:brand).permit(:name, :type_equipment_ids => [])
   end
 end
