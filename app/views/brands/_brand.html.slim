@@ -1,11 +1,11 @@
 .list-group-item.d-flex
   span.mr-auto = link_to "#{brand.name}", brand
 
-  / span.link-delete.mr-2 = link_to 'delete',
-  /         brand_path(brand),
-  /         method: :delete,
-  /         data: { confirm: "Are you sure?" },
-  /         class: 'btn btn-outline-danger btn-sm'
+  span.link-delete.mr-2 = link_to 'delete',
+          brand_path(brand),
+          method: :delete,
+          data: { confirm: "Are you sure?" },
+          class: 'btn btn-outline-danger btn-sm'
   span.link-edit = link_to 'edit',
           edit_brand_path(brand),
           class: 'btn btn-outline-secondary btn-sm'

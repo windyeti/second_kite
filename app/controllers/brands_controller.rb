@@ -1,5 +1,5 @@
 class BrandsController < ApplicationController
-  before_action :load_brand, only: [:show, :edit, :update]
+  before_action :load_brand, only: [:show, :edit, :update, :destroy]
 
   authorize_resource
 
@@ -30,6 +30,11 @@ class BrandsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @brand.destroy
+    redirect_to brands_path
   end
 
   private

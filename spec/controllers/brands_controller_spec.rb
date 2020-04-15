@@ -185,10 +185,6 @@ RSpec.describe BrandsController, type: :controller do
         get :show, params: {id: brand}
         expect(response).to redirect_to root_path
       end
-      it 'assigns var brand' do
-        get :show, params: {id: brand}
-        expect(assigns(:brand)).to be_nil
-      end
 
     end
 
@@ -336,6 +332,66 @@ RSpec.describe BrandsController, type: :controller do
 
       it 'redirect to log in' do
         patch :update, params: { id: brand, brand: { name: 'New brand name' } }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    let!(:brand) { create(:brand) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before do
+        login(admin_user)
+      end
+
+      it 'change count' do
+        expect do
+          delete :destroy, params: { id: brand }
+        end.to change(Brand, :count).by(-1)
+      end
+
+      it 'assigns brand' do
+        delete :destroy, params: { id: brand }
+        expect(assigns(:brand)).to eq brand
+      end
+
+      it 'redirect to index' do
+        delete :destroy, params: { id: brand }
+        expect(response).to redirect_to brands_path
+      end
+    end
+
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before do
+        login(user)
+      end
+
+      it 'does not change count' do
+        expect do
+          delete :destroy, params: { id: brand }
+        end.to_not change(Brand, :count)
+      end
+
+      it 'redirect to root' do
+        delete :destroy, params: { id: brand }
+        expect(response).to redirect_to root_path
+      end
+
+    end
+
+    context 'Guest' do
+
+      it 'does not change count' do
+        expect do
+          delete :destroy, params: { id: brand }
+        end.to_not change(Brand, :count)
+      end
+
+      it 'redirect to log in' do
+        delete :destroy, params: { id: brand }
         expect(response).to redirect_to new_user_session_path
       end
     end

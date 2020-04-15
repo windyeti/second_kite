@@ -11,8 +11,10 @@ feature 'Admin can create brand' do
     scenario 'can create with valid data' do
       visit root_path
       within '.admin_panel' do
-        click_on 'Add brand'
+        click_on 'Brands'
       end
+
+      click_on 'Add brand'
 
       fill_in 'Name', with: 'F-One'
       find(:css, "#brand_type_equipment_ids_#{type_equipment_kite.id}").set(true)
@@ -30,8 +32,10 @@ feature 'Admin can create brand' do
     scenario 'can not create with invalid data' do
       visit root_path
       within '.admin_panel' do
-        click_on 'Add brand'
+        click_on 'Brands'
       end
+
+      click_on 'Add brand'
 
       fill_in 'Name', with: ''
       find(:css, "#brand_type_equipment_ids_#{type_equipment_bar.id}").set(true)

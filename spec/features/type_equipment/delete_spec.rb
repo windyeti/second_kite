@@ -11,7 +11,6 @@ feature 'Admin can delete type equipment' do
       visit root_path
       click_on 'Type equipment'
 
-      save_and_open_page
       within '.list-group-item' do
         click_on 'delete'
       end
