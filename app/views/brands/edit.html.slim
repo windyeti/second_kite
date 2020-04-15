@@ -5,11 +5,4 @@ h1 Edit brand
     = f.text_field :name, class: 'form-control'
 
   .form-group
-    = f.collection_check_boxes :type_equipment_ids, TypeEquipment.all, :id, :name do |b|
-      .control-group
-        = b.label do
-          = b.text
-          = b.check_box
-
-  .form-group
     = f.submit

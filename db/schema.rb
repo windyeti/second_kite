@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_10_172508) do
+ActiveRecord::Schema.define(version: 2020_04_15_224930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,45 +35,31 @@ ActiveRecord::Schema.define(version: 2020_04_10_172508) do
     t.index ["user_id"], name: "index_ads_on_user_id"
   end
 
-  create_table "brand_type_equipments", force: :cascade do |t|
-    t.bigint "brand_id"
-    t.bigint "type_equipment_id"
+  create_table "brands", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["brand_id"], name: "index_brand_type_equipments_on_brand_id"
-    t.index ["type_equipment_id"], name: "index_brand_type_equipments_on_type_equipment_id"
   end
 
-  create_table "brands", force: :cascade do |t|
-    t.string "name"
+  create_table "kite_names", force: :cascade do |t|
+    t.bigint "brand_id"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_kite_names_on_brand_id"
   end
 
   create_table "kites", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "brand", null: false
-    t.string "name", null: false
+    t.bigint "kite_name_id"
     t.integer "year", null: false
     t.integer "size", null: false
-    t.string "type"
-    t.string "sling_system"
-    t.integer "length_slim"
-    t.boolean "one_pump"
     t.integer "price", null: false
     t.integer "quality", null: false
-    t.string "city"
-    t.boolean "cargoable"
-    t.string "origin_site"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["kite_name_id"], name: "index_kites_on_kite_name_id"
     t.index ["user_id"], name: "index_kites_on_user_id"
-  end
-
-  create_table "type_equipments", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -95,7 +81,7 @@ ActiveRecord::Schema.define(version: 2020_04_10_172508) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "ads", "users"
-  add_foreign_key "brand_type_equipments", "brands"
-  add_foreign_key "brand_type_equipments", "type_equipments"
+  add_foreign_key "kite_names", "brands"
+  add_foreign_key "kites", "kite_names"
   add_foreign_key "kites", "users"
 end
