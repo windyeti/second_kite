@@ -199,4 +199,112 @@ RSpec.describe KiteNamesController, type: :controller do
     end
   end
 
+  describe "GET #edit" do
+    let!(:kite_name) { create(:kite_name) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before { login(admin_user) }
+
+      it "render template edit" do
+        get :edit, params: { id: kite_name }
+        expect(response).to render_template :edit
+      end
+
+      it "assigns kite_name" do
+        get :edit, params: { id: kite_name }
+        expect(assigns(:kite_name)).to eq kite_name
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it "redirect to root" do
+        get :edit, params: { id: kite_name }
+        expect(response).to redirect_to root_path
+      end
+
+      it "assigns kite_name" do
+        get :edit, params: { id: kite_name }
+        expect(assigns(:kite_name)).to eq kite_name
+      end
+    end
+    context 'Guest' do
+
+      it "redirect to log in" do
+        get :edit, params: { id: kite_name }
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it "assigns kite_name" do
+        get :edit, params: { id: kite_name }
+        expect(assigns(:kite_name)).to be_nil
+      end
+    end
+  end
+
+  describe "PATCH #update" do
+    let!(:kite_name) { create(:kite_name) }
+
+    context 'Admin' do
+      context 'with valid data can update kite_name' do
+        let(:admin_user) { create(:user, role: 'Admin') }
+        before { login(admin_user) }
+
+        it "change kite_name" do
+          patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+          kite_name.reload
+          expect(kite_name.name).to eq 'New Kite Name'
+        end
+
+        it "redirect to kite_name" do
+          patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+          expect(response).to redirect_to kite_name
+        end
+      end
+      context 'with invalid data can not update kite_name' do
+        let(:admin_user) { create(:user, role: 'Admin') }
+        before { login(admin_user) }
+
+        it "does not change change kite_name" do
+          patch :update, params: { id: kite_name, kite_name: { name: '' } }
+          kite_name.reload
+          expect(kite_name.name).to eq 'My Kite'
+        end
+
+        it "render template edit" do
+          patch :update, params: { id: kite_name, kite_name: { name: '' } }
+          expect(response).to render_template :edit
+        end
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it "does not change kite_name" do
+        patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+        kite_name.reload
+        expect(kite_name.name).to eq 'My Kite'
+      end
+
+      it "redirect to root" do
+        patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+        expect(response).to redirect_to root_path
+      end
+    end
+    context 'Guest' do
+      it "does not change kite_name" do
+        patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+        kite_name.reload
+        expect(kite_name.name).to eq 'My Kite'
+      end
+
+      it "redirect to log in" do
+        patch :update, params: { id: kite_name, kite_name: { name: 'New Kite Name' } }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end

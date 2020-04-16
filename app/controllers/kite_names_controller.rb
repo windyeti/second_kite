@@ -1,6 +1,6 @@
 class KiteNamesController < ApplicationController
   before_action :load_brand, only: [:index, :create]
-  before_action :load_kite_name, only: [:show]
+  before_action :load_kite_name, only: [:show, :edit, :update]
 
   authorize_resource
 
@@ -18,6 +18,16 @@ class KiteNamesController < ApplicationController
   end
 
   def show; end
+
+  def edit; end
+
+  def update
+    if @kite_name.update(kite_name_params)
+      redirect_to @kite_name
+    else
+      render :edit
+    end
+  end
 
   private
 
