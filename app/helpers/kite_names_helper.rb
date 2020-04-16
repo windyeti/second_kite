@@ -1,0 +1,2 @@
+module KiteNamesHelper
+end

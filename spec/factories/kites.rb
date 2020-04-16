@@ -1,10 +1,14 @@
 FactoryBot.define do
   factory :kite do
-    user { nil }
-    kite_name { nil }
-    year { 1 }
-    size { 1 }
-    price { 1 }
-    quality { 1 }
+    user
+    kite_name
+    year { 2012 }
+    size { 14 }
+    price { 340 }
+    quality { 4 }
+
+    trait :invalid do
+      kite_name { nil }
+    end
   end
 end

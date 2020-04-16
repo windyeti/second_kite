@@ -28,6 +28,7 @@ class Ability
 
   def guest
     can :read, Ad
+    # TODO Kite может просматривать только пользователь
     can :read, Kite
   end
 end

@@ -31,7 +31,7 @@ RSpec.describe KitesController, type: :controller do
 
         it 'change count kites by 1' do
           expect do
-            post :create, params: { kite: attributes_for(:kite) }
+            post :create, params: { kite: attributes_for(:kite), kite_name: create(:kite_name)}
           end.to change(Kite, :count).by(1)
         end
 

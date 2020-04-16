@@ -1,3 +1,6 @@
 h4
   span.text-muted.pr-2 Название бренда:
   span = @brand.name
+
+.block-create-button
+  span.mr-2 = link_to 'Kite name', brand_kite_names_path(@brand), class: 'btn btn-outline-light btn-sm'

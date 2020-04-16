@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   resources :ads
   resources :kites, only: [:new, :create, :show]
   resources :accounts, only: [:show]
-  resources :brands
+  resources :brands do
+    resources :kite_names, shallow: true, only: [:index, :create, :show]
+  end
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

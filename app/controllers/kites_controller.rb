@@ -8,6 +8,7 @@ class KitesController < ApplicationController
 
   def create
     @kite = current_user.kites.new(kite_params)
+    @kite.kite_name = KiteName.find(params[:kite_name])
     if @kite.save
       redirect_to @kite
     else
@@ -23,19 +24,12 @@ class KitesController < ApplicationController
 
   def kite_params
     params.require(:kite).permit(
-                                  :brand,
+                                  :kite_name,
                                   :name,
                                   :year,
                                   :size,
-                                  :type,
-                                  :sling_system,
-                                  :length_slim,
-                                  :one_pump,
                                   :price,
-                                  :quality,
-                                  :city,
-                                  :cargoable,
-                                  :origin_site
+                                  :quality
                                 )
   end
 end

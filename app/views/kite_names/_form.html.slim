@@ -1,0 +1,9 @@
+h4 New Kite name
+
+= form_with model: [@brand, @kite_name] do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.submit
