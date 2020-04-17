@@ -1,6 +1,6 @@
 class KiteNamesController < ApplicationController
   before_action :load_brand, only: [:index, :create]
-  before_action :load_kite_name, only: [:show, :edit, :update]
+  before_action :load_kite_name, only: [:show, :edit, :update, :destroy]
 
   authorize_resource
 
@@ -27,6 +27,11 @@ class KiteNamesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @kite_name.destroy
+    redirect_to brand_kite_names_path(@kite_name.brand)
   end
 
   private

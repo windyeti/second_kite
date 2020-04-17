@@ -2,3 +2,10 @@
   .list-group-item.d-flex.kite-name__item
     span.mr-auto = link_to kite_name.name, kite_name
     span.mr-2 = link_to 'edit', edit_kite_name_path(kite_name), class: 'btn btn-outline-secondary btn-sm'
+    span.mr-2 = link_to 'delete', kite_name,
+            method: :delete,
+            data: { confirm: "Are you sure?" },
+            class: 'btn btn-outline-danger btn-sm'
+
+
+

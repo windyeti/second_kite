@@ -307,4 +307,57 @@ RSpec.describe KiteNamesController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:kite_name) { create(:kite_name) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before { login(admin_user) }
+
+      it 'assigns kite_name' do
+        delete :destroy, params: { id: kite_name }
+        expect(assigns(:kite_name)).to eq kite_name
+      end
+
+      it 'change kite name count' do
+        expect do
+          delete :destroy, params: { id: kite_name }
+        end.to change(KiteName, :count).by(-1)
+      end
+
+      it 'redirect to kite_names' do
+        delete :destroy, params: { id: kite_name }
+        expect(response).to redirect_to brand_kite_names_path(kite_name.brand)
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it 'does not change kite name count' do
+        expect do
+          delete :destroy, params: { id: kite_name }
+        end.to_not change(KiteName, :count)
+      end
+
+      it 'redirect to root' do
+        delete :destroy, params: { id: kite_name }
+        expect(response).to redirect_to root_path
+      end
+    end
+    context 'Guest' do
+
+      it 'does not change kite name count' do
+        expect do
+          delete :destroy, params: { id: kite_name }
+        end.to_not change(KiteName, :count)
+      end
+
+      it 'redirect to log in' do
+        delete :destroy, params: { id: kite_name }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end
