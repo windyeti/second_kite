@@ -3,7 +3,7 @@ h4 New Kite name
 = form_with model: [@brand, @kite_name] do |f|
   .form-group
     = f.label :name
-    = f.text_field :name
+    = f.text_field :name, class: 'form-control'
 
   .form-group
-    = f.submit
+    = f.submit class: 'btn btn-primary'

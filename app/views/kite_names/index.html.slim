@@ -1,5 +1,13 @@
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "Back", @brand, class: 'text-dark'
+  span.text-dark |
+  span.mr-2 =< link_to "All brands", brands_path, class: 'text-dark'
+  span.text-dark |
 .card
-  .card-header List of kite names
+  .card-header
+    span List of kite names for brand
+    strong =< @brand.name
   .list-group.list-group-flush.kite-name__list
     = render @brand.kite_names
-    p = render 'form'
+p = render 'form'

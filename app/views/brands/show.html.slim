@@ -1,6 +1,11 @@
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "All brands", brands_path, class: 'text-dark'
+  span.text-dark |
 h4
   span.text-muted.pr-2 Название бренда:
   span = @brand.name
 
-.block-create-button
-  span.mr-2 = link_to 'Kite name', brand_kite_names_path(@brand), class: 'btn btn-outline-light btn-sm'
+h6 Модели бренда по типам оборудования
+.block-create-button.mt-3
+  span.mr-2 = link_to 'Kite name', brand_kite_names_path(@brand), class: 'btn btn-outline-info btn-sm'
