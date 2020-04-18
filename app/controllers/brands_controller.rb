@@ -21,7 +21,12 @@ class BrandsController < ApplicationController
   end
 
   def index
-    @brands = Brand.all
+    if params["brands_for"].nil?
+      @brands = Brand.all
+    else
+      name_model_for_join = params["brands_for"].to_sym
+      @brands = Brand.joins(name_model_for_join).distinct
+    end
   end
 
   def edit; end

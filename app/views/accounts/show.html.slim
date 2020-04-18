@@ -11,7 +11,7 @@ h3 = "Hello, #{@account.user.email}"
     span = @account.phone
 
 .account__ad
-  = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-success btn-sm btn-block'
+  = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-info btn-sm btn-block'
 
-.account__add-equipment
-  = link_to 'Add kite', brands_path(brands_for: 'kite_name'), class: 'btn btn-outline-success btn-sm'
+.account__add-equipment.mt-2
+  = link_to 'Add kite', brands_path(brands_for: 'kite_names'), class: 'btn btn-outline-success btn-sm'

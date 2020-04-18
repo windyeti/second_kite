@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe BrandsController, type: :controller do
 
   describe "GET #index" do
-    let(:brands) { create_list(:brand, 3) }
+    let(:brand_1) { create(:brand, name: 'Brand_1') }
+    let(:brand_2) { create(:brand, name: 'Brand_2') }
+    let(:brand_3) { create(:brand, name: 'Brand_3') }
 
     context 'Admin' do
       let(:admin_user) { create(:user, role: 'Admin') }
@@ -17,7 +19,7 @@ RSpec.describe BrandsController, type: :controller do
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to eq brands
+        expect(assigns(:brands)).to eq [brand_1, brand_2, brand_3]
       end
     end
 
@@ -33,8 +35,24 @@ RSpec.describe BrandsController, type: :controller do
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to eq brands
+        expect(assigns(:brands)).to eq [brand_1, brand_2, brand_3]
       end
+    end
+
+    context 'Authenticated user' do
+      let!(:kite_name_1) { create(:kite_name, brand: brand_1) }
+      let!(:kite_name_2) { create(:kite_name, brand: brand_1) }
+      let!(:kite_name_3) { create(:kite_name, brand: brand_3) }
+      let(:user) { create(:user) }
+      before do
+        login(user)
+        get :index, params: { brands_for: "kite_names" }
+      end
+
+      it "assigns brands" do
+        expect(assigns(:brands)).to eq [brand_1, brand_3]
+      end
+
     end
 
     context 'Guest' do
