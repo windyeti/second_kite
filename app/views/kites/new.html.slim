@@ -1,5 +1,8 @@
 .col.col-md-8.mx-auto
-  h1 Create kite
+  h1.mb-4
+    span New kite model
+    strong.text-dark =< "#{@kite_name.name}"
+
   = form_with model: [@kite_name, @kite] do |f|
 
     .form-group
