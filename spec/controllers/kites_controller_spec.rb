@@ -123,18 +123,36 @@ RSpec.describe KitesController, type: :controller do
 
   describe "GET #show" do
     context 'Authenticated user' do
-      let(:user) { create(:user) }
-      let(:kite) { create(:kite, user: user) }
-      before { login(user) }
+      let(:owner_user) { create(:user) }
+      let(:other_user) { create(:user, email: 'other_user@mail.com') }
+      let(:kite) { create(:kite, user: owner_user) }
 
-      it "render template show" do
-        get :show, params: { id: kite }
-        expect(response).to render_template :show
+      context 'owner kite' do
+        before { login(owner_user) }
+
+        it "render template show" do
+          get :show, params: { id: kite }
+          expect(response).to render_template :show
+        end
+
+        it "assigns kite" do
+          get :show, params: { id: kite }
+          expect(assigns(:kite)).to eq kite
+        end
       end
 
-      it "assigns kite" do
-        get :show, params: { id: kite }
-        expect(assigns(:kite)).to eq kite
+      context 'not owner kite' do
+        before { login(other_user) }
+
+        it "redirect to root" do
+          get :show, params: { id: kite }
+          expect(response).to redirect_to root_path
+        end
+
+        it "assigns kite" do
+          get :show, params: { id: kite }
+          expect(assigns(:kite)).to eq kite
+        end
       end
     end
 

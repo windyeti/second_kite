@@ -20,6 +20,7 @@ class KitesController < ApplicationController
 
   def show
     @kite = Kite.find(params[:id])
+    authorize! :show, @kite
   end
 
   private

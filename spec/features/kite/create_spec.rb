@@ -59,7 +59,7 @@ feature 'User create kite' do
       click_on 'Create kite'
 
       within 'h1' do
-        expect(page).to have_content 'Create kite'
+        expect(page).to have_content "New kite model Solo"
       end
     end
   end
