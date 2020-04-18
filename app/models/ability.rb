@@ -23,12 +23,12 @@ class Ability
     can :create, Ad
     can [:update, :destroy], Ad, { user_id: user.id }
     can :create, Kite
+    can :read, Kite
     can :read, Account, { user_id: user.id }
+    can :read, Brand
   end
 
   def guest
     can :read, Ad
-    # TODO Kite может просматривать только пользователь
-    can :read, Kite
   end
 end

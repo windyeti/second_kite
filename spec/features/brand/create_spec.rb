@@ -17,7 +17,7 @@ feature 'Admin can create brand' do
 
       click_on 'Create Brand'
 
-      within 'h4' do
+      within '.brand_name' do
         expect(page).to have_content 'F-One'
       end
     end

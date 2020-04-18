@@ -1,14 +1,6 @@
 .col.col-md-8.mx-auto
   h1 Create kite
-  = form_with model: @kite do |f|
-
-    .form-group
-      = f.label :brand
-      = f.text_field :brand, class: 'form-control'
-
-    .form-group
-      = f.label :name
-      = f.text_field :name, class: 'form-control'
+  = form_with model: [@kite_name, @kite] do |f|
 
     .form-group
       = f.label :year

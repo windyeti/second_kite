@@ -6,10 +6,12 @@ Rails.application.routes.draw do
   devise_for :users, path_names: { sign_in: :login, sign_out: :logout }
 
   resources :ads
-  resources :kites, only: [:new, :create, :show]
   resources :accounts, only: [:show]
   resources :brands do
-    resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy]
+    resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
+      resources :kites, shallow: true, only: [:new, :create, :show]
+    end
   end
+
 
 end

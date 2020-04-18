@@ -8,7 +8,7 @@ FactoryBot.define do
     quality { 4 }
 
     trait :invalid do
-      kite_name { nil }
+      year { nil }
     end
   end
 end

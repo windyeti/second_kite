@@ -16,7 +16,9 @@ class BrandsController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    @kite_name = @brand.kite_names.new
+  end
 
   def index
     @brands = Brand.all
@@ -44,7 +46,6 @@ class BrandsController < ApplicationController
   end
 
   def brand_params
-    params[:brand][:type_equipment_ids]&.reject!(&:blank?)
-    params.require(:brand).permit(:name, :type_equipment_ids => [])
+    params.require(:brand).permit(:name)
   end
 end

@@ -19,8 +19,6 @@ feature 'Admin can delete kite name' do
         click_on 'PrettyBrand'
       end
 
-      click_on 'Kite name'
-
       within '.kite-name__item' do
         click_on 'delete'
       end

@@ -28,12 +28,12 @@ RSpec.describe BrandsController, type: :controller do
         get :index
       end
 
-      it "redirect to root" do
-        expect(response).to redirect_to root_path
+      it "render template index" do
+        expect(response).to render_template :index
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to be_nil
+        expect(assigns(:brands)).to eq brands
       end
     end
 
@@ -175,15 +175,20 @@ RSpec.describe BrandsController, type: :controller do
         expect(assigns(:brand)).to eq brand
       end
 
+      it 'assigns var kite_name' do
+        get :show, params: {id: brand}
+        expect(assigns(:kite_name)).to be_a_new KiteName
+      end
+
     end
 
     context 'Authenticated user not admin' do
       let(:user) { create(:user) }
       before { login(user) }
 
-      it 'redirect to root' do
+      it 'render template show' do
         get :show, params: {id: brand}
-        expect(response).to redirect_to root_path
+        expect(response).to render_template :show
       end
 
     end

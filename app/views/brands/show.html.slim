@@ -4,8 +4,13 @@
   span.text-dark |
 h4
   span.text-muted.pr-2 Название бренда:
-  span = @brand.name
+  span.brand_name = @brand.name
 
-h6 Модели бренда по типам оборудования
-.block-create-button.mt-3
-  span.mr-2 = link_to 'Kite name', brand_kite_names_path(@brand), class: 'btn btn-outline-info btn-sm'
+.card
+  .card-header
+    span List of kite names for brand
+    strong =< @brand.name
+  .list-group.list-group-flush.kite-name__list
+    = render @brand.kite_names
+p = render 'kite_names/form'
+

@@ -16,8 +16,6 @@ feature 'Admin can create kite_name' do
         click_on brand.name
       end
 
-      click_on 'Kite name'
-
       fill_in 'Name', with: 'Edge'
       click_on 'Create Kite name'
 
@@ -35,8 +33,6 @@ feature 'Admin can create kite_name' do
         click_on brand.name
       end
 
-      click_on 'Kite name'
-
       fill_in 'Name', with: ''
       click_on 'Create Kite name'
 
@@ -48,13 +44,13 @@ feature 'Admin can create kite_name' do
   context 'Authenticated user not admin' do
     scenario 'can not create' do
       visit root_path
-      expect(page).to_not have_selector(:link_or_button, 'Kite name')
+      expect(page).to_not have_css '.admin_panel'
     end
   end
   context 'Guest' do
     scenario 'can not create' do
       visit root_path
-      expect(page).to_not have_selector(:link_or_button, 'Kite name')
+      expect(page).to_not have_css '.admin_panel'
     end
   end
 end

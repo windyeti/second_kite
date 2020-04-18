@@ -1,35 +1,75 @@
 require 'rails_helper'
 
-feature 'User can create product kite' do
+feature 'User create kite' do
+  given(:brand) { create(:brand, name: 'F-One') }
+  %w(Bandit Master Solo).each { |n| given!("kite_name_#{n}".to_sym) { create(:kite_name, brand: brand, name: n) } }
+
   describe 'Authenticated user' do
     given(:user) { create(:user) }
     background { sign_in(user) }
 
-    scenario 'can create product kite' do
-      # TODO тут надо сделать заход в личный кабинет,
-      # а уже там жать кнопку Создать кайт
-      # click_on 'Create kite'
+    scenario 'with valid data can create kite' do
+      visit root_path
+      within '.login__down' do
+        click_on 'account'
+      end
+      within '.account__add-equipment' do
+        click_on 'Add kite'
+      end
 
-      visit new_kite_path
+      within '.brand_name' do
+        click_on 'F-One'
+      end
 
-      expect(page).to have_content 'Create kite'
+      within '.kite_name_solo' do
+        click_on 'Solo'
+      end
 
-      fill_in 'Brand', with: 'F-One'
-      fill_in 'Name', with: 'Bandit'
       select("2012", from: "Year").select_option
       select("14", from: "Size").select_option
+      fill_in 'Price', with: '345'
       select("4", from: "Quality").select_option
-      fill_in 'Price', with: '1200'
 
       click_on 'Create kite'
 
-      expect(page).to have_content 'F-One'
+      expect(page).to have_content 'Solo'
+    end
 
+    scenario 'with invalid data can not create kite' do
+      visit root_path
+      within '.login__down' do
+        click_on 'account'
+      end
+      within '.account__add-equipment' do
+        click_on 'Add kite'
+      end
+
+      within '.brand_name' do
+        click_on 'F-One'
+      end
+
+      within '.kite_name_solo' do
+        click_on 'Solo'
+      end
+
+      select("14", from: "Size").select_option
+      fill_in 'Price', with: '345'
+      select("4", from: "Quality").select_option
+
+      click_on 'Create kite'
+
+      within 'h1' do
+        expect(page).to have_content 'Create kite'
+      end
     end
   end
 
-  describe 'Guest'
-    scenario 'can not create product kite'
-      # TODO тут надо сделать заход в личный кабинет,
-      # а уже тут нет кнопки Создать кайт
+  describe 'Guest' do
+    scenario 'can not create kite' do
+      visit root_path
+      within '.login__down' do
+        expect(page).to_not have_selector(:link_or_button, 'account')
+      end
+    end
+   end
 end

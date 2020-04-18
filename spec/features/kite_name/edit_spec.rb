@@ -17,8 +17,6 @@ feature 'Admin cat edit kite type' do
         click_on brand.name
       end
 
-      click_on 'Kite name'
-
       within '.kite-name__item' do
         click_on 'edit'
       end
@@ -39,8 +37,6 @@ feature 'Admin cat edit kite type' do
       within '.brand_name' do
         click_on brand.name
       end
-
-      click_on 'Kite name'
 
       within '.kite-name__item' do
         click_on 'edit'
