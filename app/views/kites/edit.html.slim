@@ -1,0 +1,26 @@
+.col.col-md-8.mx-auto
+  h1.mb-4
+    span Edit kite model
+    strong.text-dark =< "#{@kite.kite_name.name}"
+
+  = form_with model: @kite do |f|
+
+    .form-group
+      = f.label :year
+      = f.collection_select(:year, (1990..Time.now.year), :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+
+    .form-group
+      = f.label :size
+      = f.collection_select(:size, (1..32), :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+
+    .form-group
+      = f.label :quality
+      = f.collection_select(:quality, (1..5), :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+
+    .form-group
+      = f.label :price
+      = f.text_field :price, class: 'form-control'
+
+    .form-group
+      = f.submit class: 'btn btn-primary'
+

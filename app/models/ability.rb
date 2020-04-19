@@ -24,6 +24,7 @@ class Ability
     can :create, Ad
     can [:update, :destroy], Ad, { user_id: user.id }
     can :show, Kite, { user_id: user.id }
+    can :update, Kite, { user_id: user.id }
     can :create, Kite
     can :read, Account, { user_id: user.id }
     can :read, Brand

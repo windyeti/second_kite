@@ -1,0 +1,10 @@
+.list-group-item.d-flex
+  span.mr-auto
+    span #{kite.kite_name.name} - #{kite.size}m2 - #{kite.price}
+    span.product__rub.text-muted = "&#8381;".html_safe
+
+  - if can? :update, kite
+    span.link-edit = link_to 'edit',
+            edit_kite_path(kite),
+            class: 'btn btn-outline-secondary btn-sm'
+

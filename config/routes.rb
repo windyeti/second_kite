@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [:show]
   resources :brands do
     resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
-      resources :kites, shallow: true, only: [:new, :create, :show]
+      resources :kites, shallow: true, only: [:new, :create, :show, :edit, :update]
     end
   end
 
