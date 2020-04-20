@@ -1,16 +1,15 @@
 .list-group-item.d-flex id=("kite_id_#{kite.id}")
   span.mr-auto.kite
-    span #{kite.kite_name.name} - #{kite.size}m2 - #{kite.price}
-    span.product__rub.text-muted = "&#8381;".html_safe
+    span = link_to string_link(kite), kite
 
   - if can? :destroy, kite
-    span.link-delete = link_to 'delete',
+    span.link-delete.mr-2 = link_to 'delete',
             kite,
             remote: true,
             method: :delete,
             class: 'btn btn-outline-danger btn-sm'
   - if can? :update, kite
-    span.link-edit = link_to 'edit',
+    span.link-edit.mr-2 = link_to 'edit',
             edit_kite_path(kite),
             class: 'btn btn-outline-secondary btn-sm'
 

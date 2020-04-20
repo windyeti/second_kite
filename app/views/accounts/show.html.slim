@@ -10,7 +10,7 @@ h3 = "Hello, #{@account.user.email}"
     span phone:
     span = @account.phone
 
-.account__ad
+.account__ad.mb-4
   = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-info btn-sm btn-block'
 
 .kites
