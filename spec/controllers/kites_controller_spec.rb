@@ -302,4 +302,73 @@ RSpec.describe KitesController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let!(:kite) { create(:kite, user: owner_user) }
+
+    context 'Authenticated user' do
+
+      context 'owner can delete kite' do
+        before { login(owner_user) }
+
+        it 'assigns kite' do
+          delete :destroy, params: { id: kite }, format: :js
+          expect(assigns(:kite)).to eq kite
+        end
+
+        it 'change kite count' do
+          expect do
+            delete :destroy, params: { id: kite }, format: :js
+          end.to change(Kite, :count).by(-1)
+        end
+
+        it 'render template destroy' do
+          delete :destroy, params: { id: kite }, format: :js
+          expect(response).to render_template :destroy
+        end
+      end
+
+      context 'not owner can not delete kite' do
+        before { login(other_user) }
+
+        it 'assigns kite' do
+          delete :destroy, params: { id: kite }
+          expect(assigns(:kite)).to eq kite
+        end
+
+        it 'does not change kite count' do
+          expect do
+            delete :destroy, params: { id: kite }
+          end.to_not change(Kite, :count)
+        end
+
+        it 'redirect to root' do
+          delete :destroy, params: { id: kite }
+          expect(response).to redirect_to root_path
+        end
+      end
+    end
+    context 'Guest' do
+      context 'can not delete kite' do
+
+        it 'does not assigns kite' do
+          delete :destroy, params: { id: kite }
+          expect(assigns(:kite)).to be_nil
+        end
+
+        it 'does not change kite count' do
+          expect do
+            delete :destroy, params: { id: kite }
+          end.to_not change(Kite, :count)
+        end
+
+        it 'redirect to log in' do
+          delete :destroy, params: { id: kite }
+          expect(response).to redirect_to new_user_session_path
+        end
+      end
+    end
+  end
+
 end

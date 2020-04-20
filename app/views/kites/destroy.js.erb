@@ -1,0 +1,3 @@
+$("#kite_id_<%= @kite.id %> .link-delete").on('ajax:success', function() {
+  $(this).parent().remove()
+})

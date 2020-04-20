@@ -19,7 +19,7 @@ RSpec.describe BrandsController, type: :controller do
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to eq [brand_1, brand_2, brand_3]
+        expect(assigns(:brands)).to match_array [brand_1, brand_2, brand_3]
       end
     end
 
@@ -35,7 +35,7 @@ RSpec.describe BrandsController, type: :controller do
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to eq [brand_1, brand_2, brand_3]
+        expect(assigns(:brands)).to match_array [brand_1, brand_2, brand_3]
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe BrandsController, type: :controller do
       end
 
       it "assigns brands" do
-        expect(assigns(:brands)).to eq [brand_1, brand_3]
+        expect(assigns(:brands)).to match_array [brand_1, brand_3]
       end
 
     end

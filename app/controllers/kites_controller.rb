@@ -1,6 +1,6 @@
 class KitesController < ApplicationController
   before_action :load_kite_name, only: [:new, :create]
-  before_action :load_kite, only: [:show, :edit, :update]
+  before_action :load_kite, only: [:show, :edit, :update, :destroy]
 
   authorize_resource
 
@@ -33,6 +33,12 @@ class KitesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    authorize! :destroy, @kite
+
+    @kite.destroy
   end
 
   private
