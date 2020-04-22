@@ -7,19 +7,6 @@
         - else
           span = string_full_link(kite)
 
-
-      - if can? :destroy, kite
-        span.link-delete.mr-2 = link_to 'delete',
-                kite,
-                remote: true,
-                method: :delete,
-                data: { confirm: 'Are you sure?' },
-                class: 'btn btn-outline-danger btn-sm'
-      - if can? :update, kite
-        span.link-edit.mr-2 = link_to 'edit',
-                edit_kite_path(kite),
-                class: 'btn btn-outline-secondary btn-sm'
-
     - if kite.best_photos.attached?
       .p-2
         h6 Best views

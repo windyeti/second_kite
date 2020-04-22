@@ -36,6 +36,7 @@ class AdsController < ApplicationController
 
   def destroy
     @ad.destroy
+    # TODO надо через destroy.js.erb удалять объявление
     redirect_to ads_path
   end
 
