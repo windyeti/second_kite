@@ -41,6 +41,9 @@ gem 'cancancan'
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'rails-i18n'
+gem 'mini_magick', '~> 4.8'
+gem "image_processing"
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

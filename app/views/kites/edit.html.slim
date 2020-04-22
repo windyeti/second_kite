@@ -22,5 +22,19 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label :best_photos
+      = f.file_field :best_photos, multiple: true, direct_upload: true, class: 'form-control'
+
+      .best_views.gallery_for_delete.d-flex
+        = render 'shared/gallery_views', photos: @kite.best_photos
+
+    .form-group
+      = f.label :trouble_photos
+      = f.file_field :trouble_photos, multiple: true, direct_upload: true, class: 'form-control'
+
+      .trouble_views.gallery_for_delete.d-flex
+        = render 'shared/gallery_views', photos: @kite.trouble_photos
+
+    .form-group
       = f.submit class: 'btn btn-primary'
 

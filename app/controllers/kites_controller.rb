@@ -9,7 +9,7 @@ class KitesController < ApplicationController
   end
 
   def create
-    @kite = @kite_name.kites.create(kite_params)
+    @kite = @kite_name.kites.new(kite_params)
     @kite.user = current_user
 
     if @kite.save
@@ -44,7 +44,13 @@ class KitesController < ApplicationController
   private
 
   def kite_params
-    params.require(:kite).permit(:year, :size, :price, :quality)
+    params.require(:kite).permit(:year,
+                                 :size,
+                                 :price,
+                                 :quality,
+                                 best_photos: [],
+                                 trouble_photos: []
+                                )
   end
 
   def load_kite_name

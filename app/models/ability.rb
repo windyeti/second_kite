@@ -29,6 +29,7 @@ class Ability
     can :create, Kite
     can :read, Account, { user_id: user.id }
     can :read, Brand
+    can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
   end
 
   def guest

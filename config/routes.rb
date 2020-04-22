@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :kites, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
     end
   end
+  resources :attachments, only: [:destroy]
 
 
 end

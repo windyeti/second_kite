@@ -13,8 +13,10 @@ feature 'User delete kite', js: true do
         click_on 'account'
       end
 
-      within '.link-delete' do
-        click_on 'delete'
+      accept_alert do
+        within '.link-delete' do
+          click_on 'delete'
+        end
       end
 
       expect(page).to_not have_css "#kite_id_#{kite.id}"

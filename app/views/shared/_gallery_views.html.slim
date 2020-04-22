@@ -1,0 +1,13 @@
+- photos.each do |photo|
+  .photo_link__container
+    .photo__container id="photo-container-#{photo.id}"
+      = image_tag thumbnail(photo),
+              class: 'photo__img',
+              data: { origin: "#{url_for(big_photo(photo))}" }
+    - if can? :update, Kite
+      = link_to 'x', attachment_path(photo),
+              method: :delete,
+              remote: true,
+              data: { confirm: 'Are you sure?', photo_id: "#{photo.id}" },
+              class: 'link-delete'
+

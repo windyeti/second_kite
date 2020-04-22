@@ -1,0 +1,4 @@
+$('.gallery_for_delete').on('ajax:success', function(e) {
+  if ($(e.target).text() != 'x') return
+  $(e.target).parent().remove()
+})

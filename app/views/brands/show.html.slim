@@ -12,5 +12,7 @@ h4
     strong =< @brand.name
   .list-group.list-group-flush.kite-name__list
     = render @brand.kite_names
-p = render 'kite_names/form'
+
+- if can? :create, KiteName
+  p = render 'kite_names/form'
 

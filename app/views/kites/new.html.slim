@@ -22,5 +22,13 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label :best_photos
+      = f.file_field :best_photos, multiple: true, direct_upload: true, class: 'form-control'
+
+    .form-group
+      = f.label :trouble_photos
+      = f.file_field :trouble_photos, multiple: true, direct_upload: true, class: 'form-control'
+
+    .form-group
       = f.submit 'Create kite', class: 'btn btn-primary'
 

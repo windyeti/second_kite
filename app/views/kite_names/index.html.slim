@@ -10,4 +10,6 @@
     strong =< @brand.name
   .list-group.list-group-flush.kite-name__list
     = render @brand.kite_names
-p = render 'form'
+
+- if can? :create, KiteName
+  = render 'form'

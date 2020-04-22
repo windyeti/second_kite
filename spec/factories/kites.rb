@@ -10,5 +10,12 @@ FactoryBot.define do
     trait :invalid do
       year { nil }
     end
+
+    trait :with_attachments do
+      after(:create) do |kite|
+        kite.best_photos.attach [io: File.open(Rails.root.join('spec', 'support', 'test_red.jpg')), filename: 'test_red.jpg']
+        # kite.best_photos.attach [fixture_file_upload(Rails.root.join('spec', 'support', 'test_red.jpg'), 'image/jpeg')]
+      end
+    end
   end
 end
