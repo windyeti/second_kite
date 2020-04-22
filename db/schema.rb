@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_21_082419) do
+ActiveRecord::Schema.define(version: 2020_04_22_163249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,15 @@ ActiveRecord::Schema.define(version: 2020_04_21_082419) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "ad_kites", force: :cascade do |t|
+    t.bigint "ad_id"
+    t.bigint "kite_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ad_id"], name: "index_ad_kites_on_ad_id"
+    t.index ["kite_id"], name: "index_ad_kites_on_kite_id"
   end
 
   create_table "ads", force: :cascade do |t|
@@ -102,6 +111,8 @@ ActiveRecord::Schema.define(version: 2020_04_21_082419) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ad_kites", "ads"
+  add_foreign_key "ad_kites", "kites"
   add_foreign_key "ads", "users"
   add_foreign_key "kite_names", "brands"
   add_foreign_key "kites", "kite_names"

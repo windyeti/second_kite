@@ -42,7 +42,7 @@ class AdsController < ApplicationController
   private
 
   def ad_params
-    params.require(:ad).permit(:title, :description, :total_price)
+    params.require(:ad).permit(:title, :description, :total_price, kite_ids: [])
   end
 
   def load_ad

@@ -2,6 +2,9 @@ class Kite < ApplicationRecord
   belongs_to :user
   belongs_to :kite_name
 
+  has_many :ad_kites, dependent: :destroy
+  has_many :ads, through: :ad_kites
+
   has_many_attached :best_photos
   has_many_attached :trouble_photos
 
@@ -11,6 +14,10 @@ class Kite < ApplicationRecord
   validates :quality, inclusion: 1..5
 
   validate :type_photos
+
+  def kite_name_name
+    "#{kite_name.name} - #{size}m2 - #{price}"
+  end
 
   private
 
