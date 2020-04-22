@@ -22,6 +22,10 @@
       = f.text_field :price, class: 'form-control'
 
     .form-group
+      = f.label :singly_sale
+      = f.check_box :singly_sale
+
+    .form-group
       = f.label :best_photos
       = f.file_field :best_photos, multiple: true, direct_upload: true, class: 'form-control'
 

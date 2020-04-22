@@ -4,7 +4,7 @@
       = image_tag thumbnail(photo),
               class: 'photo__img',
               data: { origin: "#{url_for(big_photo(photo))}" }
-    - if can? :update, Kite
+    - if can? :update, photo.record
       = link_to 'x', attachment_path(photo),
               method: :delete,
               remote: true,

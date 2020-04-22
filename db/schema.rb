@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_163249) do
+ActiveRecord::Schema.define(version: 2020_04_22_220150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_163249) do
     t.integer "quality", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "singly_sale", default: true
     t.index ["kite_name_id"], name: "index_kites_on_kite_name_id"
     t.index ["user_id"], name: "index_kites_on_user_id"
   end

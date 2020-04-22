@@ -1,9 +1,20 @@
-h3.h3 = @ad.title
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "Back", ads_path, class: 'text-dark'
+  span.text-dark |
+h3.h3.d-flex
+  .mr-auto
+    span = @ad.title
+    .text-muted.count_equipment = "Kites: #{@ad.kites.count}, Boards: 0, Bars: 0"
+  .total_price
+    p = "#{@ad.total_price}&#8381;".html_safe
 .description
   .text-muted Description
   p = @ad.description
-.total_price
-  .text-muted Total price
-  p = "#{@ad.total_price} руб."
-.kites
-  = render @ad.kites
+
+- unless @ad.kites.empty?
+  .kites
+    .card
+      .card-header Kites
+      .list-group.list-group-flush = render 'kites/kite_full', kites: @ad.kites
+

@@ -48,6 +48,7 @@ class KitesController < ApplicationController
                                  :size,
                                  :price,
                                  :quality,
+                                 :singly_sale,
                                  best_photos: [],
                                  trouble_photos: []
                                 )

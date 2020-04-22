@@ -1,0 +1,37 @@
+- kites.each do |kite|
+  .list-group-item id=("kite_id_#{kite.id}")
+    .container__links.d-flex
+      span.mr-auto.kite
+        - if can? :show, kite
+          span = link_to string_full_link(kite), kite
+        - else
+          span = string_full_link(kite)
+
+
+      - if can? :destroy, kite
+        span.link-delete.mr-2 = link_to 'delete',
+                kite,
+                remote: true,
+                method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: 'btn btn-outline-danger btn-sm'
+      - if can? :update, kite
+        span.link-edit.mr-2 = link_to 'edit',
+                edit_kite_path(kite),
+                class: 'btn btn-outline-secondary btn-sm'
+
+    - if kite.best_photos.attached?
+      .p-2
+        h6 Best views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: kite.best_photos
+        .photo__big__container
+          .close x
+
+    - if kite.trouble_photos.attached?
+      .p-2
+        h6 Trouble views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: kite.trouble_photos
+        .photo__big__container
+          .close x
