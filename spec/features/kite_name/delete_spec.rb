@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Admin can delete kite name' do
+feature 'Admin can delete kite name', js: true do
   given!(:brand) { create(:brand, name: 'PrettyBrand' ) }
   given!(:kite_name) { create(:kite_name, name: 'SuperNewlyModel', brand: brand ) }
 
@@ -18,12 +18,12 @@ feature 'Admin can delete kite name' do
       within '.brand_name' do
         click_on 'PrettyBrand'
       end
+save_and_open_page
 
       within '.kite-name__item' do
-        click_on 'delete'
+        accept_alert { click_on 'delete' }
       end
-
-      expect(page).to have_content 'List of kite names'
+      expect(page).to have_content "List of kite names for brand PrettyBrand"
       expect(page).to_not have_selector(:link_or_button, 'SuperNewlyModel')
     end
   end

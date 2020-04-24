@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
       resources :kites, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
     end
+    resources :board_names, shallow: true, only: [:create, :edit, :update, :show, :destroy]
   end
   resources :attachments, only: [:destroy]
 

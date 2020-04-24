@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Admin can create kite_name' do
+feature 'Admin can create kite_name', js: true do
   context 'Admin' do
     given!(:brand) { create(:brand, name: 'Ozone') }
     given(:admin_user) { create(:user, role: 'Admin') }
@@ -16,7 +16,7 @@ feature 'Admin can create kite_name' do
         click_on brand.name
       end
 
-      fill_in 'Name', with: 'Edge'
+      fill_in 'kite_name_name', with: 'Edge'
       click_on 'Create Kite name'
 
       within '.kite-name__list' do
@@ -33,12 +33,11 @@ feature 'Admin can create kite_name' do
         click_on brand.name
       end
 
-      fill_in 'Name', with: ''
+      fill_in 'kite_name_name', with: ''
       click_on 'Create Kite name'
 
-      within '.kite-name__list' do
-        expect(page).to_not have_selector(:link_or_button, 'Edge')
-      end
+      expect(page).to_not have_selector(:link_or_button, 'Edge')
+
     end
   end
   context 'Authenticated user not admin' do

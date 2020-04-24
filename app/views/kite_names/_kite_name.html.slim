@@ -1,13 +1,15 @@
 - if kite_name.valid?
-  .list-group-item.d-flex.kite-name__item
+  .list-group-item.d-flex.kite-name__item id=("kite_name_id_#{kite_name.id}")
     span.kite_name.mr-auto class=("kite_name_#{kite_name.name.downcase}") = link_to kite_name.name, new_kite_name_kite_path(kite_name)
 
     - if can? :update, KiteName
       span.mr-2 = link_to 'edit', edit_kite_name_path(kite_name), class: 'btn btn-outline-secondary btn-sm'
       span.mr-2 = link_to 'delete', kite_name,
               method: :delete,
+              remote: true,
               data: { confirm: "Are you sure?" },
-              class: 'btn btn-outline-danger btn-sm'
+              class: "btn btn-outline-danger btn-sm",
+              id: "kite_name_id_link_delete_#{kite_name.id}"
 
 
 

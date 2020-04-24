@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_220150) do
+ActiveRecord::Schema.define(version: 2020_04_23_140857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,14 @@ ActiveRecord::Schema.define(version: 2020_04_22_220150) do
     t.index ["user_id"], name: "index_ads_on_user_id"
   end
 
+  create_table "board_names", force: :cascade do |t|
+    t.bigint "brand_id"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_board_names_on_brand_id"
+  end
+
   create_table "brands", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -115,6 +123,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_220150) do
   add_foreign_key "ad_kites", "ads"
   add_foreign_key "ad_kites", "kites"
   add_foreign_key "ads", "users"
+  add_foreign_key "board_names", "brands"
   add_foreign_key "kite_names", "brands"
   add_foreign_key "kites", "kite_names"
   add_foreign_key "kites", "users"

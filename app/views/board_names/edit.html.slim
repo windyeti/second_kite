@@ -1,6 +1,6 @@
-h4 New Kite name
+h4 Edit Board_name (Model)
 
-= form_with model: [@brand, @kite_name], class: 'kite_name_form', data: { type: :json } do |f|
+= form_with model: @board_name, class: 'board_name_form' do |f|
   .form-group
     = f.label :name
     = f.text_field :name, class: 'form-control'

@@ -1,0 +1,4 @@
+- if resource.errors.present?
+  ul.error__items
+    - resource.errors.full_messages.each do |m|
+      li = m

@@ -17,7 +17,8 @@ class BrandsController < ApplicationController
   end
 
   def show
-    @kite_name = @brand.kite_names.new
+    @kite_name = KiteName.new
+    @board_name = BoardName.new
   end
 
   def index

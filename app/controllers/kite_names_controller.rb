@@ -10,10 +10,17 @@ class KiteNamesController < ApplicationController
 
   def create
     @kite_name = @brand.kite_names.new(kite_name_params)
-    if @kite_name.save
-      redirect_to brand_kite_names_path(@brand)
-    else
-      render :index
+    respond_to do |format|
+      if @kite_name.save
+        format.json { render json: {
+          html: (render_to_string partial: 'kite_names/kite_name.html.slim', locals: {kite_name: @kite_name})
+        } }
+      else
+        format.json { render json: {
+          error: (render_to_string partial: 'shared/errors.html.slim', locals: {resource: @kite_name}) },
+          status: 422
+        }
+      end
     end
   end
 
@@ -31,7 +38,6 @@ class KiteNamesController < ApplicationController
 
   def destroy
     @kite_name.destroy
-    redirect_to brand_kite_names_path(@kite_name.brand)
   end
 
   private

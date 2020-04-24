@@ -53,48 +53,43 @@ RSpec.describe KiteNamesController, type: :controller do
       context "with valid data can create kite_name" do
 
         it "assigns brand" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
           expect(assigns(:brand)).to eq brand
         end
 
         it "assigns kite_name" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
           expect(assigns(:kite_name)).to eq KiteName.all.first
+        end
+
+        it 'does not render template create' do
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
+          expect(response).to_not render_template :create
         end
 
         it 'change kite_name count' do
           expect do
-            post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+            post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
           end.to change(KiteName, :count).by(1)
-        end
-
-        it "redirect to brand.kite_names" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
-          expect(response).to redirect_to brand_kite_names_path(brand)
         end
       end
 
       context "with invalid data can not create kite_name" do
 
         it "assigns brand" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }, format: :json
           expect(assigns(:brand)).to eq brand
         end
 
         it "assigns kite_name" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }, format: :json
           expect(assigns(:kite_name).valid?).to be_falsey
         end
 
         it 'does not change kite_name count' do
           expect do
-            post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }
+            post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }, format: :json
           end.to_not change(KiteName, :count)
-        end
-
-        it "render template brand.kite_names" do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name, :invalid) }
-          expect(response).to render_template :index
         end
       end
     end
@@ -105,24 +100,24 @@ RSpec.describe KiteNamesController, type: :controller do
       before { login(user) }
 
       it "assigns brand" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         expect(assigns(:brand)).to eq brand
       end
 
       it "assigns kite_name" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         expect(assigns(:kite_name)).to be_nil
       end
 
       it 'does not change kite_name count' do
         expect do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         end.to_not change(KiteName, :count)
       end
 
-      it "redirect to root" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
-        expect(response).to redirect_to root_path
+      it "return status :forbidden" do
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
+        expect(response).to have_http_status :forbidden
       end
     end
 
@@ -130,24 +125,24 @@ RSpec.describe KiteNamesController, type: :controller do
       let!(:brand) { create(:brand) }
 
       it "assigns brand" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         expect(assigns(:brand)).to be_nil
       end
 
       it "assigns kite_name" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         expect(assigns(:kite_name)).to be_nil
       end
 
       it 'does not change kite_name count' do
         expect do
-          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
+          post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
         end.to_not change(KiteName, :count)
       end
 
-      it "redirect to log in" do
-        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }
-        expect(response).to redirect_to new_user_session_path
+      it "return status unauthorized" do
+        post :create, params: { brand_id: brand, kite_name: attributes_for(:kite_name) }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
@@ -316,34 +311,35 @@ RSpec.describe KiteNamesController, type: :controller do
       before { login(admin_user) }
 
       it 'assigns kite_name' do
-        delete :destroy, params: { id: kite_name }
+        delete :destroy, params: { id: kite_name }, format: :js
         expect(assigns(:kite_name)).to eq kite_name
       end
 
       it 'change kite name count' do
         expect do
-          delete :destroy, params: { id: kite_name }
+          delete :destroy, params: { id: kite_name }, format: :js
         end.to change(KiteName, :count).by(-1)
       end
-
-      it 'redirect to kite_names' do
-        delete :destroy, params: { id: kite_name }
-        expect(response).to redirect_to brand_kite_names_path(kite_name.brand)
-      end
     end
+
     context 'Authenticated user not admin' do
       let(:user) { create(:user) }
       before { login(user) }
 
-      it 'does not change kite name count' do
-        expect do
-          delete :destroy, params: { id: kite_name }
-        end.to_not change(KiteName, :count)
+      it 'return status redirect' do
+        delete :destroy, params: { id: kite_name }
+        expect(response).to have_http_status :redirect
       end
 
       it 'redirect to root' do
         delete :destroy, params: { id: kite_name }
         expect(response).to redirect_to root_path
+      end
+
+      it 'does not change kite name count' do
+        expect do
+          delete :destroy, params: { id: kite_name }
+        end.to_not change(KiteName, :count)
       end
     end
     context 'Guest' do
