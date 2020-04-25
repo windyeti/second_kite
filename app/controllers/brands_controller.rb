@@ -19,6 +19,7 @@ class BrandsController < ApplicationController
   def show
     @kite_name = KiteName.new
     @board_name = BoardName.new
+    @type_equipment = params["model_for"] unless params["model_for"].nil?
   end
 
   def index
@@ -27,6 +28,7 @@ class BrandsController < ApplicationController
     else
       name_model_for_join = params["brands_for"].to_sym
       @brands = Brand.joins(name_model_for_join).distinct
+      @type_equipment = params["brands_for"]
     end
   end
 

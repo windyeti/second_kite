@@ -13,9 +13,7 @@ feature 'User create kite' do
       within '.login__down' do
         click_on 'account'
       end
-      within '.account__add-equipment' do
-        click_on 'Add kite'
-      end
+      click_on 'Add kite'
 
       within '.brand_name' do
         click_on 'F-One'
@@ -40,9 +38,8 @@ feature 'User create kite' do
       within '.login__down' do
         click_on 'account'
       end
-      within '.account__add-equipment' do
-        click_on 'Add kite'
-      end
+
+      click_on 'Add kite'
 
       within '.brand_name' do
         click_on 'F-One'

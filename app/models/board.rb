@@ -1,24 +1,16 @@
-class Kite < ApplicationRecord
+class Board < ApplicationRecord
   belongs_to :user
-  belongs_to :kite_name
-
-  has_many :ad_kites, dependent: :destroy
-  has_many :ads, through: :ad_kites
+  belongs_to :board_name
 
   has_many_attached :best_photos
   has_many_attached :trouble_photos
 
-  validates :year, :size, :price, :quality, presence: true
-  validates :year, :size, :price, :quality, numericality: true
+  validates :length, :width, :year, :quality, :price, presence: true
+  validates :length, :width, :year, :quality, :price, numericality: true
 
   validates :quality, inclusion: 1..5
 
   validate :type_photos
-
-  # method for f.collection_check_boxes
-  def kite_name_name
-    "#{kite_name.name} - #{size}m2 - #{price}"
-  end
 
   private
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_23_140857) do
+ActiveRecord::Schema.define(version: 2020_04_25_081038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,23 @@ ActiveRecord::Schema.define(version: 2020_04_23_140857) do
     t.index ["brand_id"], name: "index_board_names_on_brand_id"
   end
 
+  create_table "boards", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "board_name_id"
+    t.integer "width", null: false
+    t.integer "length", null: false
+    t.boolean "pads", default: true
+    t.boolean "fins", default: true
+    t.boolean "singly_sale", default: true
+    t.integer "year", null: false
+    t.integer "quality", null: false
+    t.integer "price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["board_name_id"], name: "index_boards_on_board_name_id"
+    t.index ["user_id"], name: "index_boards_on_user_id"
+  end
+
   create_table "brands", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -124,6 +141,8 @@ ActiveRecord::Schema.define(version: 2020_04_23_140857) do
   add_foreign_key "ad_kites", "kites"
   add_foreign_key "ads", "users"
   add_foreign_key "board_names", "brands"
+  add_foreign_key "boards", "board_names"
+  add_foreign_key "boards", "users"
   add_foreign_key "kite_names", "brands"
   add_foreign_key "kites", "kite_names"
   add_foreign_key "kites", "users"

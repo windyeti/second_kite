@@ -10,10 +10,11 @@ h3 = "Hello, #{@account.user.email}"
     span phone:
     span = @account.phone
 
+/TODO List ads
 .account__ad.mb-4
   = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-info btn-sm btn-block'
 
-.kites
+.kites.mt-2
   .card
     .card-header List of kites
     .list-group.list-group-flush = render @account.user.kites
@@ -21,10 +22,10 @@ h3 = "Hello, #{@account.user.email}"
   .account__add-equipment.mt-2
     = link_to 'Add kite', brands_path(brands_for: 'kite_names'), class: 'btn btn-outline-success btn-sm'
 
-.boards
-  / .card
-  /   .card-header List of kites
-  /   .list-group.list-group-flush = render @account.user.boards
+.boards.mt-2
+  .card
+    .card-header List of kites
+    .list-group.list-group-flush = render @account.user.boards
 
   .account__add-equipment.mt-2
     = link_to 'Add board', brands_path(brands_for: 'board_names'), class: 'btn btn-outline-success btn-sm'

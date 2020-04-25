@@ -1,0 +1,67 @@
+/ .link_control.pb-2
+/   span.text-dark |
+/   span.mr-2 =< link_to "Back", account_path(@board.user.account), class: 'text-dark'
+/   span.text-dark |
+h1.mb-4.d-flex.product__head
+  span.mr-auto Кайт #{@board.board_name.name}
+  span => "#{@board.price}"
+  span.product__rub.text-muted = "&#8381;".html_safe
+
+
+.row
+  p.col.mr-3
+    span.text-muted Бренд:
+    span =< "#{@board.board_name.brand.name}"
+
+  p.col.mr-3
+    span.text-muted Модель:
+    span =< "#{@board.board_name.name}"
+
+  p.col.mr-3
+    span.text-muted Size:
+    span =< "#{@board.length} x #{@board.width}"
+
+  p.col.mr-3
+    span.text-muted Year:
+    span =< "#{@board.year}"
+
+.row
+  p.col.mr-3
+    span.text-muted Quality:
+    span =< "#{@board.quality}"
+
+  p.col.mr-3
+    span.text-muted Pads:
+    span =< @board.pads ? 'есть' : 'нет'
+
+  p.col.mr-3
+    span.text-muted Fins:
+    span =< @board.fins ? 'есть' : 'нет'
+
+.row
+  p.col.mr-3
+    span.text-muted Price:
+    span =< "#{@board.price}"
+
+  p.col.mr-3
+    span.text-muted Singly sale:
+    span =< @board.singly_sale ? 'да' : 'нет'
+
+- if @board.best_photos.attached?
+  .p-2
+    h6 Best views
+    .best_views.gallery.gallery_for_delete.d-flex
+      = render 'shared/gallery_views', photos: @board.best_photos
+    .photo__big__container
+      .close x
+
+- if @board.trouble_photos.attached?
+  .p-2.mt-3
+    h6 Trouble views
+    .trouble_views.gallery.gallery_for_delete.d-flex
+      = render 'shared/gallery_views', photos: @board.trouble_photos
+    .photo__big__container
+      .close x
+/TODO еще надо сделать action Edit
+/ .mt-2
+/   = link_to 'edit', edit_kite_path(@kite), class: 'btn btn-outline-success btn-sm'

@@ -2,7 +2,7 @@
   .list-group-item id=("kite_id_#{kite.id}")
     .container__info
       span.mr-auto.kite.d-flex.justify-content-between
-        span.mr-auto = string_full_link(kite)
+        span.mr-auto = kite_string_full_link(kite)
         - if can? :update, kite
           span.ml-2 = link_to 'edit kite', edit_kite_path(kite), class: 'btn btn-outline-success btn-sm'
 

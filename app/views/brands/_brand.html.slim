@@ -1,5 +1,5 @@
 .list-group-item.d-flex
-  span.brand_name.mr-auto = link_to brand.name, brand
+  span.brand_name.mr-auto = link_to brand.name, brand_path(brand, model_for: @type_equipment)
 
   - if can? :update, Brand
     span.link-delete.mr-2 = link_to 'delete',

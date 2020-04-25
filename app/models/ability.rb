@@ -23,13 +23,21 @@ class Ability
     guest
     can :create, Ad
     can [:update, :destroy], Ad, { user_id: user.id }
+
     can :show, Kite, { user_id: user.id }
     can :update, Kite, { user_id: user.id }
     can :destroy, Kite, { user_id: user.id }
     can :create, Kite
+
     can :read, Account, { user_id: user.id }
+
     can :read, Brand
+
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
+
+    can :create, Board
+    can :show, Board, { user_id: user.id }
+    can :update, Board, { user_id: user.id }
   end
 
   def guest

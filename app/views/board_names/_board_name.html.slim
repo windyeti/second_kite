@@ -1,7 +1,6 @@
 - if board_name.valid?
   .list-group-item.d-flex.board-name__item id=("board_name_id_#{board_name.id}")
-    span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = board_name.name
-    /TODO span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = link_to board_name.name, new_board_name_board_path(board_name)
+    span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = link_to board_name.name, new_board_name_board_path(board_name)
 
     - if can? :update, BoardName
       span.mr-2 = link_to 'edit', edit_board_name_path(board_name), class: 'btn btn-outline-secondary btn-sm'
