@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User create board' do
   describe 'Authenticated user' do
-    given!(:brand) { create(:brand, name: 'Liquid') }
+    given!(:brand) { create(:brand, name: 'NP') }
     given!(:board_name) { create(:board_name, brand: brand, name: 'Quicker') }
     given(:user) { create(:user) }
     background { sign_in(user) }
@@ -12,7 +12,7 @@ feature 'User create board' do
       click_on 'account'
       click_on 'Add board'
 
-      click_on 'Liquid'
+      click_on brand.name
       click_on 'Quicker'
 
       #   ////
