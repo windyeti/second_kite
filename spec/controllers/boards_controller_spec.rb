@@ -278,4 +278,70 @@ RSpec.describe BoardsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let(:owner_user) { create(:user) }
+    let!(:board) { create(:board, user: owner_user) }
+
+    context 'Authenticated user' do
+      let(:other_user) { create(:user, email: 'other@mail.com') }
+
+      context 'owner' do
+        before { sign_in(owner_user) }
+
+        it 'assigns board' do
+          delete :destroy, params: { id: board }, format: :js
+          expect(assigns(:board)).to eq board
+        end
+
+        it 'render template destroy' do
+          delete :destroy, params: { id: board }, format: :js
+          expect(assigns(:board)).to render_template :destroy
+        end
+
+        it 'change board count' do
+          expect do
+            delete :destroy, params: { id: board }, format: :js
+          end.to change(Board, :count).by(-1)
+        end
+      end
+      context 'not owner' do
+        before { sign_in(other_user) }
+
+        it 'assigns board' do
+          delete :destroy, params: { id: board }, format: :js
+          expect(assigns(:board)).to eq board
+        end
+
+        it 'return status forbidden' do
+          delete :destroy, params: { id: board }, format: :js
+          expect(response).to have_http_status :forbidden
+        end
+
+        it 'does not change board count' do
+          expect do
+            delete :destroy, params: { id: board }, format: :js
+          end.to_not change(Board, :count)
+        end
+      end
+    end
+    context 'Guest' do
+
+      it 'assigns board' do
+        delete :destroy, params: { id: board }, format: :js
+        expect(assigns(:board)).to be_nil
+      end
+
+      it 'return status unauthorized' do
+        delete :destroy, params: { id: board }, format: :js
+        expect(response).to have_http_status :unauthorized
+      end
+
+      it 'does not change board count' do
+        expect do
+          delete :destroy, params: { id: board }, format: :js
+        end.to_not change(Board, :count)
+      end
+    end
+  end
 end

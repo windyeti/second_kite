@@ -1,6 +1,6 @@
 class BoardsController < ApplicationController
   before_action :load_board_name, only: [:new, :create]
-  before_action :load_board, only: [:show, :edit, :update]
+  before_action :load_board, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
   def new
@@ -29,6 +29,10 @@ class BoardsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @board.destroy
   end
 
   private

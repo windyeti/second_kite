@@ -1,15 +1,16 @@
 .list-group-item.d-flex id=("board_id_#{board.id}")
-  span.mr-auto.kite
+  span.mr-auto.board
     span = link_to board_string_link(board), board
 
-  / - if can? :destroy, board
-  /   span.link-delete.mr-2 = link_to 'delete',
-  /           board,
-  /           remote: true,
-  /           method: :delete,
-  /           data: { confirm: 'Are you sure?' },
-  /           class: 'btn btn-outline-danger btn-sm'
+  - if can? :destroy, board
+    span.link-delete.mr-2 = link_to 'delete',
+                                    board,
+                                    remote: true,
+                                    method: :delete,
+                                    data: { confirm: 'Are you sure?' },
+                                    class: 'btn btn-outline-danger btn-sm',
+                                    id: "board_link_delete_id_#{board.id}"
   - if can? :update, board
     span.link-edit.mr-2 = link_to 'edit',
-            edit_board_path(board),
-            class: 'btn btn-outline-secondary btn-sm'
+                                  edit_board_path(board),
+                                  class: 'btn btn-outline-secondary btn-sm'
