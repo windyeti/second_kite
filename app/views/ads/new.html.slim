@@ -4,16 +4,16 @@
     .form-group
       = f.label :title
       = f.text_field :title, class: 'form-control form-control-sm'
-    fieldset
-      legend Choose kites for ad
+    fieldset.scheduler-border
+      legend.scheduler-border Choose kites for ad
       .form-group
         = f.collection_check_boxes :kite_ids, current_user.kites, :id, :kite_name_name do |b|
           .control-group
             = b.label do
               = b.text
               = b.check_box
-    fieldset
-      legend Choose boards for ad
+    fieldset.scheduler-border
+      legend.scheduler-border Choose boards for ad
       .form-group
         = f.collection_check_boxes :board_ids, current_user.boards, :id, :board_name_name do |b|
           .control-group

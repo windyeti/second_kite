@@ -10,7 +10,11 @@ h3 = "Hello, #{@account.user.email}"
     span phone:
     span = @account.phone
 
-/TODO List ads
+.ads.mt-4
+  h4 List of own ads
+  table.table
+    = render @account.user.ads
+
 .account__ad.mb-4
   = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-info btn-sm btn-block'
 
