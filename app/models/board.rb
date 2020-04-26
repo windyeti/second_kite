@@ -2,6 +2,9 @@ class Board < ApplicationRecord
   belongs_to :user
   belongs_to :board_name
 
+  has_many :ad_boards, dependent: :destroy
+  has_many :ads, through: :ad_boards
+
   has_many_attached :best_photos
   has_many_attached :trouble_photos
 
@@ -11,6 +14,11 @@ class Board < ApplicationRecord
   validates :quality, inclusion: 1..5
 
   validate :type_photos
+
+  # method for f.collection_check_boxes
+  def board_name_name
+    "#{board_name.name} - #{length}x#{width}см - #{price}&#8381;".html_safe
+  end
 
   private
 

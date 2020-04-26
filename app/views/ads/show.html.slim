@@ -18,3 +18,9 @@ h3.h3.d-flex
       .card-header Kites
       .list-group.list-group-flush = render 'kites/kite_full', kites: @ad.kites
 
+- unless @ad.boards.empty?
+  .boards
+    .card
+      .card-header Boards
+      .list-group.list-group-flush = render 'boards/board_full', boards: @ad.boards
+

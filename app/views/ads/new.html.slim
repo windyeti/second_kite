@@ -3,18 +3,28 @@
   = form_with model: @ad do |f|
     .form-group
       = f.label :title
-      = f.text_field :title, class: 'form-control'
-    .form-group
-      = f.collection_check_boxes :kite_ids, current_user.kites, :id, :kite_name_name do |b|
-        .control-group
-          = b.label do
-            = b.text
-            = b.check_box
+      = f.text_field :title, class: 'form-control form-control-sm'
+    fieldset
+      legend Choose kites for ad
+      .form-group
+        = f.collection_check_boxes :kite_ids, current_user.kites, :id, :kite_name_name do |b|
+          .control-group
+            = b.label do
+              = b.text
+              = b.check_box
+    fieldset
+      legend Choose boards for ad
+      .form-group
+        = f.collection_check_boxes :board_ids, current_user.boards, :id, :board_name_name do |b|
+          .control-group
+            = b.label do
+              = b.text
+              = b.check_box
     .form-group
       = f.label :description
-      = f.text_area :description, class: 'form-control'
+      = f.text_area :description, class: 'form-control form-control-sm'
     .form-group
       = f.label :total_price
-      = f.text_field :total_price, class: 'form-control'
+      = f.text_field :total_price, class: 'form-control form-control-sm'
     .form-group
-      = f.submit 'Create ad', class: 'btn btn-primary'
+      = f.submit 'Create ad', class: 'btn btn-primary btn-sm'

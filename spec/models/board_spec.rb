@@ -4,6 +4,9 @@ RSpec.describe Board, type: :model do
   it { should belong_to :user }
   it { should belong_to :board_name }
 
+  it { should have_many(:ad_boards).dependent(:destroy) }
+  it { should have_many(:ads).through(:ad_boards) }
+
   it { should validate_presence_of :length }
   it { should validate_presence_of :width }
   it { should validate_presence_of :year }

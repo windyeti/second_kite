@@ -4,6 +4,7 @@ feature 'User create an ad' do
   describe 'Authorized user' do
       given(:owner_user) { create(:user, email: 'owner@mail.com') }
       given!(:kite) { create(:kite, user: owner_user) }
+      given!(:board) { create(:board, user: owner_user) }
 
       background { sign_in(owner_user) }
 
@@ -14,6 +15,7 @@ feature 'User create an ad' do
       click_on 'create new ad'
 
       find(:css, "#ad_kite_ids_#{kite.id}").set(true)
+      find(:css, "#ad_board_ids_#{board.id}").set(true)
       fill_in 'Title', with: 'Title text'
       fill_in 'Description', with: 'Text Description'
       fill_in 'Total price', with: '321000'
@@ -25,8 +27,8 @@ feature 'User create an ad' do
 
       visit root_path
 
-      save_and_open_page
       expect(page).to have_content kite.ads[0].title
+      expect(page).to have_content board.ads[0].title
     end
     # scenario 'can not create an ad with invalid data' do
     #

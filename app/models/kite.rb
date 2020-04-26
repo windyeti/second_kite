@@ -17,7 +17,7 @@ class Kite < ApplicationRecord
 
   # method for f.collection_check_boxes
   def kite_name_name
-    "#{kite_name.name} - #{size}m2 - #{price}"
+    "#{kite_name.name} - #{size}m2 - #{price}&#8381;".html_safe
   end
 
   private
