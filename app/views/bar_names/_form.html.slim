@@ -1,0 +1,9 @@
+h4 New Bar_name (Model)
+
+= form_with model: [@brand, @bar_name], class: 'bar_name_form', data: { type: :json } do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+
+  .form-group
+    = f.submit class: 'btn btn-primary'

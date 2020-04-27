@@ -1,0 +1,2 @@
+module BarNamesHelper
+end

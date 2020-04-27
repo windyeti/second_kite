@@ -22,8 +22,7 @@ feature 'Admin create brand_name', %q{
         click_on 'Create Board name'
 
       within '.board-name__list' do
-        expect(page).to have_content 'Liquid'
-        #TODO expect(page).to have_selector(:link_or_button, 'Liquid')
+        expect(page).to have_selector(:link_or_button, 'Liquid')
       end
     end
     scenario 'with invalid data can not create board_name' do
@@ -39,7 +38,6 @@ feature 'Admin create brand_name', %q{
 
       within '.board-name__errors' do
         expect(page).to have_content 'Name can\'t be blank'
-        #TODO expect(page).to have_selector(:link_or_button, 'Liquid')
       end
     end
   end

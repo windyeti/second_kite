@@ -30,3 +30,15 @@ h4
 - if can? :create, BoardName
   p.form_board_name = render 'board_names/form'
 
+- if @type_equipment.nil? || @type_equipment == 'bar_names'
+  ul.bar-name__errors
+  .card
+    .card-header
+      span List of bar_names for brand
+      strong =< @brand.name
+    .list-group.list-group-flush.bar-name__list
+      = render @brand.bar_names
+
+- if can? :create, BarName
+  p.form_board_name = render 'bar_names/form'
+

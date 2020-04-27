@@ -19,6 +19,7 @@ class BrandsController < ApplicationController
   def show
     @kite_name = KiteName.new
     @board_name = BoardName.new
+    @bar_name = BarName.new
     @type_equipment = params["model_for"] unless params["model_for"].nil?
   end
 

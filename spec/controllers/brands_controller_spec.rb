@@ -203,6 +203,11 @@ RSpec.describe BrandsController, type: :controller do
         expect(assigns(:board_name)).to be_a_new BoardName
       end
 
+      it 'assigns var bar_name' do
+        get :show, params: {id: brand}
+        expect(assigns(:bar_name)).to be_a_new BarName
+      end
+
     end
 
     context 'Authenticated user not admin' do
