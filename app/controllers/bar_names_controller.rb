@@ -1,5 +1,7 @@
 class BarNamesController < ApplicationController
-authorize_resource
+  before_action :load_bar_name, only: [:edit, :update, :show]
+
+  authorize_resource
 
   def create
     @brand = Brand.find(params[:brand_id])
@@ -20,9 +22,25 @@ authorize_resource
     end
   end
 
+  def edit; end
+
+  def update
+    if @bar_name.update(bar_params)
+      redirect_to @bar_name
+    else
+      render :edit
+    end
+  end
+
+  def show; end
+
   private
 
   def bar_params
     params.require(:bar_name).permit(:name)
+  end
+
+  def load_bar_name
+    @bar_name = BarName.find(params[:id])
   end
 end
