@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe BarsController, type: :controller do
   describe 'GET #new' do
+    let(:bar_name) { create(:bar_name) }
+
     context 'Authenticated user' do
-      let(:bar_name) { create(:bar_name) }
       let(:user) { create(:user) }
       before { login(user) }
 
@@ -20,7 +21,21 @@ RSpec.describe BarsController, type: :controller do
         expect(assigns(:bar_name)).to render_template :new
       end
     end
-    context 'Guest'
+    context 'Guest' do
+
+      it 'does not assigns new' do
+        get :new, params: { bar_name_id: bar_name }
+        expect(assigns(:bar)).to be_nil
+      end
+      it 'assigns bar_name' do
+        get :new, params: { bar_name_id: bar_name }
+        expect(assigns(:bar_name)).to be_nil
+      end
+      it 'redicert to log in' do
+        get :new, params: { bar_name_id: bar_name }
+        expect(assigns(:bar_name)).to redirect_to new_user_session_path
+      end
+    end
   end
 
   describe 'POST #create' do
@@ -128,6 +143,105 @@ RSpec.describe BarsController, type: :controller do
       it 'redirect to log in' do
         get :show, params: { id: bar }
         expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    let(:user) { create(:user) }
+    let(:bar) { create(:bar, user: user) }
+
+    context 'Authenticated user' do
+      before { login(user) }
+
+      it 'assigns bar' do
+        get :edit, params: { id: bar }
+        expect(assigns(:bar)).to eq bar
+      end
+
+      it 'render template edit' do
+        get :edit, params: { id: bar }
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'Guest' do
+
+      it 'assigns bar' do
+        get :edit, params: { id: bar }
+        expect(assigns(:bar)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        get :edit, params: { id: bar }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:user) { create(:user) }
+    let!(:bar) { create(:bar, user: user) }
+
+    context 'Authenticated user' do
+      before { login(user) }
+
+      context 'with valid data can update bar' do
+        it 'assigns bar' do
+          patch :update, params: { id: bar, bar: { price: 123 } }
+          expect(assigns(:bar)).to eq bar
+        end
+
+        it 'redirect to bar' do
+          patch :update, params: { id: bar, bar: { price: 123 } }
+          expect(assigns(:bar)).to redirect_to :bar
+        end
+
+        it 'change bar price' do
+          expect do
+            patch :update, params: { id: bar, bar: { price: 123 } }
+            bar.reload
+          end.to change(bar, :price)
+        end
+      end
+
+      context 'with invalid data can not update bar' do
+
+        it 'assigns bar' do
+          patch :update, params: { id: bar, bar: { price: '' } }
+          expect(assigns(:bar).valid?).to be_falsey
+        end
+
+        it 'render tamplate edit' do
+          patch :update, params: { id: bar, bar: { price: '' } }
+          expect(assigns(:bar)).to render_template :edit
+        end
+
+        it 'does not change bar price' do
+          expect do
+            patch :update, params: { id: bar, bar: { price: '' } }
+            bar.reload
+          end.to_not change(bar, :price)
+        end
+      end
+    end
+    context 'Guest' do
+
+      it 'assigns bar' do
+        patch :update, params: { id: bar, bar: { price: 123 } }
+        expect(assigns(:bar)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        patch :update, params: { id: bar, bar: { price: 123 } }
+        expect(assigns(:bar)).to redirect_to new_user_session_path
+      end
+
+      it 'does not change bar price' do
+        expect do
+          patch :update, params: { id: bar, bar: { price: 123 } }
+          bar.reload
+        end.to_not change(bar, :price)
       end
     end
   end

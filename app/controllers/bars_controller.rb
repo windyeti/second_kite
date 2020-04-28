@@ -1,4 +1,5 @@
 class BarsController < ApplicationController
+  before_action :load_bar, only: [:show, :edit, :update]
   authorize_resource
 
   def new
@@ -17,11 +18,23 @@ class BarsController < ApplicationController
     end
   end
 
-  def show
-    @bar = Bar.find(params[:id])
+  def show; end
+
+  def edit; end
+
+  def update
+    if @bar.update(bar_params)
+      redirect_to @bar
+    else
+      render :edit
+    end
   end
 
   private
+
+  def load_bar
+    @bar = Bar.find(params[:id])
+  end
 
   def bar_params
     params.require(:bar).permit(:length,

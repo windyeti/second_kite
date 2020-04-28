@@ -1,0 +1,29 @@
+.col.col-md-8.mx-auto
+  h1.mb-4
+    span Edit bar of model
+    strong.text-dark =< "#{@bar.bar_name.name}"
+= form_with model: @bar, class: 'board_form' do |f|
+  .form-group
+    = f.label :length
+    = f.text_field :length, class: 'form-control'
+  .form-group
+    = f.label :singly_sale
+    = f.check_box :singly_sale, class: 'form-control'
+  .form-group
+    = f.label :year
+    = f.collection_select(:year, (1990..Time.now.year).reverse_each, :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+  .form-group
+    = f.label :quality
+    = f.collection_select(:quality, (1..5).reverse_each, :to_s, :to_s, prompt: 'Choose', class: 'form-control')
+  .form-group
+    = f.label :price
+    = f.text_field :price, class: 'form-control'
+  .form-group
+    = f.label :best_photos
+    = f.file_field :best_photos, multiple: true, direct_upload: true, class: 'form-control'
+  .form-group
+    = f.label :trouble_photos
+    = f.file_field :trouble_photos, multiple: true, direct_upload: true, class: 'form-control'
+
+  .form-group
+    = f.submit class: 'btn btn-primary'

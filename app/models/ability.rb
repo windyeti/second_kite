@@ -42,6 +42,7 @@ class Ability
 
     can :create, Bar
     can :show, Bar, { user_id: user.id }
+    can :update, Bar, { user_id: user.id }
   end
 
   def guest
