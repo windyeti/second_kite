@@ -1,8 +1,7 @@
 - if bar_name.valid?
   .list-group-item.d-flex.bar-name__item id=("bar_name_id_#{bar_name.id}")
-    span.bar_name.mr-auto class=("bar_name_#{bar_name.name.downcase}") = bar_name.name
-    /TODO после создания модели bar, заменить
-    / span.bar_name.mr-auto class=("bar_name_#{bar_name.name.downcase}") = link_to bar_name.name, new_bar_name_bar_path(bar_name)
+    span.bar_name.mr-auto class=("bar_name_#{bar_name.name.downcase}") = link_to  bar_name.name,
+                                                                                  new_bar_name_bar_path(bar_name)
 
     - if can? :update, BarName
       span.mr-2 = link_to 'edit', edit_bar_name_path(bar_name), class: 'btn btn-outline-secondary btn-sm'
