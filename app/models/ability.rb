@@ -29,7 +29,7 @@ class Ability
     can :destroy, Kite, { user_id: user.id }
     can :create, Kite
 
-    can :read, Account, { user_id: user.id }
+    can :show, Account, { user_id: user.id }
 
     can :read, Brand
 
@@ -43,6 +43,7 @@ class Ability
     can :create, Bar
     can :show, Bar, { user_id: user.id }
     can :update, Bar, { user_id: user.id }
+    can :destroy, Bar, { user_id: user.id }
   end
 
   def guest

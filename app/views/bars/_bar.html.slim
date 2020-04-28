@@ -2,14 +2,14 @@
   span.mr-auto.board
     span = link_to bar_string_link(bar), bar
 
-  / - if can? :destroy, board
-  /   span.link-delete.mr-2 = link_to 'delete',
-  /           board,
-  /           remote: true,
-  /           method: :delete,
-  /           data: { confirm: 'Are you sure?' },
-  /           class: 'btn btn-outline-danger btn-sm',
-  /           id: "board_link_delete_id_#{board.id}"
+  - if can? :destroy, bar
+    span.link-delete.mr-2 = link_to 'delete',
+            bar,
+            remote: true,
+            method: :delete,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-outline-danger btn-sm',
+            id: "bar_link_delete_id_#{bar.id}"
   - if can? :update, bar
     span.link-edit.mr-2 = link_to 'edit',
             edit_bar_path(bar),

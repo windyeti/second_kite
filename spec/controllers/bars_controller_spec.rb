@@ -245,4 +245,70 @@ RSpec.describe BarsController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:user) { create(:user) }
+    let!(:bar) { create(:bar, user: user) }
+
+    context 'Authenticated user' do
+      before { login(user) }
+
+      context 'owner' do
+
+        it 'assigns bar' do
+          delete :destroy, params: { id: bar }, format: :js
+          expect(assigns(:bar)).to eq bar
+        end
+
+        it 'assigns bar' do
+          expect do
+            delete :destroy, params: { id: bar }, format: :js
+          end.to change(Bar, :count).by(-1)
+        end
+
+        it 'render template destroy' do
+          delete :destroy, params: { id: bar }, format: :js
+          expect(assigns(:bar)).to render_template :destroy
+        end
+      end
+      context 'not owner' do
+        before { login(other_user) }
+
+        it 'assigns bar' do
+          delete :destroy, params: { id: bar }, format: :js
+          expect(assigns(:bar)).to eq bar
+        end
+
+        it 'does not assigns bar' do
+          expect do
+            delete :destroy, params: { id: bar }, format: :js
+          end.to_not change(Bar, :count)
+        end
+
+        it 'return status forbidden' do
+          delete :destroy, params: { id: bar }, format: :js
+          expect(response).to have_http_status :forbidden
+        end
+      end
+    end
+    context 'Guest' do
+
+      it 'does not assigns bar' do
+        delete :destroy, params: { id: bar }, format: :js
+        expect(assigns(:bar)).to be_nil
+      end
+
+      it 'does not assigns bar' do
+        expect do
+          delete :destroy, params: { id: bar }, format: :js
+        end.to_not change(Bar, :count)
+      end
+
+      it 'return status unauthorized' do
+        delete :destroy, params: { id: bar }, format: :js
+        expect(response).to have_http_status :unauthorized
+      end
+    end
+  end
 end

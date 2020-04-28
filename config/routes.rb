@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :boards, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
     end
     resources :bar_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
-      resources :bars, shallow: true, only: [:new, :create, :show, :edit, :update]
+      resources :bars, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
     end
   end
   resources :attachments, only: [:destroy]

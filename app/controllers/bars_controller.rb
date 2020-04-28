@@ -1,5 +1,5 @@
 class BarsController < ApplicationController
-  before_action :load_bar, only: [:show, :edit, :update]
+  before_action :load_bar, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
   def new
@@ -28,6 +28,10 @@ class BarsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    @bar.destroy
   end
 
   private
