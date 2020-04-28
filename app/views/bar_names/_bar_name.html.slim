@@ -6,10 +6,9 @@
 
     - if can? :update, BarName
       span.mr-2 = link_to 'edit', edit_bar_name_path(bar_name), class: 'btn btn-outline-secondary btn-sm'
-      / span.mr-2 = link_to 'edit', edit_bar_name_path(bar_name), class: 'btn btn-outline-secondary btn-sm'
-    /   span.mr-2 = link_to 'delete', bar_name,
-    /           method: :delete,
-    /           remote: true,
-    /           data: { confirm: "Are you sure?" },
-    /           class: "btn btn-outline-danger btn-sm",
-    /           id: "board_name_id_link_delete_#{bar_name.id}"
+      span.mr-2 = link_to 'delete', bar_name,
+              method: :delete,
+              remote: true,
+              data: { confirm: "Are you sure?" },
+              class: "btn btn-outline-danger btn-sm",
+              id: "board_name_id_link_delete_#{bar_name.id}"

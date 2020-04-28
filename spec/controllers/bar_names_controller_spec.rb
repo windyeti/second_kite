@@ -30,30 +30,32 @@ RSpec.describe BarNamesController, type: :controller do
           expect(response).to have_http_status :ok
         end
       end
-      context 'can not create bar with invalid data' do
+
+      context 'can not create bar_name with invalid data' do
 
         it 'assigns brand' do
-          post :create, params: { brand_id: brand, bar_name: attributes_for(:bar_name) }, format: :json
+          post :create, params: { brand_id: brand, bar_name: { name: '' } }, format: :json
           expect(assigns(:brand)).to eq brand
         end
 
         it 'assigns bar_name' do
-          post :create, params: { brand_id: brand, bar_name: attributes_for(:bar_name) }, format: :json
+          post :create, params: { brand_id: brand, bar_name: { name: '' } }, format: :json
           expect(assigns(:bar_name).valid?).to be_falsey
         end
 
         it 'does not change bar_name count' do
           expect do
-            post :create, params: { brand_id: brand, bar_name: attributes_for(:bar_name) }, format: :json
+            post :create, params: { brand_id: brand, bar_name: { name: '' } }, format: :json
           end.to_not change(BarName, :count)
         end
 
         it 'return status unprocessable_entity' do
-          post :create, params: { brand_id: brand, bar_name: attributes_for(:bar_name) }, format: :json
+          post :create, params: { brand_id: brand, bar_name: { name: '' } }, format: :json
           expect(response).to have_http_status :unprocessable_entity
         end
       end
     end
+
     context 'Authenticated user not admin can not create bar_name' do
       let(:brand) { create(:brand) }
       let(:user) { create(:user) }
@@ -281,4 +283,68 @@ RSpec.describe BarNamesController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:bar_name) { create(:bar_name) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before { login(admin_user) }
+
+      it 'assigns bar_name' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(assigns(:bar_name)).to eq bar_name
+      end
+
+      it 'render template destroy' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(response).to render_template :destroy
+      end
+
+      it 'change bar_name count' do
+        expect do
+          delete :destroy, params: { id: bar_name }, format: :js
+        end.to change(BarName, :count).by(-1)
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it 'assigns bar_name' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(assigns(:bar_name)).to eq bar_name
+      end
+
+      it 'return status forbidden' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(response).to have_http_status :forbidden
+      end
+
+      it 'does not change bar_name count' do
+        expect do
+          delete :destroy, params: { id: bar_name }, format: :js
+        end.to_not change(BarName, :count)
+      end
+    end
+    context 'Guest' do
+      it 'assigns bar_name' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(assigns(:bar_name)).to be_nil
+      end
+
+      it 'return status unauthorized' do
+        delete :destroy, params: { id: bar_name }, format: :js
+        expect(response).to have_http_status :unauthorized
+      end
+
+      it 'does not change bar_name count' do
+        expect do
+          delete :destroy, params: { id: bar_name }, format: :js
+        end.to_not change(BarName, :count)
+      end
+    end
+  end
 end
+
+

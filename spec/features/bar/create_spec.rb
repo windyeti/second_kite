@@ -5,7 +5,7 @@ feature 'User create bar',
 be added to the ad for sale } do
   describe 'Authenticated user' do
     given(:brand) { create(:brand, name: 'Airush') }
-    given(:bar_name) { create(:bar_name, name: '', brand: brand) }
+    given(:bar_name) { create(:bar_name, name: 'One-Two-size', brand: brand) }
     given(:owner_user) { create(:user) }
     background { sign_in(owner_user) }
 

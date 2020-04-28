@@ -1,5 +1,5 @@
 class BarNamesController < ApplicationController
-  before_action :load_bar_name, only: [:edit, :update, :show]
+  before_action :load_bar_name, only: [:edit, :update, :show, :destroy]
 
   authorize_resource
 
@@ -33,6 +33,10 @@ class BarNamesController < ApplicationController
   end
 
   def show; end
+
+  def destroy
+    @bar_name.destroy
+  end
 
   private
 
