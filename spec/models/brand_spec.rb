@@ -6,4 +6,5 @@ RSpec.describe Brand, type: :model do
   it { should have_many(:kite_names).dependent(:destroy) }
   it { should have_many(:board_names).dependent(:destroy) }
   it { should have_many(:bar_names).dependent(:destroy) }
+  it { should have_many(:stuff_names).dependent(:destroy) }
 end
