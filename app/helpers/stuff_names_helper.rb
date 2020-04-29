@@ -1,0 +1,2 @@
+module StuffNamesHelper
+end
