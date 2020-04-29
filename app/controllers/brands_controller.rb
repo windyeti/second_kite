@@ -20,6 +20,7 @@ class BrandsController < ApplicationController
     @kite_name = KiteName.new
     @board_name = BoardName.new
     @bar_name = BarName.new
+    @stuff_name = StuffName.new
     @type_equipment = params["model_for"] unless params["model_for"].nil?
   end
 

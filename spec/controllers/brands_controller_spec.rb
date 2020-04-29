@@ -208,6 +208,11 @@ RSpec.describe BrandsController, type: :controller do
         expect(assigns(:bar_name)).to be_a_new BarName
       end
 
+      it 'assigns var stuff_name' do
+        get :show, params: {id: brand}
+        expect(assigns(:stuff_name)).to be_a_new StuffName
+      end
+
     end
 
     context 'Authenticated user not admin' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Admin can create stuff_name' do
+feature 'Admin can create stuff_name', js: true do
   describe 'Admin' do
     given!(:brand) { create(:brand) }
     given(:admin_user) { create(:user, role: 'Admin') }
@@ -9,8 +9,9 @@ feature 'Admin can create stuff_name' do
     scenario 'can create stuff_name with valid data' do
       visit root_path
       click_on 'Brands'
+      click_on brand.name
 
-      within '.form_stuff_name' do
+      within '.stuff_name_form' do
         fill_in 'stuff_name_name', with: 'NewStuffName'
         click_on 'Create Stuff name'
       end
