@@ -42,3 +42,11 @@ h3 = "Hello, #{@account.user.email}"
 
   .account__add-equipment.mt-2
     = link_to 'Add bar', brands_path(brands_for: 'bar_names'), class: 'btn btn-outline-success btn-sm'
+
+/ .stuffs.mt-2
+/   .card
+/     .card-header List of stuff
+/     .list-group.list-group-flush = render @account.user.stuffs
+
+  .account__add-equipment.mt-2
+    = link_to 'Add stuff', brands_path(brands_for: 'stuff_names'), class: 'btn btn-outline-success btn-sm'

@@ -21,7 +21,6 @@ feature 'User can attach photo to kite' do
       attach_file 'Best photos', [Rails.root.join('spec', 'support', 'test_red.jpg'), Rails.root.join('spec', 'support', 'test_orange.jpg')]
       click_on 'Create kite'
 
-      save_and_open_page
       expect(find_all('.photo__img').length).to eq 2
     end
   end

@@ -13,7 +13,6 @@ feature 'User edit his board' do
         within '.boards' do
           click_on 'edit'
         end
-        save_and_open_page
         select("1999", from: "Year").select_option
         click_on "Update Board"
 
@@ -24,7 +23,6 @@ feature 'User edit his board' do
         within '.boards' do
           click_on 'edit'
         end
-        save_and_open_page
         fill_in 'Price', with: ''
         click_on "Update Board"
 

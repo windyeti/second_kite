@@ -18,7 +18,6 @@ feature 'Admin can delete kite name', js: true do
       within '.brand_name' do
         click_on 'PrettyBrand'
       end
-save_and_open_page
 
       within '.kite-name__item' do
         accept_alert { click_on 'delete' }
