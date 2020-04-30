@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :kites, dependent: :destroy
   has_many :boards, dependent: :destroy
   has_many :bars, dependent: :destroy
+  has_many :stuffs, dependent: :destroy
 
   after_create :create_account
 

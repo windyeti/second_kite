@@ -7,50 +7,54 @@ h4
   span.brand_name = @brand.name
 
 - if @type_equipment.nil? || @type_equipment == 'kite_names'
-  ul.kite-name__errors
-  .card
-    .card-header
-      span List of kite names for brand
-      strong =< @brand.name
-    .list-group.list-group-flush.kite-name__list
-      = render @brand.kite_names
+  .kite-name__container
+    ul.kite-name__errors
+    .card
+      .card-header
+        span List of kite names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.kite-name__list
+        = render @brand.kite_names
 
-- if can? :create, KiteName
-  p = render 'kite_names/form'
+    - if can? :create, KiteName
+      p = render 'kite_names/form'
 
 - if @type_equipment.nil? || @type_equipment == 'board_names'
-  ul.board-name__errors
-  .card
-    .card-header
-      span List of board_names for brand
-      strong =< @brand.name
-    .list-group.list-group-flush.board-name__list
-      = render @brand.board_names
+  .board-name__container
+    ul.board-name__errors
+    .card
+      .card-header
+        span List of board_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.board-name__list
+        = render @brand.board_names
 
-- if can? :create, BoardName
-  p.form_board_name = render 'board_names/form'
+    - if can? :create, BoardName
+      p.form_board_name = render 'board_names/form'
 
 - if @type_equipment.nil? || @type_equipment == 'bar_names'
-  ul.bar-name__errors
-  .card
-    .card-header
-      span List of bar_names for brand
-      strong =< @brand.name
-    .list-group.list-group-flush.bar-name__list
-      = render @brand.bar_names
+  .bar-name__container
+    ul.bar-name__errors
+    .card
+      .card-header
+        span List of bar_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.bar-name__list
+        = render @brand.bar_names
 
-- if can? :create, BarName
-  p.form_board_name = render 'bar_names/form'
+    - if can? :create, BarName
+      p.form_board_name = render 'bar_names/form'
 
 - if @type_equipment.nil? || @type_equipment == 'stuff_names'
-  ul.stuff-name__errors
-  .card
-    .card-header
-      span List of stuff_names for brand
-      strong =< @brand.name
-    .list-group.list-group-flush.stuff-name__list
-      = render @brand.stuff_names
+  .stuff-name__container
+    ul.stuff-name__errors
+    .card
+      .card-header
+        span List of stuff_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.stuff-name__list
+        = render @brand.stuff_names
 
-- if can? :create, StuffName
-  p.form_stuff_name = render 'stuff_names/form'
+    - if can? :create, StuffName
+      p.form_stuff_name = render 'stuff_names/form'
 

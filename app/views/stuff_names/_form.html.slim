@@ -1,9 +1,9 @@
-h4 New Stuff_name
+h6 New Stuff_name
 
 = form_with model: [@brand, @stuff_name], class: 'stuff_name_form', data: { type: :json } do |f|
-  .form-group
-    = f.label :name
-    = f.text_field :name, class: 'form-control'
-
-  .form-group
-    = f.submit class: 'btn btn-primary'
+  .form-row.align-items-center
+    .col-8
+      = f.label :name, class: "sr-only"
+      = f.text_field :name, class: 'form-control form-control-sm', placeholder: "Name"
+    .col-auto
+      = f.submit class: 'btn btn-primary btn-sm'
