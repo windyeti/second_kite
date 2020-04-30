@@ -1,6 +1,6 @@
 class StuffNamesController < ApplicationController
   before_action :load_brand, only: [:create]
-  before_action :load_stuff_name, only: [:edit, :update, :show]
+  before_action :load_stuff_name, only: [:edit, :update, :show, :destroy]
   authorize_resource
 
   def create
@@ -29,8 +29,10 @@ class StuffNamesController < ApplicationController
     end
   end
 
-  def show
+  def show; end
 
+  def destroy
+    @stuff_name.destroy
   end
 
   private

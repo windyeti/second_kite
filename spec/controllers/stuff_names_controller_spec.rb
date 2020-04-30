@@ -258,4 +258,67 @@ RSpec.describe StuffNamesController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    let!(:stuff_name) { create(:stuff_name) }
+
+    context 'Admin' do
+      let(:admin_user) { create(:user, role: 'Admin') }
+      before { login(admin_user) }
+
+      it 'assigns stuff_name' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(assigns(:stuff_name)).to eq stuff_name
+      end
+
+      it 'render template destroy' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(response).to render_template :destroy
+      end
+
+      it 'change stuff_name count' do
+        expect do
+          delete :destroy, params: { id: stuff_name }, format: :js
+        end.to change(StuffName, :count).by(-1)
+      end
+    end
+    context 'Authenticated user not admin' do
+      let(:user) { create(:user) }
+      before { login(user) }
+
+      it 'assigns stuff_name' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(assigns(:stuff_name)).to eq stuff_name
+      end
+
+      it 'return status forbidden' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(response).to have_http_status :forbidden
+      end
+
+      it 'does not change stuff_name count' do
+        expect do
+          delete :destroy, params: { id: stuff_name }, format: :js
+        end.to_not change(StuffName, :count)
+      end
+    end
+    context 'Guest' do
+
+      it 'assigns stuff_name' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(assigns(:stuff_name)).to be_nil
+      end
+
+      it 'return status unauthorized' do
+        delete :destroy, params: { id: stuff_name }, format: :js
+        expect(response).to have_http_status :unauthorized
+      end
+
+      it 'does not change stuff_name count' do
+        expect do
+          delete :destroy, params: { id: stuff_name }, format: :js
+        end.to_not change(StuffName, :count)
+      end
+    end
+  end
 end
