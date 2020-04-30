@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe StuffsController, type: :controller do
   describe 'GET #new' do
+    let(:stuff_name) { create(:stuff_name) }
+    let(:user) { create(:user) }
+
     context 'Authenticated user' do
-      let(:stuff_name) { create(:stuff_name) }
-      let(:user) { create(:user) }
       before { login(user) }
 
       it 'assigns new stuff' do
@@ -22,7 +23,23 @@ RSpec.describe StuffsController, type: :controller do
         expect(response).to render_template :new
       end
     end
-    context 'Guest'
+    context 'Guest' do
+
+      it 'assigns new stuff' do
+        get :new, params: { stuff_name_id: stuff_name }
+        expect(assigns(:stuff)).to be_nil
+      end
+
+      it 'assigns stuff_name' do
+        get :new, params: { stuff_name_id: stuff_name }
+        expect(assigns(:stuff_name)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        get :new, params: { stuff_name_id: stuff_name }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
   end
 
   describe 'POST #create' do
@@ -105,20 +122,36 @@ RSpec.describe StuffsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:user) { create(:user) }
     let(:stuff) { create(:stuff, user: user) }
 
     context 'Authenticated user' do
       before { login(user) }
 
-      it 'assigns stuff' do
-        get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to eq stuff
-      end
+      context 'owner' do
+        it 'assigns stuff' do
+          get :show, params: { id: stuff }
+          expect(assigns(:stuff)).to eq stuff
+        end
 
-      it 'render template show' do
-        get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to render_template :show
+        it 'render template show' do
+          get :show, params: { id: stuff }
+          expect(assigns(:stuff)).to render_template :show
+        end
+      end
+      context 'not owner' do
+        before { login(other_user) }
+
+        it 'assigns stuff' do
+          get :show, params: { id: stuff }
+          expect(assigns(:stuff)).to eq stuff
+        end
+
+        it 'redirect to root' do
+          get :show, params: { id: stuff }
+          expect(assigns(:stuff)).to redirect_to root_path
+        end
       end
     end
     context 'Guest' do
@@ -133,5 +166,206 @@ RSpec.describe StuffsController, type: :controller do
         expect(assigns(:stuff)).to redirect_to new_user_session_path
       end
     end
+  end
+
+  describe 'GET #edit' do
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:owner_user) { create(:user) }
+    let(:stuff) { create(:stuff, user: owner_user) }
+
+    context 'Authenticated user' do
+      before { login(owner_user) }
+
+      context 'owner can edit stuff' do
+
+        it 'assigns stuff' do
+          get :edit, params: { id: stuff }
+          expect(assigns(:stuff)).to eq stuff
+        end
+        it 'render template edit' do
+          get :edit, params: { id: stuff }
+          expect(response).to render_template :edit
+        end
+      end
+
+      context 'not owner cannot edit stuff' do
+        before { login(other_user) }
+
+        it 'assigns stuff' do
+          get :edit, params: { id: stuff }
+          expect(assigns(:stuff)).to eq stuff
+        end
+        it 'redirect to root' do
+          get :edit, params: { id: stuff }
+          expect(response).to redirect_to root_path
+        end
+      end
+    end
+
+    context 'Guest cannot edit stuff' do
+
+      it 'assigns stuff' do
+        get :edit, params: { id: stuff }
+        expect(assigns(:stuff)).to be_nil
+      end
+      it 'redirect to log in' do
+        get :edit, params: { id: stuff }
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:owner_user) { create(:user) }
+    let(:stuff) { create(:stuff, user: owner_user) }
+
+    context 'Authenticated user' do
+      before { login(owner_user) }
+
+      context 'owner' do
+        context 'can update stuff with valid data' do
+          it 'assigns stuff' do
+            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            expect(assigns(:stuff)).to eq stuff
+          end
+          it 'change price of stuff' do
+            expect do
+              patch :update, params: { id: stuff, stuff: { price: '123' } }
+              stuff.reload
+            end.to change(stuff, :price)
+          end
+          it 'redirect to stuff' do
+            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            expect(assigns(:stuff)).to redirect_to stuff
+          end
+        end
+        context 'cannot update stuff with invalid data' do
+          it 'assigns stuff' do
+            patch :update, params: { id: stuff, stuff: { price: '' } }
+            expect(assigns(:stuff).valid?).to be_falsey
+          end
+          it 'does not change year of stuff' do
+            expect do
+              patch :update, params: { id: stuff, stuff: { price: '' } }
+              stuff.reload
+            end.to_not change(stuff, :price)
+          end
+          it 'render template edit' do
+            patch :update, params: { id: stuff, stuff: { price: '' } }
+            expect(assigns(:stuff)).to render_template :edit
+          end
+        end
+      end
+
+      context 'not owner' do
+        before { login(other_user) }
+
+        context 'cannot update stuff' do
+
+          it 'assigns stuff' do
+            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            expect(assigns(:stuff)).to eq stuff
+          end
+          it 'does not change price of stuff' do
+            expect do
+              patch :update, params: { id: stuff, stuff: { price: '123' } }
+              stuff.reload
+            end.to_not change(stuff, :price)
+          end
+          it 'redirect to root' do
+            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            expect(assigns(:stuff)).to redirect_to root_path
+          end
+        end
+      end
+    end
+    context 'Guest' do
+      context 'cannot update stuff' do
+
+        it 'assigns stuff' do
+          patch :update, params: { id: stuff, stuff: { price: '123' } }
+          expect(assigns(:stuff)).to be_nil
+        end
+        it 'does not change price of stuff' do
+          expect do
+            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            stuff.reload
+          end.to_not change(stuff, :price)
+        end
+        it 'redirect to log in' do
+          patch :update, params: { id: stuff, stuff: { price: '123' } }
+          expect(assigns(:stuff)).to redirect_to new_user_session_path
+        end
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:owner_user) { create(:user) }
+    let!(:stuff) { create(:stuff, user: owner_user) }
+
+    context 'Authenticated user' do
+      before { login(owner_user) }
+
+      context 'owner can delete stuff' do
+        it 'assigns stuff' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(assigns(:stuff)).to eq stuff
+        end
+        it 'render template destroy' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(assigns(:stuff)).to render_template :destroy
+        end
+        it 'change stuff count' do
+          expect do
+            delete :destroy, params: { id: stuff }, format: :js
+          end.to change(Stuff, :count).by(-1)
+        end
+      end
+
+      context 'not owner cannot delete stuff' do
+        before { login(other_user) }
+
+        it 'assigns stuff' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(assigns(:stuff)).to eq stuff
+        end
+
+        it 'return status forbidden' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(response).to have_http_status :forbidden
+        end
+
+        it 'does not change stuff count' do
+          expect do
+            delete :destroy, params: { id: stuff }, format: :js
+          end.to_not change(Stuff, :count)
+        end
+      end
+    end
+
+    context 'Guest' do
+      context 'cannot delete stuff' do
+
+        it 'assigns stuff' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(assigns(:stuff)).to be_nil
+        end
+
+        it 'return status unauthorized' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(response).to have_http_status :unauthorized
+        end
+
+        it 'does not change stuff count' do
+          expect do
+            delete :destroy, params: { id: stuff }, format: :js
+          end.to_not change(Stuff, :count)
+        end
+      end
+    end
+
   end
 end

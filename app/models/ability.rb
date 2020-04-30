@@ -46,7 +46,9 @@ class Ability
     can :destroy, Bar, { user_id: user.id }
 
     can :create, Stuff
-    can :show, Stuff
+    can :show, Stuff, { user_id: user.id }
+    can :update, Stuff, { user_id: user.id }
+    can :destroy, Stuff, { user_id: user.id }
   end
 
   def guest

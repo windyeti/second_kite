@@ -1,0 +1,17 @@
+.list-group-item.d-flex id=("stuff_id_#{stuff.id}")
+  span.mr-auto.stuff
+    span = link_to stuff_string_link(stuff), stuff
+
+  - if can? :destroy, stuff
+    span.link-delete.mr-2 = link_to 'delete',
+            stuff,
+            remote: true,
+            method: :delete,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-outline-danger btn-sm',
+            id: "stuff_link_delete_id_#{stuff.id}"
+  - if can? :update, stuff
+    span.link-edit.mr-2 = link_to 'edit',
+            edit_stuff_path(stuff),
+            class: 'btn btn-outline-secondary btn-sm'
+

@@ -1,4 +1,6 @@
 class StuffsController < ApplicationController
+  before_action :load_stuff, only: [:show, :edit, :update, :destroy]
+
   authorize_resource
 
   def new
@@ -17,11 +19,27 @@ class StuffsController < ApplicationController
     end
   end
 
-  def show
-    @stuff = Stuff.find(params[:id])
+  def show; end
+
+  def edit; end
+
+  def update
+    if @stuff.update(stuff_params)
+      redirect_to @stuff
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @stuff.destroy
   end
 
   private
+
+  def load_stuff
+    @stuff = Stuff.find(params[:id])
+  end
 
   def stuff_params
     params.require(:stuff).permit(:price,

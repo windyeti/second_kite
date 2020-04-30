@@ -1,0 +1,3 @@
+$("#stuff_link_delete_id_<%= @stuff.id %>").on('ajax:success', function() {
+  $("#stuff_id_<%= @stuff.id %>").remove()
+})
