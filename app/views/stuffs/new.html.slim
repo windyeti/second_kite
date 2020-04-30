@@ -1,4 +1,5 @@
 .col.col-md-8.mx-auto
+  = render 'shared/errors', resource: @stuff
   h1.mb-4
     span New stuff model
     strong.text-dark =< "#{@stuff_name.name}"

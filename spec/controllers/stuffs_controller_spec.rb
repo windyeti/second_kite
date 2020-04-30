@@ -26,8 +26,9 @@ RSpec.describe StuffsController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:stuff_name) { create(:stuff_name) }
+
     context 'Authenticated user' do
-      let(:stuff_name) { create(:stuff_name) }
       let(:user) { create(:user) }
       before { login(user) }
 
@@ -53,15 +54,61 @@ RSpec.describe StuffsController, type: :controller do
           end.to change(Stuff, :count).by(1)
         end
       end
-      context 'cannot create stuff with invalid data'
+
+      context 'cannot create stuff with invalid data' do
+
+        it 'assigns stuff_name' do
+          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
+          expect(assigns(:stuff_name)).to eq stuff_name
+        end
+
+        it 'assigns stuff' do
+          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
+          expect(assigns(:stuff).valid?).to be_falsey
+        end
+
+        it 'render template new' do
+          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
+          expect(response).to render_template :new
+        end
+
+        it 'does not change stuff count' do
+          expect do
+            post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
+          end.to_not change(Stuff, :count)
+        end
+      end
     end
-    context 'Guest'
+    context 'Guest' do
+
+      it 'assigns stuff_name' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+        expect(assigns(:stuff_name)).to be_nil
+      end
+
+      it 'assigns stuff' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+        expect(assigns(:stuff)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it 'does not change stuff count' do
+        expect do
+          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+        end.to_not change(Stuff, :count)
+      end
+    end
   end
 
   describe 'GET #show' do
+    let(:user) { create(:user) }
+    let(:stuff) { create(:stuff, user: user) }
+
     context 'Authenticated user' do
-      let(:user) { create(:user) }
-      let(:stuff) { create(:stuff, user: user) }
       before { login(user) }
 
       it 'assigns stuff' do
@@ -74,6 +121,17 @@ RSpec.describe StuffsController, type: :controller do
         expect(assigns(:stuff)).to render_template :show
       end
     end
-    context 'Guest'
+    context 'Guest' do
+
+      it 'assigns stuff' do
+        get :show, params: { id: stuff }
+        expect(assigns(:stuff)).to be_nil
+      end
+
+      it 'redirect to log in' do
+        get :show, params: { id: stuff }
+        expect(assigns(:stuff)).to redirect_to new_user_session_path
+      end
+    end
   end
 end
