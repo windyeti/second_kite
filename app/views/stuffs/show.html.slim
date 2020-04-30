@@ -1,0 +1,43 @@
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "Back", account_path(@stuff.user.account), class: 'text-dark'
+  span.text-dark |
+h1.mb-4.d-flex.product__head
+  span.mr-auto Дельная вещь #{@stuff.stuff_name.name}
+  span => "#{@stuff.price}"
+  span.product__rub.text-muted = "&#8381;".html_safe
+
+.d-flex
+  p.mr-3
+    span.text-muted Бренд:
+    span =< "#{@stuff.stuff_name.brand.name}"
+
+  p.mr-3
+    span.text-muted Модель:
+    span =< "#{@stuff.stuff_name.name}"
+
+  p.mr-3
+    span.text-muted Quality:
+    span =< "#{@stuff.quality}"
+
+  p.mr-3
+    span.text-muted Year:
+    span =< "#{@stuff.year}"
+
+- if @stuff.best_photos.attached?
+  .p-2
+    h6 Best views
+    .best_views.gallery.gallery_for_delete.d-flex
+      = render 'shared/gallery_views', photos: @stuff.best_photos
+    .photo__big__container
+      .close x
+
+- if @stuff.trouble_photos.attached?
+  .p-2.mt-3
+    h6 Trouble views
+    .trouble_views.gallery.gallery_for_delete.d-flex
+      = render 'shared/gallery_views', photos: @stuff.trouble_photos
+    .photo__big__container
+      .close x
+/ .mt-2
+/   = link_to 'edit', edit_stuff_path(@stuff), class: 'btn btn-outline-success btn-sm'

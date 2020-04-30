@@ -19,10 +19,13 @@ feature 'User can create stuff' do
         click_on stuff_name.name
       end
 
-      fill_in 'stuff_name_name', with: 'NewStuffName'
-      click_on 'Create Stuff name'
+      fill_in 'stuff_price', with: 123
+      select("1999", from: 'Year').select_option
+      select("5", from: 'Quality').select_option
 
-      expect(page).to have_content 'NewStuffName'
+      click_on 'Create Stuff'
+
+      expect(page).to have_content 'Year: 1999'
     end
     context 'can not create stuff with invalid data'
   end
