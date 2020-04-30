@@ -1,5 +1,6 @@
 class StuffNamesController < ApplicationController
   before_action :load_brand, only: [:create]
+  before_action :load_stuff_name, only: [:edit, :update, :show]
   authorize_resource
 
   def create
@@ -18,6 +19,20 @@ class StuffNamesController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    if @stuff_name.update(stuff_name_params)
+      redirect_to @stuff_name
+    else
+      render :edit
+    end
+  end
+
+  def show
+
+  end
+
   private
 
   def stuff_name_params
@@ -26,5 +41,9 @@ class StuffNamesController < ApplicationController
 
   def load_brand
     @brand = Brand.find(params[:brand_id])
+  end
+
+  def load_stuff_name
+    @stuff_name = StuffName.find(params[:id])
   end
 end

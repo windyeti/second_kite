@@ -4,8 +4,8 @@
     / TODO после создания stuff заменить
     / span.stuff_name.mr-auto class=("stuff_name_#{stuff_name.name.downcase}") = link_to stuff_name.name, new_stuff_name_stuff_path(stuff_name)
 
-    / - if can? :update, StuffName
-    /   span.mr-2 = link_to 'edit', edit_stuff_name_path(stuff_name), class: 'btn btn-outline-secondary btn-sm'
+    - if can? :update, StuffName
+      span.mr-2 = link_to 'edit', edit_stuff_name_path(stuff_name), class: 'btn btn-outline-secondary btn-sm'
     /   span.mr-2 = link_to 'delete', stuff_name,
     /           method: :delete,
     /           remote: true,

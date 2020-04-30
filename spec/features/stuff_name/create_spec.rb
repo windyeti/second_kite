@@ -39,15 +39,12 @@ feature 'Admin can create stuff_name', js: true do
 
     scenario 'cannot create stuff_name' do
       visit root_path
-
       expect(page).to_not have_selector :link_or_button, 'Brands'
     end
-
   end
   describe 'Guest' do
     scenario 'cannot create stuff_name' do
       visit root_path
-
       expect(page).to_not have_selector :link_or_button, 'Brands'
     end
   end

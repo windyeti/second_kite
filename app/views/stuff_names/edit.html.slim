@@ -1,0 +1,9 @@
+h4 Edit Stuff_name
+
+= form_with model: @stuff_name do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+
+  .form-group
+    = f.submit class: 'btn btn-primary'
