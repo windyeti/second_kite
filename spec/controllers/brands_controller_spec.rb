@@ -213,6 +213,10 @@ RSpec.describe BrandsController, type: :controller do
         expect(assigns(:stuff_name)).to be_a_new StuffName
       end
 
+      it '@type_equipment is nil' do
+        get :show, params: {id: brand}
+        expect(assigns(:type_equipment)).to be_nil
+      end
     end
 
     context 'Authenticated user not admin' do
@@ -222,6 +226,11 @@ RSpec.describe BrandsController, type: :controller do
       it 'render template show' do
         get :show, params: {id: brand}
         expect(response).to render_template :show
+      end
+
+      it 'assigns var @type_equipment' do
+        get :show, params: {id: brand, "model_for"=> 'kite_names'}
+        expect(assigns(:type_equipment)).to eq 'kite_names'
       end
 
     end
