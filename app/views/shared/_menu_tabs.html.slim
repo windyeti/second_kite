@@ -1,0 +1,11 @@
+ul.menu-tabs.d-flex.justify-content-end
+  li.menu__item.mx-2.border.border-color-secondary.px-2.py-1 class=('active' if current_page?('/ads') || current_page?('/'))
+    = link_to 'Все', ads_path
+  li.menu__item.mx-2.border.border-color-secondary.px-2.py-1 class=('active' if current_page?(action: "kites", controller: "singly_sales"))
+    = link_to 'Only kites', kites_singly_sales_path
+  li.menu__item.mx-2.border.border-color-secondary.px-2.py-1 class=('active' if current_page?(action: "boards", controller: "singly_sales"))
+    = link_to 'Only boards', boards_singly_sales_path
+  li.menu__item.mx-2.border.border-color-secondary.px-2.py-1 class=('active' if current_page?(action: "bars", controller: "singly_sales"))
+    = link_to 'Only bars', bars_singly_sales_path
+  li.menu__item.mx-2.border.border-color-secondary.px-2.py-1 class=('active' if current_page?(action: "stuffs", controller: "singly_sales"))
+    = link_to 'Only stuffs', stuffs_singly_sales_path

@@ -54,5 +54,8 @@ class Ability
   def guest
     can :read, Ad
     can :kites, Ad
+    can :boards, Ad
+    can :bars, Ad
+    can :stuffs, Ad
   end
 end

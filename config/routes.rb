@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   resources :singly_sales do
     collection do
       get 'kites', to: 'singly_sales#kites'
+      get 'boards', to: 'singly_sales#boards'
+      get 'bars', to: 'singly_sales#bars'
+      get 'stuffs', to: 'singly_sales#stuffs'
     end
   end
 

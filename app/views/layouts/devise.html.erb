@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SecondKite</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<% if can? :update, Brand %>
+  <%= render 'shared/admin_panel' %>
+<% end %>
+<%= render 'shared/header' %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col col-md-8 mx-auto">
+      <%= render 'shared/flash' %>
+      <%= yield %>
+    </div>
+  </div>
+</div>
+</body>
+</html>

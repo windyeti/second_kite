@@ -1,0 +1,6 @@
+.boards
+  .card
+    .card-header Boards
+    .list-group.list-group-flush
+      - @boards.each do |kite|
+        .list-group-item.kite id=("board_id_#{board.id}") = board_string_full_link(board)

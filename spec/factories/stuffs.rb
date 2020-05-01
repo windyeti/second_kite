@@ -6,6 +6,5 @@ FactoryBot.define do
     quality { 1 }
     year { 1 }
     description { "MyText" }
-    singly_sale { false }
   end
 end
