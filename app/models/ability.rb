@@ -53,5 +53,6 @@ class Ability
 
   def guest
     can :read, Ad
+    can :kites, Ad
   end
 end

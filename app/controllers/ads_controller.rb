@@ -1,6 +1,7 @@
 class AdsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :load_ad, only: [:show, :edit, :update, :destroy]
+
   authorize_resource
 
   def index

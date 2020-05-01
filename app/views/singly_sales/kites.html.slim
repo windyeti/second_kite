@@ -1,0 +1,7 @@
+.kites
+  .card
+    .card-header Kites
+    .list-group.list-group-flush
+      -p @kites.size
+      - @kites.each do |kite|
+        .list-group-item.kite id=("kite_id_#{kite.id}") = kite_string_full_link(kite)

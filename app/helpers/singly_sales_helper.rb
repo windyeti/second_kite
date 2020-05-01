@@ -1,0 +1,2 @@
+module SinglySalesHelper
+end

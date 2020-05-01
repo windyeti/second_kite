@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   devise_for :users, path_names: { sign_in: :login, sign_out: :logout }
 
   resources :ads
+
   resources :accounts, only: [:show]
+
   resources :brands do
     resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
       resources :kites, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
@@ -21,5 +23,12 @@ Rails.application.routes.draw do
       resources :stuffs, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
     end
   end
+
+  resources :singly_sales do
+    collection do
+      get 'kites', to: 'singly_sales#kites'
+    end
+  end
+
   resources :attachments, only: [:destroy]
 end
