@@ -124,6 +124,32 @@ RSpec.describe BarsController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
 
+      context 'owner' do
+
+        it 'assigns bar' do
+          get :show, params: { id: bar }
+          expect(assigns(:bar)).to eq bar
+        end
+        it 'render template show' do
+          get :show, params: { id: bar }
+          expect(response).to render_template :show
+        end
+      end
+      context 'not owner' do
+
+        it 'assigns bar' do
+          get :show, params: { id: bar }
+          expect(assigns(:bar)).to eq bar
+        end
+        it 'render template show' do
+          get :show, params: { id: bar }
+          expect(response).to render_template :show
+        end
+      end
+    end
+
+    context 'Guest' do
+
       it 'assigns bar' do
         get :show, params: { id: bar }
         expect(assigns(:bar)).to eq bar
@@ -131,18 +157,6 @@ RSpec.describe BarsController, type: :controller do
       it 'render template show' do
         get :show, params: { id: bar }
         expect(response).to render_template :show
-      end
-    end
-
-    context 'Guest' do
-
-      it 'does not assigns bar' do
-        get :show, params: { id: bar }
-        expect(assigns(:bar)).to be_nil
-      end
-      it 'redirect to log in' do
-        get :show, params: { id: bar }
-        expect(response).to redirect_to new_user_session_path
       end
     end
   end

@@ -1,4 +1,5 @@
 class KitesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :load_kite_name, only: [:new, :create]
   before_action :load_kite, only: [:show, :edit, :update, :destroy]
 

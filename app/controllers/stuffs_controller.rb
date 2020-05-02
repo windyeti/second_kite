@@ -1,4 +1,5 @@
 class StuffsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :load_stuff, only: [:show, :edit, :update, :destroy]
 
   authorize_resource

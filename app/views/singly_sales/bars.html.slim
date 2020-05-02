@@ -3,4 +3,4 @@
     .card-header Bars
     .list-group.list-group-flush
       - @bars.each do |bar|
-        .list-group-item.bar id=("bar_id_#{bar.id}") = bar_string_full_link(bar)
+        .list-group-item.bar id=("bar_id_#{bar.id}") = link_to bar_string_full_link(bar), bar_path(bar)

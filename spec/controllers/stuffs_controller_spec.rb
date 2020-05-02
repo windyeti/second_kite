@@ -148,9 +148,9 @@ RSpec.describe StuffsController, type: :controller do
           expect(assigns(:stuff)).to eq stuff
         end
 
-        it 'redirect to root' do
+        it 'render template show' do
           get :show, params: { id: stuff }
-          expect(assigns(:stuff)).to redirect_to root_path
+          expect(assigns(:stuff)).to render_template :show
         end
       end
     end
@@ -158,12 +158,12 @@ RSpec.describe StuffsController, type: :controller do
 
       it 'assigns stuff' do
         get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to be_nil
+        expect(assigns(:stuff)).to eq stuff
       end
 
-      it 'redirect to log in' do
+      it 'render template show' do
         get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to redirect_to new_user_session_path
+        expect(assigns(:stuff)).to render_template :show
       end
     end
   end

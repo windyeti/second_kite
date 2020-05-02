@@ -54,6 +54,7 @@ h1.mb-4.d-flex.product__head
       = render 'shared/gallery_views', photos: @bar.trouble_photos
     .photo__big__container
       .close x
-/TODO еще надо сделать action Edit
-/ .mt-2
-/   = link_to 'edit', edit_kite_path(@kite), class: 'btn btn-outline-success btn-sm'
+
+- if can? :edit, @bar
+  .mt-2
+    = link_to 'edit', edit_bar_path(@bar), class: 'btn btn-outline-success btn-sm'

@@ -3,7 +3,7 @@ FactoryBot.define do
     title { "MyString" }
     description { "MyText" }
     total_price { 1.5 }
-    user { nil }
+    user
 
     trait :invalid do
       title { nil }

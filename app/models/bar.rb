@@ -2,6 +2,9 @@ class Bar < ApplicationRecord
   belongs_to :user
   belongs_to :bar_name
 
+  has_many :ad_bars, dependent: :destroy
+  has_many :ads, through: :ad_bars
+
   has_many_attached :best_photos
   has_many_attached :trouble_photos
 

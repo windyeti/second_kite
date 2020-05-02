@@ -4,6 +4,9 @@ RSpec.describe Bar, type: :model do
   it { should belong_to :user }
   it { should belong_to :bar_name }
 
+  it { should have_many(:ad_bars).dependent(:destroy) }
+  it { should have_many(:ads).through(:ad_bars) }
+
   it { should validate_presence_of :length }
   it { should validate_presence_of :price }
   it { should validate_presence_of :quality }

@@ -2,5 +2,5 @@
   .card
     .card-header Boards
     .list-group.list-group-flush
-      - @boards.each do |kite|
-        .list-group-item.kite id=("board_id_#{board.id}") = board_string_full_link(board)
+      - @boards.each do |board|
+        .list-group-item.board id=("board_id_#{board.id}") = link_to board_string_full_link(board), board_path(board)

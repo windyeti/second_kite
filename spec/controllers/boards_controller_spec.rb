@@ -122,9 +122,9 @@ RSpec.describe BoardsController, type: :controller do
           expect(assigns(:board)).to eq board
         end
 
-        it 'redirect to root' do
+        it 'render template show' do
           get :show, params: { id: board }
-          expect(response).to redirect_to root_path
+          expect(response).to render_template :show
         end
       end
     end
@@ -132,12 +132,12 @@ RSpec.describe BoardsController, type: :controller do
 
       it 'assigns board' do
         get :show, params: { id: board }
-        expect(assigns(:board)).to be_nil
+        expect(assigns(:board)).to eq board
       end
 
-      it 'redirect to log in' do
+      it 'render template show' do
         get :show, params: { id: board }
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to render_template :show
       end
     end
   end

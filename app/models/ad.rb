@@ -7,5 +7,11 @@ class Ad < ApplicationRecord
   has_many :ad_boards, dependent: :destroy
   has_many :boards, through: :ad_boards
 
+  has_many :ad_bars, dependent: :destroy
+  has_many :bars, through: :ad_bars
+
+  has_many :ad_stuffs, dependent: :destroy
+  has_many :stuffs, through: :ad_stuffs
+
   validates :title, :total_price, presence: true
 end

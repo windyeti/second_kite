@@ -24,7 +24,6 @@ class Ability
     can :create, Ad
     can [:update, :destroy], Ad, { user_id: user.id }
 
-    can :show, Kite, { user_id: user.id }
     can :update, Kite, { user_id: user.id }
     can :destroy, Kite, { user_id: user.id }
     can :create, Kite
@@ -36,22 +35,24 @@ class Ability
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
 
     can :create, Board
-    can :show, Board, { user_id: user.id }
     can :update, Board, { user_id: user.id }
     can :destroy, Board, { user_id: user.id }
 
     can :create, Bar
-    can :show, Bar, { user_id: user.id }
     can :update, Bar, { user_id: user.id }
     can :destroy, Bar, { user_id: user.id }
 
     can :create, Stuff
-    can :show, Stuff, { user_id: user.id }
     can :update, Stuff, { user_id: user.id }
     can :destroy, Stuff, { user_id: user.id }
   end
 
   def guest
+    can :show, Kite
+    can :show, Board
+    can :show, Bar
+    can :show, Stuff
+
     can :read, Ad
     can :kites, Ad
     can :boards, Ad

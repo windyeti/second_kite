@@ -4,18 +4,18 @@ class SinglySalesController < ApplicationController
   authorize_resource class: Ad
 
   def kites
-    @kites = Kite.where(singly_sale: true)
+    @kites = Kite.joins(:ad_kites).where(singly_sale: true).distinct
   end
 
   def boards
-    @boards = Board.where(singly_sale: true)
+    @boards = Board.joins(:ad_boards).where(singly_sale: true).distinct
   end
 
   def bars
-    @bars = Bar.where(singly_sale: true)
+    @bars = Bar.joins(:ad_bars).where(singly_sale: true).distinct
   end
 
   def stuffs
-    @stuffs = Stuff.where(singly_sale: true)
+    @stuffs = Stuff.joins(:ad_stuffs).where(singly_sale: true).distinct
   end
 end

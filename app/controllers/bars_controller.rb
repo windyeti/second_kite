@@ -1,4 +1,5 @@
 class BarsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :load_bar, only: [:show, :edit, :update, :destroy]
   authorize_resource
 

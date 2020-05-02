@@ -145,9 +145,9 @@ RSpec.describe KitesController, type: :controller do
       context 'not owner kite' do
         before { login(other_user) }
 
-        it "redirect to root" do
+        it "render template show" do
           get :show, params: { id: kite }
-          expect(response).to redirect_to root_path
+          expect(response).to render_template :show
         end
 
         it "assigns kite" do
@@ -160,14 +160,14 @@ RSpec.describe KitesController, type: :controller do
     context 'Guest' do
       let(:kite) { create(:kite) }
 
-      it "redirect to log in" do
+      it "render template show" do
         get :show, params: { id: kite }
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to render_template :show
       end
 
-      it "does not assigns kite" do
+      it "assigns kite" do
         get :show, params: { id: kite }
-        expect(assigns(:kite)).to be_nil
+        expect(assigns(:kite)).to eq kite
       end
     end
   end
