@@ -5,5 +5,7 @@ RSpec.describe KiteName, type: :model do
 
   it { should have_many :kites }
 
+  it_behaves_like "Subscriptionable"
+
   it { should validate_presence_of :name }
 end

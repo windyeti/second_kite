@@ -7,6 +7,8 @@ RSpec.describe User, type: :model do
   it { should have_many(:boards).dependent :destroy }
   it { should have_many(:bars).dependent :destroy }
   it { should have_many(:stuffs).dependent :destroy }
+  it { should have_many(:subscriptions).dependent :destroy }
+
   it { should have_one(:account).dependent :destroy }
 
   it { is_expected.to callback(:create_account).after(:create) }

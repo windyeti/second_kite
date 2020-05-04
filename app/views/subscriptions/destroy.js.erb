@@ -1,0 +1,3 @@
+$("#subscription_id_link_delete_<%= @subscription.id %>").on('ajax:success', function() {
+  $("#subscription_id_<%= @subscription.id %>").remove()
+})

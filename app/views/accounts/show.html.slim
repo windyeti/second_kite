@@ -50,3 +50,7 @@ h3 = "Hello, #{@account.user.email}"
 
   .account__add-equipment.mt-2
     = link_to 'Add stuff', brands_path(brands_for: 'stuff_names'), class: 'btn btn-outline-success btn-sm'
+
+.subscriptions.mt-2
+  h4 Subscriptions
+  = render @account.user.subscriptions

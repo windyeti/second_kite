@@ -1,0 +1,8 @@
+span.ml-2 id="subscription_id_#{subscription.id}"
+  span.ml-1 = subscription.subscriptionable.name
+  span = link_to 'unsubscription', subscription_path(subscription),
+          method: :delete,
+          remote: true,
+          data: {confirm: "Are you sure?"},
+          class: "btn btn-outline-danger btn-sm",
+          id: "subscription_id_link_delete_#{subscription.id}"

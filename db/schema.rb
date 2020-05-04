@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_180044) do
+ActiveRecord::Schema.define(version: 2020_05_04_093136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,16 @@ ActiveRecord::Schema.define(version: 2020_05_02_180044) do
     t.index ["user_id"], name: "index_stuffs_on_user_id"
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "subscriptionable_type"
+    t.bigint "subscriptionable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subscriptionable_type", "subscriptionable_id"], name: "index_subscription"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -229,4 +239,5 @@ ActiveRecord::Schema.define(version: 2020_05_02_180044) do
   add_foreign_key "stuff_names", "brands"
   add_foreign_key "stuffs", "stuff_names"
   add_foreign_key "stuffs", "users"
+  add_foreign_key "subscriptions", "users"
 end

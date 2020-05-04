@@ -45,6 +45,10 @@ class Ability
     can :create, Stuff
     can :update, Stuff, { user_id: user.id }
     can :destroy, Stuff, { user_id: user.id }
+
+    can :create, Subscription
+    can :destroy, Subscription, { user_id: user.id }
+
   end
 
   def guest
