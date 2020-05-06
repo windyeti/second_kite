@@ -1,14 +1,17 @@
-h3 = "Hello, #{@account.user.email}"
 .account__info
+  h3.d-flex
+    span.mr-auto = "Hello, #{@account.user.email}"
+    - if can? :edit, @account
+      span.ml-2 = link_to 'edit', edit_account_path(@account), class: 'btn btn-outline-info btn-sm'
   p
-    span nick:
-    span = @account.nickname
+    span nickname:
+    span =< @account.nickname
   p
     span city:
-    span = @account.city
+    span =< @account.city
   p
     span phone:
-    span = @account.phone
+    span =< @account.phone
 
 .ads.mt-4
   h4 List of own ads

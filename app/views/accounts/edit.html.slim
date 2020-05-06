@@ -1,0 +1,13 @@
+h4 Edit account
+= form_with model: @account do |f|
+  .form-group
+    = f.label :nickname
+    = f.text_field :nickname
+  .form-group
+    = f.label :phone
+    = f.text_field :phone
+  .form-group
+    = f.label :city
+    = f.text_field :city
+  .form-group
+    = f.submit

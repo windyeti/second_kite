@@ -1,11 +1,15 @@
 .link_control.pb-2
   span.text-dark |
-  span.mr-2 =< link_to "Back", account_path(@stuff.user.account), class: 'text-dark'
+  span.mr-2 =< link_to "All ads", root_path, class: 'text-dark'
   span.text-dark |
+
 h1.mb-4.d-flex.product__head
   span.mr-auto Дельная вещь #{@stuff.stuff_name.name}
   span => "#{@stuff.price}"
   span.product__rub.text-muted = "&#8381;".html_safe
+.seller
+  .text-muted Продавец
+  p = render 'shared/contact', equip: @stuff
 
 .d-flex
   p.mr-3

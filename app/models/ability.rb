@@ -29,6 +29,7 @@ class Ability
     can :create, Kite
 
     can :show, Account, { user_id: user.id }
+    can :update, Account, { user_id: user.id }
 
     can :read, Brand
 

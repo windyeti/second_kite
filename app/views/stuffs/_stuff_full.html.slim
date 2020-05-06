@@ -1,0 +1,24 @@
+- stuffs.each do |stuff|
+  .list-group-item id=("stuff_id_#{stuff.id}")
+    .container__info
+      span.mr-auto.stuff.d-flex.justify-content-between
+        span.mr-auto = stuff_string_full_link(stuff)
+        - if can? :update, stuff
+          span.ml-2 = link_to 'edit stuff', edit_stuff_path(stuff), class: 'btn btn-outline-success btn-sm'
+
+    - if stuff.best_photos.attached?
+      .p-2
+        h6 Best views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: stuff.best_photos
+        .photo__big__container
+          span.close.text-secondary.stuff-around &#10060;
+
+    - if stuff.trouble_photos.attached?
+      .p-2
+        h6 Trouble views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: stuff.trouble_photos
+        .photo__big__container
+          span.close.text-secondary.stuff-around &#10060;
+/TODO надо что-то с крестиком сделать

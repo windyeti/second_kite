@@ -6,6 +6,7 @@ class SubscriptionsController < ApplicationController
     @subscription = @subscriptionable.subscriptions.new
     @subscription.user = current_user
     @subscription.save
+    redirect_to current_user.account
   end
 
   def destroy

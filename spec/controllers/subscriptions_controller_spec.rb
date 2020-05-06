@@ -12,6 +12,11 @@ RSpec.describe SubscriptionsController, type: :controller do
         expect(assigns(:subscription).subscriptionable).to eq kite_name
       end
 
+      it 'redirect to account' do
+        post :create, params: { kite_name_id: kite_name, subscriptionable: 'kite_names' }
+        expect(assigns(:subscription).subscriptionable).to redirect_to account_path(user.account)
+      end
+
       it 'change subscription count' do
         expect do
           post :create, params: { kite_name_id: kite_name, subscriptionable: 'kite_names' }

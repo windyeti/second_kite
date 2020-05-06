@@ -1,4 +1,6 @@
 class StuffName < ApplicationRecord
+  include Subscriptionable
+
   belongs_to :brand
 
   has_many :stuffs, dependent: :destroy

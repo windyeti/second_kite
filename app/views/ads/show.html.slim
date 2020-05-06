@@ -5,9 +5,15 @@
 h3.h3.d-flex
   .mr-auto
     span = @ad.title
-    .text-muted.count_equipment = "Kites: #{@ad.kites.count}, Boards: #{@ad.boards.count}, Bars: 0"
+    .text-muted.count_equipment = "Kites: #{@ad.kites.count}, Boards: #{@ad.boards.count}, Bars: #{@ad.bars.count}, Stuffs: #{@ad.stuffs.count}"
   .total_price
     p = "#{@ad.total_price}&#8381;".html_safe
+.seller
+  .text-muted Продавец
+  p
+    span =< @ad.user.account.nickname
+    span =< @ad.user.email
+    span =< @ad.user.account.phone
 .description
   .text-muted Description
   p = @ad.description
@@ -23,4 +29,16 @@ h3.h3.d-flex
     .card
       .card-header Boards
       .list-group.list-group-flush = render 'boards/board_full', boards: @ad.boards
+
+- unless @ad.bars.empty?
+  .bars
+    .card
+      .card-header Bars
+      .list-group.list-group-flush = render 'bars/bar_full', bars: @ad.bars
+
+- unless @ad.stuffs.empty?
+  .stuffs
+    .card
+      .card-header Stuffs
+      .list-group.list-group-flush = render 'stuffs/stuff_full', stuffs: @ad.stuffs
 

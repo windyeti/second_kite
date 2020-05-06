@@ -14,6 +14,12 @@ module ApplicationHelper
   def big_photo(photo)
     photo.variant(resize: '1200x1200').processed
   end
+
+  def subscribable?(any_model_name)
+    !any_model_name.subscriptions.find_by(user_id: current_user)
+    # sub = current_user.subscriptions.select { |s| s.subscriptionable == any_model_name }
+    # sub.length <= 0
+  end
 end
 
 # TODO .service_url

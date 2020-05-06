@@ -1,0 +1,24 @@
+- bars.each do |bar|
+  .list-group-item id=("bar_id_#{bar.id}")
+    .container__info
+      span.mr-auto.bar.d-flex.justify-content-between
+        span.mr-auto = bar_string_full_link(bar)
+        - if can? :update, bar
+          span.ml-2 = link_to 'edit bar', edit_bar_path(bar), class: 'btn btn-outline-success btn-sm'
+
+    - if bar.best_photos.attached?
+      .p-2
+        h6 Best views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: bar.best_photos
+        .photo__big__container
+          span.close.text-secondary.bar-around &#10060;
+
+    - if bar.trouble_photos.attached?
+      .p-2
+        h6 Trouble views
+        .best_views.gallery.gallery_for_delete.d-flex
+          = render 'shared/gallery_views', photos: bar.trouble_photos
+        .photo__big__container
+          span.close.text-secondary.bar-around &#10060;
+/TODO надо что-то с крестиком сделать
