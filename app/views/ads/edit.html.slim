@@ -12,14 +12,30 @@
             = b.label do
               = b.text
               = b.check_box
-    fieldset.scheduler-border
-      legend.scheduler-border Choose boards for ad
-      .form-group
-        = f.collection_check_boxes :board_ids, current_user.boards, :id, :board_name_name do |b|
-          .control-group
-            = b.label do
-              = b.text
-              = b.check_box
+      fieldset.scheduler-border
+        legend.scheduler-border Choose boards for ad
+        .form-group
+          = f.collection_check_boxes :board_ids, current_user.boards, :id, :board_name_name do |b|
+            .control-group
+              = b.label do
+                = b.text
+                = b.check_box
+      fieldset.scheduler-border
+        legend.scheduler-border Choose bars for ad
+        .form-group
+          = f.collection_check_boxes :bar_ids, current_user.bars, :id, :bar_name_name do |b|
+            .control-group
+              = b.label do
+                = b.text
+                = b.check_box
+      fieldset.scheduler-border
+        legend.scheduler-border Choose stuffs for ad
+        .form-group
+          = f.collection_check_boxes :stuff_ids, current_user.stuffs, :id, :stuff_name_name do |b|
+            .control-group
+              = b.label do
+                = b.text
+                = b.check_box
     .form-group
       = f.label :description
       = f.text_area :description, class: 'form-control form-control-sm'

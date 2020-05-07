@@ -44,6 +44,8 @@ gem 'rails-i18n'
 gem 'mini_magick', '~> 4.8'
 gem "image_processing"
 gem "aws-sdk-s3", require: false
+gem 'mysql2', '0.4.9'
+gem 'thinking-sphinx', '4.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
