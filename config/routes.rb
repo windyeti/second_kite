@@ -17,12 +17,15 @@ Rails.application.routes.draw do
     end
     resources :board_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
       resources :boards, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
+      resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'board_names' }
     end
     resources :bar_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
       resources :bars, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
+      resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'bar_names' }
     end
     resources :stuff_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
       resources :stuffs, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
+      resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'stuff_names' }
     end
   end
 

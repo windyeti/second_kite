@@ -46,6 +46,7 @@ gem "image_processing"
 gem "aws-sdk-s3", require: false
 gem 'mysql2', '0.4.9'
 gem 'thinking-sphinx', '4.0.0'
+gem 'sidekiq'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -17,4 +17,14 @@ RSpec.describe Ad, type: :model do
 
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:total_price) }
+
+  it { is_expected.to callback(:send_notification).after(:create) }
+
+  describe 'call SendNotificationJob.perform_later' do
+    let(:subject) { build(:ad, user: create(:user)) }
+    it do
+      expect(SendNotificationJob).to receive(:perform_later).with(subject)
+      subject.save!
+    end
+  end
 end

@@ -11,8 +11,6 @@
               class: "btn btn-outline-danger btn-sm",
               id: "kite_name_id_link_delete_#{kite_name.id}"
 
-    / - if can?(:create, Subscription)
-    / -byebug
     - if can?(:create, Subscription) && subscribable?(kite_name)
       span.mr-2 = link_to 'subscription',
                           kite_name_subscriptions_path(kite_name),

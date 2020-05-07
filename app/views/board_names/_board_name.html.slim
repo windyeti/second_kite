@@ -10,3 +10,9 @@
               data: { confirm: "Are you sure?" },
               class: "btn btn-outline-danger btn-sm",
               id: "board_name_id_link_delete_#{board_name.id}"
+
+    - if can?(:create, Subscription) && subscribable?(board_name)
+      span.mr-2 = link_to 'subscription',
+              board_name_subscriptions_path(board_name),
+              method: :post,
+              class: 'btn btn-outline-info btn-sm'

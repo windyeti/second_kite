@@ -14,4 +14,12 @@ class Ad < ApplicationRecord
   has_many :stuffs, through: :ad_stuffs
 
   validates :title, :total_price, presence: true
+
+  after_create :send_notification
+
+  private
+
+  def send_notification
+    SendNotificationJob.perform_later(self)
+  end
 end
