@@ -17,9 +17,7 @@ feature 'Admin delete board_name', js: true do
         accept_alert { click_on 'delete' }
       end
 
-      expect(page).to_not have_content 'Liquid'
-      # TODO сделать ссылкой
-      # expect(page).to_not have_selector(:link_or_button, 'Liquid')
+      expect(page).to_not have_selector(:link_or_button, 'Liquid')
     end
   end
   describe 'Authenticated user not admin' do

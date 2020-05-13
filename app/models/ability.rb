@@ -1,4 +1,3 @@
-# TODO Тесты класса ability
 class Ability
   include CanCan::Ability
 

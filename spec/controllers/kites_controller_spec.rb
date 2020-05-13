@@ -1,4 +1,3 @@
-# TODO Еще везде рассмотреть Admin
 require 'rails_helper'
 
 RSpec.describe KitesController, type: :controller do

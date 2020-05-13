@@ -15,5 +15,3 @@ module ApplicationHelper
     photo.variant(resize: '1200x1200').processed
   end
 end
-
-# TODO .service_url

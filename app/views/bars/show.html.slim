@@ -48,7 +48,7 @@ h1.mb-4.d-flex.product__head
     .best_views.gallery.gallery_for_delete.d-flex
       = render 'shared/gallery_views', photos: @bar.best_photos
     .photo__big__container
-      .close x
+      .close &#215;
 
 - if @bar.trouble_photos.attached?
   .p-2.mt-3
@@ -56,7 +56,7 @@ h1.mb-4.d-flex.product__head
     .trouble_views.gallery.gallery_for_delete.d-flex
       = render 'shared/gallery_views', photos: @bar.trouble_photos
     .photo__big__container
-      .close x
+      .close &#215;
 
 - if can? :edit, @bar
   .mt-2
