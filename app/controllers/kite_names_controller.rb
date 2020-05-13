@@ -12,14 +12,9 @@ class KiteNamesController < ApplicationController
     @kite_name = @brand.kite_names.new(kite_name_params)
     respond_to do |format|
       if @kite_name.save
-        format.json { render json: {
-          html: (render_to_string partial: 'kite_names/kite_name.html.slim', locals: {kite_name: @kite_name})
-        } }
+        format.json { render json: { kite_name: @kite_name } }
       else
-        format.json { render json: {
-          error: (render_to_string partial: 'shared/errors.html.slim', locals: {resource: @kite_name}) },
-          status: 422
-        }
+        format.json { render json: { errors: @kite_name.errors.full_messages }, status: 422 }
       end
     end
   end

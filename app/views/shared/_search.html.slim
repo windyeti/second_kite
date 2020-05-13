@@ -1,6 +1,10 @@
 = form_with url: searches_path, method: :get, local: true do |f|
   .form-inline.mb-2
-    = f.label :query, 'Search'
-    = f.text_field :query, class: 'form-control'
-    = f.select 'scope', ['All', ['Model of  Kite', 'Kite'], ['Model of  Board', 'Board'], ['Model of  Bar', 'Bar'], ['Model of  Stuff', 'Stuff']]
-    = f.submit 'Search', class: 'btn btn-sm btn-info'
+    .form-group.mr-3
+      span.mr-1= f.label :query, 'Search'
+      = f.text_field :query, class: 'form-control'
+    .form-group.mr-3
+      span.mr-1= f.label 'scope'
+      = f.select 'scope', ['All', ['Model of  Kite', 'Kite'], ['Model of  Board', 'Board'], ['Model of  Bar', 'Bar'], ['Model of  Stuff', 'Stuff']], {}, {class: "custom-select"}
+    .form-group
+      = f.submit 'Search', class: 'btn btn-sm btn-info'

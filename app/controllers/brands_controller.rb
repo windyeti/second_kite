@@ -17,6 +17,11 @@ class BrandsController < ApplicationController
   end
 
   def show
+    gon.admin = current_user.admin?
+    gon.kite_name_subscriptions = current_user.subscriptions.where(subscriptionable_type: 'KiteName').map(&:id)
+    gon.board_name_subscriptions = current_user.subscriptions.where(subscriptionable_type: 'BoardName').map(&:id)
+    gon.bar_name_subscriptions = current_user.subscriptions.where(subscriptionable_type: 'BarName').map(&:id)
+    gon.stuff_name_subscriptions = current_user.subscriptions.where(subscriptionable_type: 'StuffName').map(&:id)
     @kite_name = KiteName.new
     @board_name = BoardName.new
     @bar_name = BarName.new

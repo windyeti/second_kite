@@ -10,7 +10,7 @@
               remote: true,
               data: { confirm: "Are you sure?" },
               class: "btn btn-outline-danger btn-sm",
-              id: "board_name_id_link_delete_#{bar_name.id}"
+              id: "bar_name_id_link_delete_#{bar_name.id}"
 
     - if can?(:create, Subscription) && subscribable?(bar_name)
       span.mr-2 = link_to 'subscription',

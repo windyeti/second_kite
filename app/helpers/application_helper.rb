@@ -17,8 +17,6 @@ module ApplicationHelper
 
   def subscribable?(any_model_name)
     !any_model_name.subscriptions.find_by(user_id: current_user)
-    # sub = current_user.subscriptions.select { |s| s.subscriptionable == any_model_name }
-    # sub.length <= 0
   end
 end
 

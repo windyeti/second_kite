@@ -7,12 +7,9 @@ class BoardNamesController < ApplicationController
     @board_name = @brand.board_names.new(board_name_params)
     respond_to do |format|
       if @board_name.save
-        format.json { render json: { html: (render_to_string partial: 'board_name.html.slim', locals: { board_name: @board_name }) } }
+        format.json { render json: { board_name: @board_name } }
       else
-        format.json { render json: {
-          error: (render_to_string partial: 'shared/errors.html.slim', locals: {resource: @board_name}) },
-          status: 422
-        }
+        format.json { render json: { errors: @board_name.errors.full_messages }, status: 422 }
       end
     end
   end

@@ -1,0 +1,11 @@
+.list-group-item.d-flex.bar-name__item id=("stuff_name_id_#{@id}")
+  span.stuff_name.mr-auto class="stuff_name_#{@name}"
+    a href="/stuff_names/#{@id}/stuffs/new" #{@name}
+  - if gon.admin
+    span.mr-2
+      a class="btn btn-outline-secondary btn-sm" href="/stuff_names/#{@id}/edit" edit
+    span.mr-2
+      a data-confirm="Are you sure?" class="btn btn-outline-danger btn-sm" id="stuff_name_id_link_delete_#{@id}" data-remote="true" rel="nofollow" data-method="delete" href="/stuff_names/#{@id}" delete
+  - unless "#{@id}" in gon.stuff_name_subscriptions
+    span.mr-2
+      a class="btn btn-outline-info btn-sm" rel="nofollow" data-method="post" href="/stuff_names/#{@id}/subscriptions" subscription
