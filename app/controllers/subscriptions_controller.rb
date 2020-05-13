@@ -3,6 +3,7 @@ class SubscriptionsController < ApplicationController
   authorize_resource
 
   def create
+    return unless current_user.subscribable?(@subscriptionable)
     @subscription = @subscriptionable.subscriptions.create(user: current_user)
     redirect_to current_user.account
   end

@@ -5,6 +5,8 @@ RSpec.describe SubscriptionsController, type: :controller do
     context 'Authenticated user' do
       let(:user) { create(:user) }
       let(:kite_name) { create(:kite_name) }
+      let(:kite_name_subscribed) { create(:kite_name) }
+      let!(:subscription) { create(:subscription, user: user, subscriptionable: kite_name_subscribed) }
       before { login(user) }
 
       it 'assigns subscription' do
@@ -21,6 +23,12 @@ RSpec.describe SubscriptionsController, type: :controller do
         expect do
           post :create, params: { kite_name_id: kite_name, subscriptionable: 'kite_names' }
         end.to change(Subscription, :count).by(1)
+      end
+
+      it 'does not change subscription count two time subcribe to one resource' do
+        expect do
+          post :create, params: { kite_name_id: kite_name_subscribed, subscriptionable: 'kite_names' }
+        end.to_not change(Subscription, :count)
       end
     end
     context 'Guest'
