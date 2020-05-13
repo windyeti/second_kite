@@ -14,10 +14,6 @@ module ApplicationHelper
   def big_photo(photo)
     photo.variant(resize: '1200x1200').processed
   end
-
-  def subscribable?(any_model_name)
-    !any_model_name.subscriptions.find_by(user_id: current_user)
-  end
 end
 
 # TODO .service_url

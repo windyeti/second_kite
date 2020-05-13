@@ -20,6 +20,10 @@ class User < ApplicationRecord
     role === 'Admin'
   end
 
+  def subscribable?(any_model_name)
+    !any_model_name.subscriptions.find_by(user_id: self)
+  end
+
   private
 
   def create_account
