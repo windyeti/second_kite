@@ -3,9 +3,7 @@ class SubscriptionsController < ApplicationController
   authorize_resource
 
   def create
-    @subscription = @subscriptionable.subscriptions.new
-    @subscription.user = current_user
-    @subscription.save
+    @subscription = @subscriptionable.subscriptions.create(user: current_user)
     redirect_to current_user.account
   end
 
