@@ -19,9 +19,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col col-md-8 mx-auto">
+        <%= render 'shared/menu_tabs', active: @active %>
         <%= render 'shared/flash' %>
         <%= render 'shared/search' %>
-        <%= render 'shared/menu_tabs', active: @active %>
         <%= yield %>
       </div>
     </div>

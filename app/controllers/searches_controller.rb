@@ -3,8 +3,8 @@ class SearchesController < ApplicationController
   skip_authorization_check
 
   def index
-    @results = Services::Search.call(search_params)
-    redirect_to root_path unless @results
+    @ads = Services::Search.call(search_params)
+    redirect_to root_path unless @ads
   end
 
   private

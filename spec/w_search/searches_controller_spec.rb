@@ -36,7 +36,7 @@ RSpec.describe SearchesController, type: :controller do
       end
 
       it 'assigns results' do
-        expect(assigns(:results)).to be_nil
+        expect(assigns(:ads)).to be_nil
       end
 
       it 'redirect to root' do

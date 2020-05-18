@@ -50,6 +50,7 @@ gem 'sidekiq'
 gem 'skim'
 gem 'gon'
 gem 'whenever'
+gem 'sinatra', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -8,7 +8,7 @@ shared_examples_for 'Search' do
     end
 
     it 'assigns results' do
-      expect(assigns(:results)).to eq what_search
+      expect(assigns(:ads)).to eq what_search
     end
 
     it 'be successful' do
