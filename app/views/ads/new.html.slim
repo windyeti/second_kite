@@ -6,12 +6,13 @@
       = f.text_field :title, class: 'form-control form-control-sm'
     fieldset.scheduler-border
       legend.scheduler-border Choose kites for ad
-      .form-group
+      .form-group.checkboxes__kites
         = f.collection_check_boxes :kite_ids, current_user.kites, :id, :kite_name_name do |b|
           .control-group
             = b.label do
               = b.text
               = b.check_box
+      = link_to 'Add kite', new_kite_path, remote: true, class: 'btn btn-info btn-sm'
     fieldset.scheduler-border
       legend.scheduler-border Choose boards for ad
       .form-group

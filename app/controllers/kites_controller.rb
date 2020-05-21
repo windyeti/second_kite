@@ -1,6 +1,5 @@
 class KitesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :load_kite_name, only: [:new, :create]
   before_action :load_kite, only: [:show, :edit, :update, :destroy]
 
   authorize_resource
@@ -10,13 +9,18 @@ class KitesController < ApplicationController
   end
 
   def create
-    @kite = @kite_name.kites.new(kite_params)
+    return render json: { errors: ['Brand and kite_name can\'t be blank'] }, status: 422 if kite_params[:brand].empty? || kite_params[:kite_name].empty?
+    new_params = Kite.redefine_kite_params(kite_params)
+
+    @kite = Kite.new(new_params)
     @kite.user = current_user
 
-    if @kite.save
-      redirect_to @kite
-    else
-      render :new
+    respond_to do |format|
+      if @kite.save
+        format.json { render json: { equipment: { kite: @kite, kite_name: @kite.kite_name.name } } }
+      else
+        format.json { render json: { errors: @kite.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -45,7 +49,9 @@ class KitesController < ApplicationController
   private
 
   def kite_params
-    params.require(:kite).permit(:year,
+    params.require(:kite).permit(:brand,
+                                 :kite_name,
+                                 :year,
                                  :size,
                                  :price,
                                  :quality,

@@ -1,0 +1,4 @@
+.control-group
+  label for="ad_kite_ids_#{@id}"
+    span #{@kite_name} - #{@size}m2 - #{@price}&#8381;
+    input type="checkbox" value="#{@id}" name="ad[kite_ids][]" id="ad_kite_ids_#{@id}"

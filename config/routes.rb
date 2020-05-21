@@ -14,11 +14,11 @@ Rails.application.routes.draw do
   resources :ads
 
   resources :accounts, only: [:show, :edit, :update]
-  resources :accounts, only: [:show, :edit, :update]
+
+  resources :kites, only: [:new, :create, :show, :edit, :update, :destroy]
 
   resources :brands do
     resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
-      resources :kites, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
       resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'kite_names' }
     end
     resources :board_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do

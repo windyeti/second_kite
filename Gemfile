@@ -40,6 +40,7 @@ gem 'devise'
 gem 'cancancan'
 gem 'bootstrap'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'rails-i18n'
 gem 'mini_magick', '~> 4.8'
 gem "image_processing"

@@ -14,4 +14,13 @@ module ApplicationHelper
   def big_photo(photo)
     photo.variant(resize: '1200x1200').processed
   end
+
+  def brand_kite_name
+    result = {}
+    Brand.order(:name).each do |b|
+      arr = b.kite_names.map(&:name)
+      result["#{b.name}"] = arr
+    end
+    result
+  end
 end

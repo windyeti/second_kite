@@ -1,0 +1,49 @@
+var $containerForm = $('<div>').addClass('container-form-add col-10 col-md-8');
+$containerForm.appendTo('body');
+$containerForm.html("<%= j render 'form' %>");
+
+$('#kite_brand').autocomplete(
+  {
+    source: $('#kite_brand').data('autocomplete-source')
+  }
+);
+$('#kite_brand').on('change', function() {
+
+  $('#kite_kite_name').val('');
+
+  if ( $('#kite_brand').data('autocomplete-source').includes( $('#kite_brand').val() ) ) {
+    $('#kite_kite_name').autocomplete(
+      {
+        source: $('#kite_kite_name').data('autocomplete-source')[$('#kite_brand').val()]
+      }
+    )
+  }
+})
+
+
+$('.close_form').on('click', function() {
+  $(this).closest('.container-form-add').remove();
+})
+
+
+$('.kite_form').on('ajax:success', function(e) {
+  var equipment = e.detail[0].equipment;
+//  console.log(equipment.kite)
+//  console.log(equipment.kite_name)
+  $('.checkboxes__kites').append(JST['templates/checkbox_kite']({
+    price: equipment.kite.price,
+    size: equipment.kite.size,
+    id: equipment.kite.id,
+    kite_name: equipment.kite_name
+  }))
+  $(this).parent().remove();
+})
+ .on('ajax:error', function(e) {
+   var data = e.detail[0].errors;
+//   console.log(data)
+   $('.kite__errors').html('')
+   $(this).prepend( $('<div>').addClass('kite__errors') )
+   $('.kite__errors').html(JST['templates/errors']({
+     errors: data
+   }))
+ })
