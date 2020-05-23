@@ -1,6 +1,4 @@
 class Kite < ApplicationRecord
-  attr_accessor :brand
-
   belongs_to :user
   belongs_to :kite_name
 
@@ -10,25 +8,24 @@ class Kite < ApplicationRecord
   has_many_attached :best_photos
   has_many_attached :trouble_photos
 
-  validates :year, :size, :price, :quality, :brand, :kite_name, presence: true
+  validates :year, :size, :price, :quality, presence: true
   validates :year, :size, :price, :quality, numericality: true
 
   validates :quality, inclusion: 1..5
 
-  # validate :type_photos
+  validate :type_photos
 
   # method for f.collection_check_boxes
   def kite_name_name
     "#{kite_name.name} - #{size}m2 - #{price}&#8381;".html_safe
   end
 
-  def self.redefine_kite_params(kite_params)
-    brand = Brand.custom_find_or_create_brand(kite_params)
-    kite_name = KiteName.custom_find_or_create_kite_name(brand, kite_params)
+  def brand
+    kite_name.brand.name if kite_name
+  end
 
-    new_params = kite_params
-    new_params[:kite_name] = kite_name
-    new_params
+  def madel
+    kite_name.name if kite_name
   end
 
   private

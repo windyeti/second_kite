@@ -6,6 +6,15 @@ class Brand < ApplicationRecord
 
   validates :name, presence: true
 
+  def self.brand_kite_name
+    result = {}
+    order(:name).each do |b|
+      arr = b.kite_names.map(&:name)
+      result["#{b.name}"] = arr
+    end
+    result
+  end
+
   def self.custom_find_or_create_brand(params)
     brand_param = params[:brand].downcase
     brand = Brand.where( 'lower(name) = ?', brand_param ).first

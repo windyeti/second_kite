@@ -7,10 +7,15 @@ class KiteName < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.custom_find_or_create_kite_name(brand, params)
-    kite_name_param = params[:kite_name].downcase
-    kite_name = brand.kite_names.where( 'lower(name) = ?', kite_name_param ).first
-    kite_name = KiteName.create!(brand_id: brand.id, name: params[:kite_name]) if kite_name.nil?
-    kite_name
+  def self.find_kite_name(params)
+    brand = Brand.custom_find_or_create_brand(params)
+    custom_find_or_create(brand, params)
+  end
+
+  def self.custom_find_or_create(brand, params)
+    madel_param = params[:madel].downcase
+    madel = brand.kite_names.where( 'lower(name) = ?', madel_param ).first
+    madel = create!(brand_id: brand.id, name: params[:madel]) if madel.nil?
+    madel
   end
 end

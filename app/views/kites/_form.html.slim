@@ -1,6 +1,6 @@
 
 h1.mb-4
-  span New kite
+  span = @kite.id.nil? ? 'New kite' : 'Update kite'
   span.float-right.close_form &#215;
 
 = form_with model: @kite, class: 'kite_form', data: { type: :json } do |f|
@@ -10,8 +10,8 @@ h1.mb-4
     = f.text_field :brand, data: {autocomplete_source: Brand.order(:name).map(&:name)}, class: 'form-control'
 
   .form-group
-    = f.label :kite_name
-    = f.text_field :kite_name, data: {autocomplete_source: brand_kite_name}, class: 'form-control'
+    = f.label :madel
+    = f.text_field :madel, data: {autocomplete_source: Brand.brand_kite_name}, class: 'form-control'
 
   .form-group
     = f.label :year

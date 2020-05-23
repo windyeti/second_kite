@@ -21,13 +21,12 @@
 .account__ad.mb-4
   = link_to 'create new ad', new_ad_path, class: 'btn btn-outline-info btn-sm btn-block'
 
-.kites.mt-2
+.kites.mt-2.mb-4
   .card
-    .card-header List of kites
-    .list-group.list-group-flush = render @account.user.kites
-
-  .account__add-equipment.mt-2
-    = link_to 'Add kite', brands_path(brands_for: 'kite_names'), class: 'btn btn-outline-success btn-sm'
+    .card-header
+      span List of kites
+      span.ml-2.float-right = link_to 'Add kite', new_kite_path, remote: true, class: 'btn btn-outline-info btn-sm'
+    #account__kites.list-group.list-group-flush = render @account.user.kites
 
 .boards.mt-2
   .card

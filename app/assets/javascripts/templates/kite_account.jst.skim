@@ -1,0 +1,8 @@
+.list-group-item.d-flex id="kite_id_#{@id}"
+  span.mr-auto.kite
+    span
+      a href="/kites/#{@id}" #{@kite_name} - #{@size}м&#178; - #{@price}&#8381;
+  span.link-delete.mr-2
+    a.btn.btn-outline-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/kites/#{@id}" delete
+  span.link-edit.mr-2
+    a.btn.btn-outline-secondary.btn-sm href="/kites/#{@id}/edit" data-remote="true" edit

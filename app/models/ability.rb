@@ -31,6 +31,7 @@ class Ability
     can :update, Account, { user_id: user.id }
 
     can :read, Brand
+    can :create, Brand
 
     can :destroy, ActiveStorage::Attachment, record: { user_id: user.id }
 

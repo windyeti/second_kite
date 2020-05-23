@@ -1,18 +1,38 @@
-// $(document).on('turbolinks:load', function() {
-//   $('#kite_brand').autocomplete(
-//     {
-//       source: $('#kite_brand').data('autocomplete-source')
-//     }
-//   );
-//   $('#kite_brand').on('change', function() {
-//
-//     if ( $('#kite_brand').val() == '' ) $('#kite_kite_name').val('');
-//
-//     $('#kite_kite_name').autocomplete(
-//       {
-//         source: $('#kite_kite_name').data('autocomplete-source')[$('#kite_brand').val()]
-//       }
-//     )
-//   })
-//
-// });
+function Autocomplete(brand, model) {
+  this.brand = brand;
+  this.model = model
+}
+
+Autocomplete.prototype.make = function() {
+  var $brand_field = $(this.brand);
+  var $brand_source = $brand_field.data('autocomplete-source');
+  var $model_field = $(this.model);
+  var $model_source = $model_field.data('autocomplete-source');
+
+  $brand_field.autocomplete(
+    {
+      source: $brand_source
+    }
+  );
+  $brand_field.on('change', function() {
+
+    $model_field.val('');
+
+    var brand_field_value_lowercase = $brand_field.val().toLocaleLowerCase();
+    var brand_property_str = '';
+
+    for ( var property in $model_source ) {
+      if(property.toLocaleLowerCase() === brand_field_value_lowercase ) {
+        brand_property_str = property
+      }
+    }
+
+    if ( brand_property_str ) {
+      $model_field.autocomplete(
+        {
+          source: $model_source[brand_property_str]
+        }
+      )
+    }
+  })
+}

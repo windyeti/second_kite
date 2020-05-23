@@ -12,5 +12,6 @@
   - if can? :update, kite
     span.link-edit.mr-2 = link_to 'edit',
             edit_kite_path(kite),
+            remote: true,
             class: 'btn btn-outline-secondary btn-sm'
 

@@ -11,14 +11,11 @@ $('.kite_form').on('ajax:success', function(e) {
     id: equipment.kite.id,
     kite_name: equipment.kite_name
   }
+//  remove old
+  $('#account__kites #kite_id_' + kite.id).remove()
 
-  var locationAccount = window.location.href.split('/').includes('accounts')
+  $('#account__kites').append(JST['templates/kite_account'](kite))
 
-  if (locationAccount) {
-    $('#account__kites').append(JST['templates/kite_account'](kite))
-  } else {
-    $('.checkboxes__kites').append(JST['templates/kite_checkbox'](kite))
-  }
   $(this).parent().remove();
 })
  .on('ajax:error', function(e) {
