@@ -26,6 +26,7 @@
     .card-header
       span List of kites
       span.ml-2.float-right = link_to 'Add kite', new_kite_path, remote: true, class: 'btn btn-outline-info btn-sm'
+      span.ml-2.float-right = link_to 'Subscribe', brands_path(brands_for: 'kite_names'), class: 'btn btn-outline-success btn-sm'
     #account__kites.list-group.list-group-flush = render @account.user.kites
 
 .boards.mt-2
