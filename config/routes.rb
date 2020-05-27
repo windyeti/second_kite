@@ -46,4 +46,10 @@ Rails.application.routes.draw do
 
   resources :attachments, only: [:destroy]
   resources :searches, only: [:index]
+
+  resources :proofs, only: [:index, :show, :update] do
+    member do
+      post 'notification', to: 'proofs#notification'
+    end
+  end
 end

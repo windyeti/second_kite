@@ -1,6 +1,8 @@
 .list-group-item.d-flex id=("kite_id_#{kite.id}")
   span.mr-auto.kite
-    span = link_to kite_string_link(kite), kite
+    span => link_to kite_string_link(kite), kite
+    - unless kite.kite_name.approve
+      span need to appove
 
   - if can? :destroy, kite
     span.link-delete.mr-2 = link_to 'delete',

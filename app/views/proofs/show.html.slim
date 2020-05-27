@@ -1,0 +1,27 @@
+.proof
+  h4
+    span Объявление:
+    span class="Ad_id_#{@proof.id}"
+      span =< link_to @proof.title, @proof
+      span =< link_to "approve",
+              proof_path(@proof, klass: @proof.class),
+              method: :patch,
+              remote: true,
+              data: {type: :json},
+              class: "btn btn-info btn-sm"
+  .errors
+
+  .proof__items
+    h5 Kites. Список без подтверждения
+    ul.proof__kites
+      -@proof.kites.each do |k|
+        - brand = k.kite_name.brand
+        - madel = k.kite_name
+
+        - next if madel.approve
+
+        li
+          = render 'equip', brand: brand, madel: madel
+
+.form.p-3.border.border-secondary
+  = render 'form'

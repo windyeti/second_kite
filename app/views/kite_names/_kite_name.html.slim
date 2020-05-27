@@ -3,6 +3,8 @@
 
     - if can? :update, kite_name
       span.kite_name.mr-auto class=("kite_name_#{kite_name.name.downcase}") = link_to kite_name.name, kite_name
+      - unless kite_name.approve
+        span.mr-2 need to approve
       span.mr-2 = link_to 'edit', edit_kite_name_path(kite_name), class: 'btn btn-outline-secondary btn-sm'
       span.mr-2 = link_to 'delete', kite_name,
               method: :delete,

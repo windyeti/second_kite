@@ -3,7 +3,10 @@ h4 Edit Kite name
 = form_with model: @kite_name do |f|
   .form-group
     = f.label :name
-    = f.text_field :name
+    = f.text_field :name, class: 'form-control'
+  .form-check.mb-2
+    = f.check_box :approve, class: 'form-check-input'
+    = f.label :approve, class: 'form-check-label'
 
   .form-group
     = f.submit class: 'btn btn-primary'

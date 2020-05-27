@@ -5,6 +5,8 @@
 h3.h3.d-flex
   .mr-auto
     span = @ad.title
+    - if can? :edit, @ad
+      span.ml-2.p-1.small.border.border-secondary = "approve:#{@ad.approve}"
     .text-muted.count_equipment = "Kites: #{@ad.kites.count}, Boards: #{@ad.boards.count}, Bars: #{@ad.bars.count}, Stuffs: #{@ad.stuffs.count}"
   .total_price
     p = "#{@ad.total_price}&#8381;".html_safe

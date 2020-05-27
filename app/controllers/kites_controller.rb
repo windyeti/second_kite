@@ -15,8 +15,13 @@ class KitesController < ApplicationController
 
     respond_to do |format|
       if @kite.save
-        format.json { render json: { equipment: { kite: @kite, kite_name: @kite.kite_name.name } } }
-      else
+        format.json { render json: {
+          equipment: {
+            kite: @kite,
+            kite_name: @kite.kite_name.name,
+            approve_madel: @kite.kite_name.approve }
+          }
+        }      else
         format.json { render json: { errors: @kite.errors.full_messages }, status: 422 }
       end
     end
@@ -36,7 +41,13 @@ class KitesController < ApplicationController
 
     respond_to do |format|
       if @kite.update(params)
-        format.json { render json: { equipment: { kite: @kite, kite_name: @kite.kite_name.name } } }
+        format.json { render json: {
+          equipment: {
+            kite: @kite,
+            kite_name: @kite.kite_name.name,
+            approve: @kite.kite_name.approve }
+          }
+        }
       else
         format.json { render json: { errors: @kite.errors.full_messages }, status: 422 }
       end

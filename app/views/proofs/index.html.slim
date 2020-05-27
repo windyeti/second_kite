@@ -1,0 +1,3 @@
+ul.proofs
+  -@proofs.each do |p|
+    li = link_to p.title, proof_path(p)

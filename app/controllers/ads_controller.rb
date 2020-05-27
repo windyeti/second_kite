@@ -5,7 +5,7 @@ class AdsController < ApplicationController
   authorize_resource
 
   def index
-    @ads = Ad.all
+    @ads = Ad.where(approve: true)
   end
 
   def new
@@ -14,6 +14,7 @@ class AdsController < ApplicationController
 
   def create
     @ad = current_user.ads.new(ad_params)
+    @ad.approve = Ad.approve?(ad_params)
     if @ad.save
       redirect_to @ad, notice: 'You created ad'
     else
@@ -27,6 +28,7 @@ class AdsController < ApplicationController
   def edit; end
 
   def update
+    @ad.approve = Ad.approve?(ad_params)
     if @ad.update(ad_params)
       redirect_to @ad, notice: "Ad #{@ad.title} updated"
     else

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_04_093136) do
+ActiveRecord::Schema.define(version: 2020_05_24_115543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2020_05_04_093136) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "approve", default: false
     t.index ["user_id"], name: "index_ads_on_user_id"
   end
 
@@ -143,6 +144,7 @@ ActiveRecord::Schema.define(version: 2020_05_04_093136) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "approve", default: false
   end
 
   create_table "kite_names", force: :cascade do |t|
@@ -150,6 +152,7 @@ ActiveRecord::Schema.define(version: 2020_05_04_093136) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "approve", default: false
     t.index ["brand_id"], name: "index_kite_names_on_brand_id"
   end
 

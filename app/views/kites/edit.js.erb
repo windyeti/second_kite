@@ -9,7 +9,8 @@ $('.kite_form').on('ajax:success', function(e) {
     price: equipment.kite.price,
     size: equipment.kite.size,
     id: equipment.kite.id,
-    kite_name: equipment.kite_name
+    kite_name: equipment.kite_name,
+    approve_madel: equipment.approve_madel
   }
 //  remove old
   $('#account__kites #kite_id_' + kite.id).remove()

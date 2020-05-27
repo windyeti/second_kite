@@ -17,6 +17,8 @@ class Ability
   def admin
     can :manage, :all
     cannot :create, Subscription
+    can :index, ProofsController
+    can :notification, ProofsController
   end
 
   def auth_user

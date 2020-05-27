@@ -17,7 +17,11 @@ class Kite < ApplicationRecord
 
   # method for f.collection_check_boxes
   def kite_name_name
-    "#{kite_name.name} - #{size}m2 - #{price}&#8381;".html_safe
+    if kite_name.approve
+      "#{kite_name.name} - #{size}m2 - #{price}&#8381;".html_safe
+    else
+      "#{kite_name.name} - #{size}m2 - #{price}&#8381; need to approve".html_safe
+    end
   end
 
   def brand

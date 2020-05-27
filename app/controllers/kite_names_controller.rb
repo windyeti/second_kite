@@ -38,7 +38,7 @@ class KiteNamesController < ApplicationController
   private
 
   def kite_name_params
-    params.require(:kite_name).permit(:name)
+    params.require(:kite_name).permit(:name, :approve)
   end
 
   def load_brand

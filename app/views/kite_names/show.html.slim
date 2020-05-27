@@ -3,5 +3,6 @@
   span.mr-2 =< link_to "Back", brand_kite_names_path(@kite_name.brand), class: 'text-dark'
   span.text-dark |
 h4
-  | Show kite_name:
-  span.kite-name = @kite_name.name
+  span Show kite_name:
+  span.kite-name =< @kite_name.name
+.approve Approve: #{@kite_name.approve}

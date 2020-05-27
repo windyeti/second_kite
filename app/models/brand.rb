@@ -8,7 +8,7 @@ class Brand < ApplicationRecord
 
   def self.brand_kite_name
     result = {}
-    order(:name).each do |b|
+    order(:name).where(approve: true).each do |b|
       arr = b.kite_names.map(&:name)
       result["#{b.name}"] = arr
     end
