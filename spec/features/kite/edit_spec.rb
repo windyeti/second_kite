@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Authenticated user edit kite' do
+feature 'Authenticated user edit kite', js: true do
   describe 'Authenticated user' do
     given(:owner_user) { create(:user) }
     given!(:kite) { create(:kite, user: owner_user) }
@@ -22,7 +22,9 @@ feature 'Authenticated user edit kite' do
 
         click_on 'Update Kite'
 
-        expect(page).to have_content 'Size: 9'
+        # save_and_open_page
+
+        expect(page).to have_content 'My Kite - 9m2 - 340₽'
       end
       scenario 'with invalid data can not edit his kite' do
         visit root_path
@@ -38,7 +40,8 @@ feature 'Authenticated user edit kite' do
 
         click_on 'Update Kite'
 
-        expect(page).to have_content "Edit kite model #{kite.kite_name.name}"
+        expect(page).to have_content "Update kite"
+        expect(page).to have_content "Price can't be blank"
       end
     end
 

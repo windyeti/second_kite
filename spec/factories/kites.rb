@@ -2,6 +2,8 @@ FactoryBot.define do
   factory :kite do
     user
     kite_name
+    # brand { nil }
+    # madel { nil }
     year { 2012 }
     size { 14 }
     price { 340 }

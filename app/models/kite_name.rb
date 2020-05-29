@@ -11,10 +11,10 @@ class KiteName < ApplicationRecord
 
   def self.find_kite_name(params)
     brand = Brand.custom_find_or_create_brand(params)
-    custom_find_or_create(brand, params)
+    custom_find_or_create_madel(brand, params)
   end
 
-  def self.custom_find_or_create(brand, params)
+  def self.custom_find_or_create_madel(brand, params)
     madel_param = params[:madel].downcase
     madel = brand.kite_names.where( 'lower(name) = ?', madel_param ).first
     madel = create!(brand_id: brand.id, name: params[:madel]) if madel.nil?

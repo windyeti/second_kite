@@ -6,6 +6,7 @@ class Brand < ApplicationRecord
 
   validates :name, presence: true
 
+  # объект для autocomlete { brand: [madel1, madel2, ] }
   def self.brand_kite_name
     result = {}
     order(:name).where(approve: true).each do |b|

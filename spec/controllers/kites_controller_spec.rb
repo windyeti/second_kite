@@ -4,11 +4,11 @@ RSpec.describe KitesController, type: :controller do
   let(:kite_name) { create(:kite_name) }
   let(:user) { create(:user) }
 
-  describe "GET #new" do
+  describe "GET #new", js: true do
     context 'Authenticated user' do
       before do
         login(user)
-        get :new, params: { kite_name_id: kite_name }
+        get :new, xhr: true
       end
 
       it "render template new" do
@@ -17,10 +17,6 @@ RSpec.describe KitesController, type: :controller do
 
       it "assigns kite is new" do
         expect(assigns(:kite)).to be_a_new(Kite)
-      end
-
-      it "assigns kite_name" do
-        expect(assigns(:kite_name)).to eq kite_name
       end
     end
 
@@ -34,64 +30,67 @@ RSpec.describe KitesController, type: :controller do
       it "assigns kite is new" do
         expect(assigns(:kite)).to be_nil
       end
-
-      it "assigns kite_name" do
-        expect(assigns(:kite_name)).to be_nil
-      end
     end
 
   end
 
   describe "POST #create" do
     context 'Authenticated user create kite' do
+      let!(:brand) { create(:brand, name: 'F-ONE') }
+      let!(:kite_name) { create(:kite_name, brand: brand, name: 'Solo') }
       let(:user) { create(:user) }
       before { login(user) }
 
       context 'with valid data can create kite' do
 
         it 'assigns kite' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
+          post :create, params: { kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
           expect(assigns(:kite)).to eq kite_name.kites.first
         end
 
-        it 'assigns kite_name' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
-          expect(assigns(:kite_name)).to eq kite_name
+        it 'assigns kite with new madel' do
+          post :create, params: { kite: attributes_for(:kite, brand: "F-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:kite).kite_name.name).to eq 'NEWSolo'
+        end
+
+        it 'assigns kite with new brand and madel' do
+          post :create, params: { kite: attributes_for(:kite, brand: "NEWF-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:kite).kite_name.brand.name).to eq 'NEWF-ONE'
         end
 
         it 'change count kites by 1' do
           expect do
-            post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
+            post :create, params: { kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to change(Kite, :count).by(1)
         end
 
-        it 'redirect to kite' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
-          expect(response).to redirect_to assigns(:kite)
+        it 'return status ok' do
+          post :create, params: { kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :ok
         end
       end
 
-      context 'with invalid data can not create kite' do
+      it 'return status :unprocessable_entity' do
+        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, brand: "", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unprocessable_entity
+      end
+
+      context 'with invalid data cannot create kite' do
 
         it 'kite is not valid' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid) }
+          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
           expect(assigns(:kite).year).to be_nil
-        end
-
-        it 'assigns kite_name' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid) }
-          expect(assigns(:kite_name)).to eq kite_name
         end
 
         it 'does not change count kites' do
           expect do
-            post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid) }
+            post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to_not change(Kite, :count)
         end
 
-        it 'render template new' do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid) }
-          expect(response).to render_template :new
+        it 'return status :unprocessable_entity' do
+          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :unprocessable_entity
         end
       end
     end
@@ -99,24 +98,19 @@ RSpec.describe KitesController, type: :controller do
     context 'Guest' do
 
       it 'does not assigns kite' do
-        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
+        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
         expect(assigns(:kite)).to be_nil
-      end
-
-      it 'does not assigns kite_name' do
-        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
-        expect(assigns(:kite_name)).to be_nil
       end
 
       it 'does not change count kites by 1' do
         expect do
-          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
+          post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
         end.to_not change(Kite, :count)
       end
 
-      it 'redirect to log in' do
-        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite) }
-        expect(response).to redirect_to new_user_session_path
+      it 'return status :unauthorized' do
+        post :create, params: { kite_name_id: kite_name, kite: attributes_for(:kite, brand: "F-ONE", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
@@ -171,7 +165,7 @@ RSpec.describe KitesController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
+  describe 'GET #edit', js: true do
     let(:owner_user) { create(:user) }
     let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:kite) { create(:kite, user: owner_user) }
@@ -181,32 +175,32 @@ RSpec.describe KitesController, type: :controller do
         before { login(owner_user) }
 
         it 'render template edit' do
-          get :edit, params: { id: kite }
+          get :edit, params: { id: kite, brand: "F-ONE", madel: "Solo" }, xhr: true
           expect(response).to render_template :edit
         end
 
         it 'assigns kite' do
-          get :edit, params: { id: kite }
+          get :edit, params: { id: kite, brand: "F-ONE", madel: "Solo" }, xhr: true
           expect(assigns(:kite)).to eq kite
         end
       end
       context 'not owner' do
         before { login(other_user) }
 
-        it 'redirect to root' do
-          get :edit, params: { id: kite }
-          expect(response).to redirect_to root_path
+        it 'return status :forbidden' do
+          get :edit, params: { id: kite, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(response).to have_http_status :forbidden
         end
 
         it 'assigns kite' do
-          get :edit, params: { id: kite }
+          get :edit, params: { id: kite, brand: "F-ONE", madel: "Solo" }, xhr: true
           expect(assigns(:kite)).to eq kite
         end
       end
     end
     context 'Guest' do
       it 'assigns kite is nil' do
-        get :edit, params: { id: kite }
+        get :edit, params: { id: kite, brand: "F-ONE", madel: "Solo" }, xhr: true
         expect(assigns(:kite)).to be_nil
       end
 
@@ -229,36 +223,41 @@ RSpec.describe KitesController, type: :controller do
         context 'with valid data can update kite' do
 
           it 'assigns kite' do
-            patch :update, params: { id: kite , kite: { size: 8 } }
+            patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
             expect(assigns(:kite)).to eq kite
           end
 
           it 'change attributes' do
-            patch :update, params: { id: kite , kite: { size: 8 } }
+            patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
             kite.reload
             expect(kite.size).to eq 8
           end
 
-          it 'redirect to kite' do
-            patch :update, params: { id: kite , kite: { size: 8 } }
-            expect(response).to redirect_to kite
+          it 'return status ok' do
+            patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :ok
           end
         end
         context 'with invalid data can not update kite' do
 
           it 'assigns kite' do
-            patch :update, params: { id: kite , kite: { size: '' } }
+            patch :update, params: { id: kite , kite: { size: '', brand: "F-ONE", madel: "Solo" } }, format: :json
             expect(assigns(:kite)).to eq kite
           end
 
           it 'does not change attributes' do
-            patch :update, params: { id: kite , kite: { size: '' } }
+            patch :update, params: { id: kite , kite: { size: '', brand: "F-ONE", madel: "Solo" } }, format: :json
             expect(kite.size).to eq Kite.find(kite.id).size
           end
 
-          it 'render template edit' do
-            patch :update, params: { id: kite , kite: { size: '' } }
-            expect(response).to render_template :edit
+          it 'return status :unprocessable_entity' do
+            patch :update, params: { id: kite , kite: { size: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :unprocessable_entity
+          end
+
+          it 'return status :unprocessable_entity' do
+            patch :update, params: { id: kite , kite: { size: '10', brand: "", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :unprocessable_entity
           end
         end
       end
@@ -266,18 +265,18 @@ RSpec.describe KitesController, type: :controller do
         before { login(other_user) }
 
         it 'does not assign kite' do
-          patch :update, params: { id: kite , kite: { size: 8 } }
+          patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
           expect(assigns(:kite)).to eq kite
         end
 
         it 'does not change attributes' do
-          patch :update, params: { id: kite , kite: { size: 8 } }
+          patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
           expect(kite.size).to eq Kite.find(kite.id).size
         end
 
-        it 'rdirect to root' do
-          patch :update, params: { id: kite , kite: { size: 8 } }
-          expect(response).to redirect_to root_path
+        it 'return status :forbidden' do
+          patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(response).to have_http_status :forbidden
         end
       end
     end
@@ -285,18 +284,18 @@ RSpec.describe KitesController, type: :controller do
     context 'Guest' do
 
       it 'does not assign kite' do
-        patch :update, params: { id: kite , kite: { size: 8 } }
+        patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
         expect(assigns(:kite)).to be_nil
       end
 
       it 'does not change attributes' do
-        patch :update, params: { id: kite , kite: { size: 8 } }
+        patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
         expect(kite.size).to eq Kite.find(kite.id).size
       end
 
-      it 'rdirect to log in' do
-        patch :update, params: { id: kite , kite: { size: 8 } }
-        expect(response).to redirect_to new_user_session_path
+      it 'return status :unauthorized' do
+        patch :update, params: { id: kite , kite: { size: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end

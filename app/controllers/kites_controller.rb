@@ -10,11 +10,10 @@ class KitesController < ApplicationController
 
   def create
     return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if kite_params[:brand].empty? || kite_params[:madel].empty?
-    params = custom_params
-    @kite = current_user.kites.new(params)
+    @kite = Kite.custom_create(kite_params, current_user)
 
     respond_to do |format|
-      if @kite.save
+      if @kite.valid?
         format.json { render json: {
           equipment: {
             kite: @kite,
@@ -37,15 +36,15 @@ class KitesController < ApplicationController
 
   def update
     return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if kite_params[:brand].empty? || kite_params[:madel].empty?
-    params = custom_params
+    @kite.custom_update(kite_params)
 
     respond_to do |format|
-      if @kite.update(params)
+      if @kite.valid?
         format.json { render json: {
           equipment: {
             kite: @kite,
             kite_name: @kite.kite_name.name,
-            approve: @kite.kite_name.approve }
+            approve_madel: @kite.kite_name.approve }
           }
         }
       else
@@ -81,15 +80,5 @@ class KitesController < ApplicationController
 
   def load_kite
     @kite = Kite.find(params[:id])
-  end
-
-  def custom_params
-    kite_name = KiteName.find_kite_name(kite_params)
-
-    new_params = kite_params
-    new_params.delete(:brand)
-    new_params.delete(:madel)
-    new_params[:kite_name] = kite_name
-    new_params
   end
 end

@@ -15,6 +15,32 @@ class Kite < ApplicationRecord
 
   validate :type_photos
 
+  def self.custom_create(kite_params, current_user)
+    transaction do
+      new_params = custom_params(kite_params)
+      kite = current_user.kites.create( new_params )
+      kite
+    end
+  end
+
+  def self.custom_params(kite_params)
+    kite_name = KiteName.find_kite_name(kite_params)
+
+    new_params = kite_params
+    new_params.delete(:brand)
+    new_params.delete(:madel)
+    new_params[:kite_name] = kite_name
+    new_params
+  end
+
+  def custom_update(kite_params)
+    transaction do
+      new_params = self.class.custom_params(kite_params)
+      update( new_params )
+      self
+    end
+  end
+
   # method for f.collection_check_boxes
   def kite_name_name
     if kite_name.approve
