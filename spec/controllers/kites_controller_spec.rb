@@ -4,7 +4,7 @@ RSpec.describe KitesController, type: :controller do
   let(:kite_name) { create(:kite_name) }
   let(:user) { create(:user) }
 
-  describe "GET #new", js: true do
+  describe "GET #new" do
     context 'Authenticated user' do
       before do
         login(user)
@@ -165,7 +165,7 @@ RSpec.describe KitesController, type: :controller do
     end
   end
 
-  describe 'GET #edit', js: true do
+  describe 'GET #edit' do
     let(:owner_user) { create(:user) }
     let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:kite) { create(:kite, user: owner_user) }

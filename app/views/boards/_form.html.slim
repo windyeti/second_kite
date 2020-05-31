@@ -1,8 +1,17 @@
-.col.col-md-8.mx-auto
-  h1.mb-4
-    span Edit board of model
-    strong.text-dark =< "#{@board.board_name.name}"
-= form_with model: @board, class: 'board_form' do |f|
+h1.mb-4
+  span = @board.id.nil? ? 'New board' : 'Update board'
+  span.float-right.close_form &#215;
+
+= form_with model: @board, class: 'board_form', data: { type: :json } do |f|
+
+  .form-group
+    = f.label :brand
+    = f.text_field :brand, data: {autocomplete_source: Brand.order(:name).where(approve: true).map(&:name)}, class: 'form-control'
+
+  .form-group
+    = f.label :madel
+    = f.text_field :madel, data: {autocomplete_source: Brand.brand_board_name}, class: 'form-control'
+
   .form-group
     = f.label :length
     = f.text_field :length, class: 'form-control'
@@ -27,9 +36,11 @@
   .form-group
     = f.label :price
     = f.text_field :price, class: 'form-control'
+
   .form-group
     = f.label :best_photos
     = f.file_field :best_photos, multiple: true, direct_upload: true, class: 'form-control'
+
   .form-group
     = f.label :trouble_photos
     = f.file_field :trouble_photos, multiple: true, direct_upload: true, class: 'form-control'

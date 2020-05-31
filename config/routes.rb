@@ -16,21 +16,21 @@ Rails.application.routes.draw do
   resources :accounts, only: [:show, :edit, :update]
 
   resources :kites, only: [:new, :create, :show, :edit, :update, :destroy]
+  resources :boards, only: [:new, :create, :show, :edit, :update, :destroy]
+  resources :bars, only: [:new, :create, :show, :edit, :update, :destroy]
+  resources :stuffs, only: [:new, :create, :show, :edit, :update, :destroy]
 
   resources :brands do
     resources :kite_names, shallow: true, only: [:index, :create, :show, :edit, :update, :destroy] do
       resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'kite_names' }
     end
     resources :board_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
-      resources :boards, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
       resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'board_names' }
     end
     resources :bar_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
-      resources :bars, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
       resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'bar_names' }
     end
     resources :stuff_names, shallow: true, only: [:create, :edit, :update, :show, :destroy] do
-      resources :stuffs, shallow: true, only: [:new, :create, :show, :edit, :update, :destroy]
       resources :subscriptions, only: [:create, :destroy], shallow: true, defaults: { subscriptionable: 'stuff_names' }
     end
   end

@@ -6,5 +6,9 @@ FactoryBot.define do
     year { 1 }
     price { 1 }
     quality { 1 }
+
+    trait :invalid do
+      year { nil }
+    end
   end
 end

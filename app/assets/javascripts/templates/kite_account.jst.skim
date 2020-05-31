@@ -2,10 +2,9 @@
   span.mr-auto.kite
     span
       a href="/kites/#{@id}"
-        - if @approve_madel
-          span #{@kite_name} - #{@size}m2 - #{@price}&#8381;
-        - else
-          span #{@kite_name} - #{@size}m2 - #{@price}&#8381; need to approve
+        span #{@kite_name} - #{@size}mм&#178; - #{@price}&#8381;
+    - unless @approve_madel
+      span.ml-1  need to approve
   span.link-delete.mr-2
     a.btn.btn-outline-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/kites/#{@id}" delete
   span.link-edit.mr-2

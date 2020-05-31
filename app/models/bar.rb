@@ -14,9 +14,49 @@ class Bar < ApplicationRecord
 
   validate :type_photos
 
+  # +++++++++++++++++++++++++++++++
+  def self.custom_create(bar_params, current_user)
+    transaction do
+      new_params = custom_params(bar_params)
+      bar = current_user.bars.create( new_params )
+      bar
+    end
+  end
+
+  def self.custom_params(bar_params)
+    bar_name = BarName.find_bar_name(bar_params)
+
+    new_params = bar_params
+    new_params.delete(:brand)
+    new_params.delete(:madel)
+    new_params[:bar_name] = bar_name
+    new_params
+  end
+
+  def custom_update(bar_params)
+    transaction do
+      new_params = self.class.custom_params(bar_params)
+      update( new_params )
+      self
+    end
+  end
+  # +++++++++++++++++++++++++++++++
+
   # method for f.collection_check_boxes
   def bar_name_name
-    "#{bar_name.name} - #{length}см - #{price}&#8381;".html_safe
+    if bar_name.approve
+      "#{bar_name.name} - #{length}см - #{price}&#8381;".html_safe
+    else
+      "#{bar_name.name} - #{length}см - #{price}&#8381; need to approve".html_safe
+    end
+  end
+
+  def brand
+    bar_name.brand.name if bar_name
+  end
+
+  def madel
+    bar_name.name if bar_name
   end
 
   private

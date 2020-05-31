@@ -6,5 +6,9 @@ FactoryBot.define do
     quality { 1 }
     year { 1 }
     description { "MyText" }
+
+    trait :invalid do
+      year { nil }
+    end
   end
 end

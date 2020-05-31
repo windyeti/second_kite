@@ -1,0 +1,11 @@
+.list-group-item.d-flex id="board_id_#{@id}"
+  span.mr-auto.board
+    span
+      a href="/boards/#{@id}"
+        span #{@board_name} - #{@length}x#{@width}см - #{@price}&#8381;
+    - unless @approve_madel
+      span.ml-1  need to approve
+  span.link-delete.mr-2
+    a.btn.btn-outline-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/boards/#{@id}" delete
+  span.link-edit.mr-2
+    a.btn.btn-outline-secondary.btn-sm href="/boards/#{@id}/edit" data-remote="true" edit

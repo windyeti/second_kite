@@ -12,7 +12,7 @@ class KiteNamesController < ApplicationController
     @kite_name = @brand.kite_names.new(kite_name_params)
     respond_to do |format|
       if @kite_name.save
-        format.json { render json: { kite_name: @kite_name } }
+        format.json { render json: { kite_name: @kite_name, approve: @kite_name.approve } }
       else
         format.json { render json: { errors: @kite_name.errors.full_messages }, status: 422 }
       end

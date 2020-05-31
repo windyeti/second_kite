@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User edit his board' do
+feature 'User edit his board', js: true do
   describe 'Authenticated user' do
     given(:owner_user) { create(:user) }
     given!(:board) { create(:board, year: 2010, user: owner_user) }
@@ -13,10 +13,10 @@ feature 'User edit his board' do
         within '.boards' do
           click_on 'edit'
         end
-        select("1999", from: "Year").select_option
+        fill_in 'Price', with: 100500
         click_on "Update Board"
 
-        expect(page).to have_content 'Year: 1999'
+        expect(page).to have_content "#{board.board_name.name} - #{board.length}x#{board.width}см - 100500₽"
       end
       scenario 'with invalid data can not edit board' do
         visit account_path(owner_user.account)
@@ -26,7 +26,8 @@ feature 'User edit his board' do
         fill_in 'Price', with: ''
         click_on "Update Board"
 
-        expect(page).to have_content "Edit board of model #{board.board_name.name}"
+        expect(page).to have_content "Update board"
+        expect(page).to have_content "Price can't be blank"
       end
     end
     scenario 'not owner can not edit board' do

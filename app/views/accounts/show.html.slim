@@ -29,30 +29,54 @@
       span.ml-2.float-right = link_to 'Subscribe', brands_path(brands_for: 'kite_names'), class: 'btn btn-outline-success btn-sm'
     #account__kites.list-group.list-group-flush = render @account.user.kites
 
-.boards.mt-2
+.boards.mt-2.mb-4
   .card
-    .card-header List of boards
-    .list-group.list-group-flush = render @account.user.boards
+    .card-header
+      span List of boards
+      span.ml-2.float-right = link_to 'Add board', new_board_path, remote: true, class: 'btn btn-outline-info btn-sm'
+      span.ml-2.float-right = link_to 'Subscribe', brands_path(brands_for: 'board_names'), class: 'btn btn-outline-success btn-sm'
+    #account__boards.list-group.list-group-flush = render @account.user.boards
 
-  .account__add-equipment.mt-2
-    = link_to 'Add board', brands_path(brands_for: 'board_names'), class: 'btn btn-outline-success btn-sm'
+/ .boards.mt-2
+/   .card
+/     .card-header List of boards
+/     .list-group.list-group-flush = render @account.user.boards
+/
+/   .account__add-equipment.mt-2
+/     = link_to 'Add board', brands_path(brands_for: 'board_names'), class: 'btn btn-outline-success btn-sm'
 
-
-.bars.mt-2
+.bars.mt-2.mb-4
   .card
-    .card-header List of bars
-    .list-group.list-group-flush = render @account.user.bars
+    .card-header
+      span List of bars
+      span.ml-2.float-right = link_to 'Add bar', new_bar_path, remote: true, class: 'btn btn-outline-info btn-sm'
+      span.ml-2.float-right = link_to 'Subscribe', brands_path(brands_for: 'bar_names'), class: 'btn btn-outline-success btn-sm'
+    #account__bars.list-group.list-group-flush = render @account.user.bars
 
-  .account__add-equipment.mt-2
-    = link_to 'Add bar', brands_path(brands_for: 'bar_names'), class: 'btn btn-outline-success btn-sm'
+/ .bars.mt-2
+/   .card
+/     .card-header List of bars
+/     .list-group.list-group-flush = render @account.user.bars
+/
+/   .account__add-equipment.mt-2
+/     = link_to 'Add bar', brands_path(brands_for: 'bar_names'), class: 'btn btn-outline-success btn-sm'
 
-.stuffs.mt-2
+
+.stuffs.mt-2.mb-4
   .card
-    .card-header List of stuff
-    .list-group.list-group-flush = render @account.user.stuffs
+    .card-header
+      span List of stuffs
+      span.ml-2.float-right = link_to 'Add stuff', new_stuff_path, remote: true, class: 'btn btn-outline-info btn-sm'
+      span.ml-2.float-right = link_to 'Subscribe', brands_path(brands_for: 'stuff_names'), class: 'btn btn-outline-success btn-sm'
+    #account__stuffs.list-group.list-group-flush = render @account.user.stuffs
 
-  .account__add-equipment.mt-2
-    = link_to 'Add stuff', brands_path(brands_for: 'stuff_names'), class: 'btn btn-outline-success btn-sm'
+/ .stuffs.mt-2
+/   .card
+/     .card-header List of stuff
+/     .list-group.list-group-flush = render @account.user.stuffs
+/
+/   .account__add-equipment.mt-2
+/     = link_to 'Add stuff', brands_path(brands_for: 'stuff_names'), class: 'btn btn-outline-success btn-sm'
 
 .subscriptions.mt-2
   h4 Subscriptions

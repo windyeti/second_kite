@@ -15,8 +15,16 @@ Autocomplete.prototype.make = function() {
     }
   );
   $brand_field.on('change', function() {
-
     $model_field.val('');
+    autocomplete_model()
+  });
+  // при редактировании (), если уже был выбран бренд,
+  // то по нему должен быть автокомплит моделей
+  if ( $brand_field.val().length ) {
+    autocomplete_model()
+  }
+
+  function autocomplete_model() {
 
     var brand_field_value_lowercase = $brand_field.val().toLocaleLowerCase();
     var brand_property_str = '';
@@ -34,5 +42,6 @@ Autocomplete.prototype.make = function() {
         }
       )
     }
-  })
+  }
+
 }

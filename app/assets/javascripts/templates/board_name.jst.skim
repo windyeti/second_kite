@@ -1,11 +1,10 @@
 .list-group-item.d-flex.board-name__item id=("board_name_id_#{@id}")
   span.board_name.mr-auto class="board_name_#{@name}"
     a href="/board_names/#{@id}/boards/new" #{@name}
+  - unless @approve
+    span.mr-2 need to approve
   - if gon.admin
     span.mr-2
       a class="btn btn-outline-secondary btn-sm" href="/board_names/#{@id}/edit" edit
     span.mr-2
       a data-confirm="Are you sure?" class="btn btn-outline-danger btn-sm" id="board_name_id_link_delete_#{@id}" data-remote="true" rel="nofollow" data-method="delete" href="/board_names/#{@id}" delete
-  - unless "#{@id}" in gon.board_name_subscriptions
-    span.mr-2
-      a class="btn btn-outline-info btn-sm" rel="nofollow" data-method="post" href="/board_names/#{@id}/subscriptions" subscription

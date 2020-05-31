@@ -16,6 +16,33 @@ class Brand < ApplicationRecord
     result
   end
 
+  def self.brand_board_name
+    result = {}
+    order(:name).where(approve: true).each do |b|
+      arr = b.board_names.map(&:name)
+      result["#{b.name}"] = arr
+    end
+    result
+  end
+
+  def self.brand_bar_name
+    result = {}
+    order(:name).where(approve: true).each do |b|
+      arr = b.bar_names.map(&:name)
+      result["#{b.name}"] = arr
+    end
+    result
+  end
+
+  def self.brand_stuff_name
+    result = {}
+    order(:name).where(approve: true).each do |b|
+      arr = b.stuff_names.map(&:name)
+      result["#{b.name}"] = arr
+    end
+    result
+  end
+
   def self.custom_find_or_create_brand(params)
     brand_param = params[:brand].downcase
     brand = Brand.where( 'lower(name) = ?', brand_param ).first

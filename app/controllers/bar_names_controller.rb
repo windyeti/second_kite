@@ -8,7 +8,7 @@ class BarNamesController < ApplicationController
     @bar_name = @brand.bar_names.new(bar_params)
     respond_to do |format|
       if @bar_name.save
-        format.json { render json: { bar_name: @bar_name } }
+        format.json { render json: { bar_name: @bar_name, approve: @bar_name.approve } }
       else
         format.json { render json: { errors: @bar_name.errors.full_messages }, status: 422 }
       end
@@ -34,7 +34,7 @@ class BarNamesController < ApplicationController
   private
 
   def bar_params
-    params.require(:bar_name).permit(:name)
+    params.require(:bar_name).permit(:name, :approve)
   end
 
   def load_bar_name

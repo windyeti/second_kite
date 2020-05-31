@@ -1,188 +1,206 @@
 require 'rails_helper'
 
 RSpec.describe BarsController, type: :controller do
-  describe 'GET #new' do
-    let(:bar_name) { create(:bar_name) }
+  let(:bar_name) { create(:bar_name) }
+  let(:user) { create(:user) }
 
+  describe "GET #new" do
     context 'Authenticated user' do
-      let(:user) { create(:user) }
-      before { login(user) }
+      before do
+        login(user)
+        get :new, xhr: true
+      end
 
-      it 'assigns new' do
-        get :new, params: { bar_name_id: bar_name }
-        expect(assigns(:bar)).to be_a_new Bar
+      it "render template new" do
+        expect(response).to render_template :new
       end
-      it 'assigns bar_name' do
-        get :new, params: { bar_name_id: bar_name }
-        expect(assigns(:bar_name)).to eq bar_name
-      end
-      it 'render template new' do
-        get :new, params: { bar_name_id: bar_name }
-        expect(assigns(:bar_name)).to render_template :new
+
+      it "assigns bar is new" do
+        expect(assigns(:bar)).to be_a_new(Bar)
       end
     end
-    context 'Guest' do
 
-      it 'does not assigns new' do
-        get :new, params: { bar_name_id: bar_name }
+    context 'Guest' do
+      before { get :new, params: { bar_name_id: bar_name } }
+
+      it "redirect to log in" do
+        expect(response).to redirect_to new_user_session_path
+      end
+
+      it "assigns bar is new" do
         expect(assigns(:bar)).to be_nil
       end
-      it 'assigns bar_name' do
-        get :new, params: { bar_name_id: bar_name }
-        expect(assigns(:bar_name)).to be_nil
-      end
-      it 'redicert to log in' do
-        get :new, params: { bar_name_id: bar_name }
-        expect(assigns(:bar_name)).to redirect_to new_user_session_path
-      end
     end
+
   end
 
-  describe 'POST #create' do
-    let(:bar_name) { create(:bar_name) }
-
-    context 'Authenticated user' do
+  describe "POST #create" do
+    context 'Authenticated user create kite' do
+      let!(:brand) { create(:brand, name: 'F-ONE') }
+      let!(:bar_name) { create(:bar_name, brand: brand, name: 'Solo') }
       let(:user) { create(:user) }
       before { login(user) }
 
-      context 'can create bar with valid data' do
-
-        it 'assigns bar_name' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
-          expect(assigns(:bar_name)).to eq bar_name
-        end
+      context 'with valid data can create bar' do
 
         it 'assigns bar' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
+          post :create, params: { bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
           expect(assigns(:bar)).to eq bar_name.bars.first
         end
 
-        it 'change bar count' do
+        it 'assigns bar with new madel' do
+          post :create, params: { bar: attributes_for(:bar, brand: "F-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:bar).bar_name.name).to eq 'NEWSolo'
+        end
+
+        it 'assigns bar with new brand and madel' do
+          post :create, params: { bar: attributes_for(:bar, brand: "NEWF-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:bar).bar_name.brand.name).to eq 'NEWF-ONE'
+        end
+
+        it 'change count bars by 1' do
           expect do
-            post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
+            post :create, params: { bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to change(Bar, :count).by(1)
         end
 
-        it 'redirect to bar' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
-          expect(response).to redirect_to assigns(:bar)
+        it 'return status ok' do
+          post :create, params: { bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :ok
         end
       end
-      context 'can not create bar with invalid data' do
 
-        it 'assigns bar_name' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, length: '') }
-          expect(assigns(:bar_name)).to eq bar_name
+      it 'return status :unprocessable_entity' do
+        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, brand: "", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unprocessable_entity
+      end
+
+      context 'with invalid data cannot create bar' do
+
+        it 'bar is not valid' do
+          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(assigns(:bar).year).to be_nil
         end
 
-        it 'assigns bar' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, length: '') }
-          expect(assigns(:bar).valid?).to be_falsey
-        end
-
-        it 'does not change bar count' do
+        it 'does not change count bars' do
           expect do
-            post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, length: '') }
+            post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to_not change(Bar, :count)
         end
 
-        it 'render template new' do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, length: '') }
-          expect(response).to render_template :new
+        it 'return status :unprocessable_entity' do
+          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :unprocessable_entity
         end
       end
     end
+
     context 'Guest' do
 
-      it 'assigns bar_name' do
-        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
-        expect(assigns(:bar_name)).to be_nil
-      end
-
-      it 'assigns bar' do
-        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
+      it 'does not assigns bar' do
+        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
         expect(assigns(:bar)).to be_nil
       end
 
-      it 'does not change bar count' do
+      it 'does not change count bars by 1' do
         expect do
-          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
+          post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
         end.to_not change(Bar, :count)
       end
 
-      it 'redirect to log in' do
-        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar) }
-        expect(response).to redirect_to new_user_session_path
+      it 'return status :unauthorized' do
+        post :create, params: { bar_name_id: bar_name, bar: attributes_for(:bar, brand: "F-ONE", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
 
-  describe 'GET #show' do
-    let(:user) { create(:user) }
-    let(:bar) { create(:bar, user: user) }
-
+  describe "GET #show" do
     context 'Authenticated user' do
-      before { login(user) }
+      let(:owner_user) { create(:user) }
+      let(:other_user) { create(:user, email: 'other_user@mail.com') }
+      let(:bar) { create(:bar, user: owner_user) }
 
-      context 'owner' do
+      context 'owner bar' do
+        before { login(owner_user) }
 
-        it 'assigns bar' do
-          get :show, params: { id: bar }
-          expect(assigns(:bar)).to eq bar
-        end
-        it 'render template show' do
+        it "render template show" do
           get :show, params: { id: bar }
           expect(response).to render_template :show
+        end
+
+        it "assigns bar" do
+          get :show, params: { id: bar }
+          expect(assigns(:bar)).to eq bar
         end
       end
-      context 'not owner' do
 
-        it 'assigns bar' do
-          get :show, params: { id: bar }
-          expect(assigns(:bar)).to eq bar
-        end
-        it 'render template show' do
+      context 'not owner bar' do
+        before { login(other_user) }
+
+        it "render template show" do
           get :show, params: { id: bar }
           expect(response).to render_template :show
+        end
+
+        it "assigns bar" do
+          get :show, params: { id: bar }
+          expect(assigns(:bar)).to eq bar
         end
       end
     end
 
     context 'Guest' do
+      let(:bar) { create(:bar) }
 
-      it 'assigns bar' do
-        get :show, params: { id: bar }
-        expect(assigns(:bar)).to eq bar
-      end
-      it 'render template show' do
+      it "render template show" do
         get :show, params: { id: bar }
         expect(response).to render_template :show
+      end
+
+      it "assigns bar" do
+        get :show, params: { id: bar }
+        expect(assigns(:bar)).to eq bar
       end
     end
   end
 
   describe 'GET #edit' do
-    let(:user) { create(:user) }
-    let(:bar) { create(:bar, user: user) }
+    let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:bar) { create(:bar, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(user) }
+      context 'owner' do
+        before { login(owner_user) }
 
-      it 'assigns bar' do
-        get :edit, params: { id: bar }
-        expect(assigns(:bar)).to eq bar
+        it 'render template edit' do
+          get :edit, params: { id: bar, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(response).to render_template :edit
+        end
+
+        it 'assigns bar' do
+          get :edit, params: { id: bar, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(assigns(:bar)).to eq bar
+        end
       end
+      context 'not owner' do
+        before { login(other_user) }
 
-      it 'render template edit' do
-        get :edit, params: { id: bar }
-        expect(response).to render_template :edit
+        it 'return status :forbidden' do
+          get :edit, params: { id: bar, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(response).to have_http_status :forbidden
+        end
+
+        it 'assigns bar' do
+          get :edit, params: { id: bar, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(assigns(:bar)).to eq bar
+        end
       end
     end
-
     context 'Guest' do
-
-      it 'assigns bar' do
-        get :edit, params: { id: bar }
+      it 'assigns bar is nil' do
+        get :edit, params: { id: bar, brand: "F-ONE", madel: "Solo" }, xhr: true
         expect(assigns(:bar)).to be_nil
       end
 
@@ -194,88 +212,105 @@ RSpec.describe BarsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:user) { create(:user) }
-    let!(:bar) { create(:bar, user: user) }
+    let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
+    let(:bar) { create(:bar, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(user) }
+      context 'owner' do
+        before { login(owner_user) }
 
-      context 'with valid data can update bar' do
-        it 'assigns bar' do
-          patch :update, params: { id: bar, bar: { price: 123 } }
+        context 'with valid data can update bar' do
+
+          it 'assigns bar' do
+            patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(assigns(:bar)).to eq bar
+          end
+
+          it 'change attributes' do
+            patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            bar.reload
+            expect(bar.length).to eq 8
+          end
+
+          it 'return status ok' do
+            patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :ok
+          end
+        end
+        context 'with invalid data can not update bar' do
+
+          it 'assigns bar' do
+            patch :update, params: { id: bar , bar: { length: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(assigns(:bar)).to eq bar
+          end
+
+          it 'does not change attributes' do
+            patch :update, params: { id: bar , bar: { length: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(bar.length).to eq Bar.find(bar.id).length
+          end
+
+          it 'return status :unprocessable_entity' do
+            patch :update, params: { id: bar , bar: { length: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :unprocessable_entity
+          end
+        end
+      end
+      context 'not owner' do
+        before { login(other_user) }
+
+        it 'does not assign bar' do
+          patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
           expect(assigns(:bar)).to eq bar
         end
 
-        it 'redirect to bar' do
-          patch :update, params: { id: bar, bar: { price: 123 } }
-          expect(assigns(:bar)).to redirect_to :bar
+        it 'does not change attributes' do
+          patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(bar.length).to eq Bar.find(bar.id).length
         end
 
-        it 'change bar price' do
-          expect do
-            patch :update, params: { id: bar, bar: { price: 123 } }
-            bar.reload
-          end.to change(bar, :price)
-        end
-      end
-
-      context 'with invalid data can not update bar' do
-
-        it 'assigns bar' do
-          patch :update, params: { id: bar, bar: { price: '' } }
-          expect(assigns(:bar).valid?).to be_falsey
-        end
-
-        it 'render tamplate edit' do
-          patch :update, params: { id: bar, bar: { price: '' } }
-          expect(assigns(:bar)).to render_template :edit
-        end
-
-        it 'does not change bar price' do
-          expect do
-            patch :update, params: { id: bar, bar: { price: '' } }
-            bar.reload
-          end.to_not change(bar, :price)
+        it 'return status :forbidden' do
+          patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(response).to have_http_status :forbidden
         end
       end
     end
+
     context 'Guest' do
 
-      it 'assigns bar' do
-        patch :update, params: { id: bar, bar: { price: 123 } }
+      it 'does not assign bar' do
+        patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
         expect(assigns(:bar)).to be_nil
       end
 
-      it 'redirect to log in' do
-        patch :update, params: { id: bar, bar: { price: 123 } }
-        expect(assigns(:bar)).to redirect_to new_user_session_path
+      it 'does not change attributes' do
+        patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(bar.length).to eq Bar.find(bar.id).length
       end
 
-      it 'does not change bar price' do
-        expect do
-          patch :update, params: { id: bar, bar: { price: 123 } }
-          bar.reload
-        end.to_not change(bar, :price)
+      it 'return status :unauthorized' do
+        patch :update, params: { id: bar , bar: { length: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
 
   describe 'DELETE #destroy' do
+    let(:owner_user) { create(:user) }
     let(:other_user) { create(:user, email: 'other@mail.com') }
-    let(:user) { create(:user) }
-    let!(:bar) { create(:bar, user: user) }
+    let!(:bar) { create(:bar, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(user) }
 
-      context 'owner' do
+      context 'owner can delete bar' do
+        before { login(owner_user) }
 
         it 'assigns bar' do
           delete :destroy, params: { id: bar }, format: :js
           expect(assigns(:bar)).to eq bar
         end
 
-        it 'assigns bar' do
+        it 'change bar count' do
           expect do
             delete :destroy, params: { id: bar }, format: :js
           end.to change(Bar, :count).by(-1)
@@ -283,45 +318,48 @@ RSpec.describe BarsController, type: :controller do
 
         it 'render template destroy' do
           delete :destroy, params: { id: bar }, format: :js
-          expect(assigns(:bar)).to render_template :destroy
+          expect(response).to render_template :destroy
         end
       end
-      context 'not owner' do
+
+      context 'not owner can not delete bar' do
         before { login(other_user) }
 
         it 'assigns bar' do
-          delete :destroy, params: { id: bar }, format: :js
+          delete :destroy, params: { id: bar }
           expect(assigns(:bar)).to eq bar
         end
 
-        it 'does not assigns bar' do
+        it 'does not change bar count' do
           expect do
-            delete :destroy, params: { id: bar }, format: :js
+            delete :destroy, params: { id: bar }
           end.to_not change(Bar, :count)
         end
 
-        it 'return status forbidden' do
-          delete :destroy, params: { id: bar }, format: :js
-          expect(response).to have_http_status :forbidden
+        it 'redirect to root' do
+          delete :destroy, params: { id: bar }
+          expect(response).to redirect_to root_path
         end
       end
     end
     context 'Guest' do
+      context 'can not delete bar' do
 
-      it 'does not assigns bar' do
-        delete :destroy, params: { id: bar }, format: :js
-        expect(assigns(:bar)).to be_nil
-      end
+        it 'does not assigns bar' do
+          delete :destroy, params: { id: bar }
+          expect(assigns(:bar)).to be_nil
+        end
 
-      it 'does not assigns bar' do
-        expect do
-          delete :destroy, params: { id: bar }, format: :js
-        end.to_not change(Bar, :count)
-      end
+        it 'does not change bar count' do
+          expect do
+            delete :destroy, params: { id: bar }
+          end.to_not change(Bar, :count)
+        end
 
-      it 'return status unauthorized' do
-        delete :destroy, params: { id: bar }, format: :js
-        expect(response).to have_http_status :unauthorized
+        it 'redirect to log in' do
+          delete :destroy, params: { id: bar }
+          expect(response).to redirect_to new_user_session_path
+        end
       end
     end
   end

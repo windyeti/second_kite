@@ -23,5 +23,38 @@
         li
           = render 'equip', brand: brand, madel: madel
 
+    h5 Boards. Список без подтверждения
+    ul.proof__boards
+      -@proof.boards.each do |b|
+        - brand = b.board_name.brand
+        - madel = b.board_name
+
+        - next if madel.approve
+
+        li
+          = render 'equip', brand: brand, madel: madel
+
+    h5 Bars. Список без подтверждения
+    ul.proof__bars
+      -@proof.bars.each do |b|
+        - brand = b.bar_name.brand
+        - madel = b.bar_name
+
+        - next if madel.approve
+
+        li
+          = render 'equip', brand: brand, madel: madel
+
+    h5 Stuffs. Список без подтверждения
+    ul.proof__stuffs
+      -@proof.stuffs.each do |s|
+        - brand = s.stuff_name.brand
+        - madel = s.stuff_name
+
+        - next if madel.approve
+
+        li
+          = render 'equip', brand: brand, madel: madel
+
 .form.p-3.border.border-secondary
   = render 'form'

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can edit stuff' do
+feature 'User can edit stuff', js: true do
   given(:other_user) { create(:user, email: 'other@mail.com') }
   given(:owner_user) { create(:user) }
   given!(:stuff) { create(:stuff, user: owner_user) }
@@ -15,9 +15,10 @@ feature 'User can edit stuff' do
           click_on 'edit'
         end
         select('1998', from: 'Year').select_option
+        fill_in 'Description', with: 'Text text text text'
         click_on 'Update Stuff'
 
-        expect(page).to have_content 'Year: 1998'
+        expect(page).to have_content "#{stuff.stuff_name.name} - #{stuff.description.truncate(15)} - #{stuff.price}₽"
       end
       scenario 'cannot edit stuff with invalid data' do
         visit account_path(owner_user.account)
@@ -27,7 +28,8 @@ feature 'User can edit stuff' do
         fill_in 'Price', with: ''
         click_on 'Update Stuff'
 
-        expect(page).to have_content 'Edit stuff model'
+        expect(page).to have_content 'Update stuff'
+        expect(page).to have_content "Price can't be blank"
       end
     end
     context 'not owner' do

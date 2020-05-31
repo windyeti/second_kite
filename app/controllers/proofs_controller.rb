@@ -1,6 +1,5 @@
 class ProofsController < ApplicationController
   authorize_resource :class => false
-  # skip_authorization_check
 
   def index
     @proofs = Ad.where(approve: false)

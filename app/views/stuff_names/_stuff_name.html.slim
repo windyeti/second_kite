@@ -1,9 +1,10 @@
 - if stuff_name.valid?
   .list-group-item.d-flex.stuff-name__item id=("stuff_name_id_#{stuff_name.id}")
 
-    span.stuff_name.mr-auto class=("stuff_name_#{stuff_name.name.downcase}") = link_to stuff_name.name, new_stuff_name_stuff_path(stuff_name)
-
-    - if can? :update, StuffName
+    - if can? :update, stuff_name
+      span.stuff_name.mr-auto class=("stuff_name_#{stuff_name.name.downcase}") = link_to stuff_name.name, stuff_name
+      - unless stuff_name.approve
+        span.mr-2 need to approve
       span.mr-2 = link_to 'edit', edit_stuff_name_path(stuff_name), class: 'btn btn-outline-secondary btn-sm'
       span.mr-2 = link_to 'delete', stuff_name,
               method: :delete,
@@ -11,10 +12,11 @@
               data: { confirm: "Are you sure?" },
               class: "btn btn-outline-danger btn-sm",
               id: "stuff_name_id_link_delete_#{stuff_name.id}"
+    - else
+      span.stuff_name.mr-auto class=("stuff_name_#{stuff_name.name.downcase}") = stuff_name.name
 
     - if can?(:create, Subscription) && current_user.subscribable?(stuff_name)
-      span.mr-2 = link_to 'subscription',
+      span.mr-2 = link_to 'subscribe',
               stuff_name_subscriptions_path(stuff_name),
               method: :post,
               class: 'btn btn-outline-info btn-sm'
-

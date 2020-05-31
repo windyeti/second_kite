@@ -1,0 +1,11 @@
+.list-group-item.d-flex id="stuff_id_#{@id}"
+  span.mr-auto.stuff
+    span
+      a href="/stuffs/#{@id}"
+        span #{@stuff_name} - #{@description.slice(0, 12)}... - #{@price}&#8381;
+    - unless @approve_madel
+      span.ml-1 need to approve
+  span.link-delete.mr-2
+    a.btn.btn-outline-danger.btn-sm data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/stuffs/#{@id}" delete
+  span.link-edit.mr-2
+    a.btn.btn-outline-secondary.btn-sm href="/stuffs/#{@id}/edit" data-remote="true" edit

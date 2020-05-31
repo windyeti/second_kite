@@ -1,213 +1,209 @@
 require 'rails_helper'
 
 RSpec.describe StuffsController, type: :controller do
-  describe 'GET #new' do
-    let(:stuff_name) { create(:stuff_name) }
-    let(:user) { create(:user) }
+  let(:stuff_name) { create(:stuff_name) }
+  let(:user) { create(:user) }
 
+  describe "GET #new" do
     context 'Authenticated user' do
-      before { login(user) }
-
-      it 'assigns new stuff' do
-        get :new, params: { stuff_name_id: stuff_name }
-        expect(assigns(:stuff)).to be_a_new Stuff
+      before do
+        login(user)
+        get :new, xhr: true
       end
 
-      it 'assigns stuff_name' do
-        get :new, params: { stuff_name_id: stuff_name }
-        expect(assigns(:stuff_name)).to eq stuff_name
-      end
-
-      it 'render template new' do
-        get :new, params: { stuff_name_id: stuff_name }
+      it "render template new" do
         expect(response).to render_template :new
       end
+
+      it "assigns stuff is new" do
+        expect(assigns(:stuff)).to be_a_new(Stuff)
+      end
     end
+
     context 'Guest' do
+      before { get :new, params: { stuff_name_id: stuff_name } }
 
-      it 'assigns new stuff' do
-        get :new, params: { stuff_name_id: stuff_name }
-        expect(assigns(:stuff)).to be_nil
-      end
-
-      it 'assigns stuff_name' do
-        get :new, params: { stuff_name_id: stuff_name }
-        expect(assigns(:stuff_name)).to be_nil
-      end
-
-      it 'redirect to log in' do
-        get :new, params: { stuff_name_id: stuff_name }
+      it "redirect to log in" do
         expect(response).to redirect_to new_user_session_path
       end
+
+      it "assigns stuff is new" do
+        expect(assigns(:stuff)).to be_nil
+      end
     end
+
   end
 
-  describe 'POST #create' do
-    let(:stuff_name) { create(:stuff_name) }
-
-    context 'Authenticated user' do
+  describe "POST #create" do
+    context 'Authenticated user create stuff' do
+      let!(:brand) { create(:brand, name: 'F-ONE') }
+      let!(:stuff_name) { create(:stuff_name, brand: brand, name: 'Solo') }
       let(:user) { create(:user) }
       before { login(user) }
 
-      context 'can create stuff with valid data' do
-        it 'assigns stuff_name' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
-          expect(assigns(:stuff_name)).to eq stuff_name
-        end
+      context 'with valid data can create stuff' do
 
         it 'assigns stuff' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+          post :create, params: { stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
           expect(assigns(:stuff)).to eq stuff_name.stuffs.first
         end
 
-        it 'redirect to stuff' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
-          expect(response).to redirect_to stuff_name.stuffs.first
+        it 'assigns stuff with new madel' do
+          post :create, params: { stuff: attributes_for(:stuff, brand: "F-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:stuff).stuff_name.name).to eq 'NEWSolo'
         end
 
-        it 'change stuff count' do
+        it 'assigns stuff with new brand and madel' do
+          post :create, params: { stuff: attributes_for(:stuff, brand: "NEWF-ONE", madel: "NEWSolo") }, format: :json
+          expect(assigns(:stuff).stuff_name.brand.name).to eq 'NEWF-ONE'
+        end
+
+        it 'change count stuff by 1' do
           expect do
-            post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+            post :create, params: { stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to change(Stuff, :count).by(1)
+        end
+
+        it 'return status ok' do
+          post :create, params: { stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :ok
         end
       end
 
-      context 'cannot create stuff with invalid data' do
+      it 'return status :unprocessable_entity' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, brand: "", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unprocessable_entity
+      end
 
-        it 'assigns stuff_name' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
-          expect(assigns(:stuff_name)).to eq stuff_name
+      context 'with invalid data cannot create stuff' do
+
+        it 'stuff is not valid' do
+          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(assigns(:stuff).year).to be_nil
         end
 
-        it 'assigns stuff' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
-          expect(assigns(:stuff).valid?).to be_falsey
-        end
-
-        it 'render template new' do
-          post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
-          expect(response).to render_template :new
-        end
-
-        it 'does not change stuff count' do
+        it 'does not change stuffs' do
           expect do
-            post :create, params: { stuff_name_id: stuff_name, stuff: { price: '' } }
+            post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
           end.to_not change(Stuff, :count)
+        end
+
+        it 'return status :unprocessable_entity' do
+          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, :invalid, brand: "F-ONE", madel: "Solo") }, format: :json
+          expect(response).to have_http_status :unprocessable_entity
         end
       end
     end
+
     context 'Guest' do
 
-      it 'assigns stuff_name' do
-        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
-        expect(assigns(:stuff_name)).to be_nil
-      end
-
-      it 'assigns stuff' do
-        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
+      it 'does not assigns stuff' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
         expect(assigns(:stuff)).to be_nil
       end
 
-      it 'redirect to log in' do
-        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
-        expect(response).to redirect_to new_user_session_path
+      it 'does not change count stuff by 1' do
+        expect do
+          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
+        end.to_not change(Stuff, :count)
       end
 
-      it 'does not change stuff count' do
-        expect do
-          post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff) }
-        end.to_not change(Stuff, :count)
+      it 'return status :unauthorized' do
+        post :create, params: { stuff_name_id: stuff_name, stuff: attributes_for(:stuff, brand: "F-ONE", madel: "Solo") }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
 
-  describe 'GET #show' do
-    let(:other_user) { create(:user, email: 'other@mail.com') }
-    let(:user) { create(:user) }
-    let(:stuff) { create(:stuff, user: user) }
-
+  describe "GET #show" do
     context 'Authenticated user' do
-      before { login(user) }
+      let(:owner_user) { create(:user) }
+      let(:other_user) { create(:user, email: 'other_user@mail.com') }
+      let(:stuff) { create(:stuff, user: owner_user) }
 
-      context 'owner' do
-        it 'assigns stuff' do
+      context 'owner stuff' do
+        before { login(owner_user) }
+
+        it "render template show" do
           get :show, params: { id: stuff }
-          expect(assigns(:stuff)).to eq stuff
+          expect(response).to render_template :show
         end
 
-        it 'render template show' do
+        it "assigns stuff" do
           get :show, params: { id: stuff }
-          expect(assigns(:stuff)).to render_template :show
+          expect(assigns(:stuff)).to eq stuff
         end
       end
-      context 'not owner' do
+
+      context 'not owner stuff' do
         before { login(other_user) }
 
-        it 'assigns stuff' do
+        it "render template show" do
           get :show, params: { id: stuff }
-          expect(assigns(:stuff)).to eq stuff
+          expect(response).to render_template :show
         end
 
-        it 'render template show' do
+        it "assigns stuff" do
           get :show, params: { id: stuff }
-          expect(assigns(:stuff)).to render_template :show
+          expect(assigns(:stuff)).to eq stuff
         end
       end
     end
-    context 'Guest' do
 
-      it 'assigns stuff' do
+    context 'Guest' do
+      let(:stuff) { create(:stuff) }
+
+      it "render template show" do
         get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to eq stuff
+        expect(response).to render_template :show
       end
 
-      it 'render template show' do
+      it "assigns stuff" do
         get :show, params: { id: stuff }
-        expect(assigns(:stuff)).to render_template :show
+        expect(assigns(:stuff)).to eq stuff
       end
     end
   end
 
   describe 'GET #edit' do
-    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:stuff) { create(:stuff, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(owner_user) }
+      context 'owner' do
+        before { login(owner_user) }
 
-      context 'owner can edit stuff' do
-
-        it 'assigns stuff' do
-          get :edit, params: { id: stuff }
-          expect(assigns(:stuff)).to eq stuff
-        end
         it 'render template edit' do
-          get :edit, params: { id: stuff }
+          get :edit, params: { id: stuff, brand: "F-ONE", madel: "Solo" }, xhr: true
           expect(response).to render_template :edit
         end
-      end
-
-      context 'not owner cannot edit stuff' do
-        before { login(other_user) }
 
         it 'assigns stuff' do
-          get :edit, params: { id: stuff }
+          get :edit, params: { id: stuff, brand: "F-ONE", madel: "Solo" }, xhr: true
           expect(assigns(:stuff)).to eq stuff
         end
-        it 'redirect to root' do
-          get :edit, params: { id: stuff }
-          expect(response).to redirect_to root_path
+      end
+      context 'not owner' do
+        before { login(other_user) }
+
+        it 'return status :forbidden' do
+          get :edit, params: { id: stuff, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(response).to have_http_status :forbidden
+        end
+
+        it 'assigns stuff' do
+          get :edit, params: { id: stuff, brand: "F-ONE", madel: "Solo" }, xhr: true
+          expect(assigns(:stuff)).to eq stuff
         end
       end
     end
-
-    context 'Guest cannot edit stuff' do
-
-      it 'assigns stuff' do
-        get :edit, params: { id: stuff }
+    context 'Guest' do
+      it 'assigns stuff is nil' do
+        get :edit, params: { id: stuff, brand: "F-ONE", madel: "Solo" }, xhr: true
         expect(assigns(:stuff)).to be_nil
       end
+
       it 'redirect to log in' do
         get :edit, params: { id: stuff }
         expect(response).to redirect_to new_user_session_path
@@ -216,156 +212,155 @@ RSpec.describe StuffsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:stuff) { create(:stuff, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(owner_user) }
-
       context 'owner' do
-        context 'can update stuff with valid data' do
+        before { login(owner_user) }
+
+        context 'with valid data can update stuff' do
+
           it 'assigns stuff' do
-            patch :update, params: { id: stuff, stuff: { price: '123' } }
+            patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
             expect(assigns(:stuff)).to eq stuff
           end
-          it 'change price of stuff' do
-            expect do
-              patch :update, params: { id: stuff, stuff: { price: '123' } }
-              stuff.reload
-            end.to change(stuff, :price)
+
+          it 'change attributes' do
+            patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            stuff.reload
+            expect(stuff.price).to eq 8
           end
-          it 'redirect to stuff' do
-            patch :update, params: { id: stuff, stuff: { price: '123' } }
-            expect(assigns(:stuff)).to redirect_to stuff
+
+          it 'return status ok' do
+            patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :ok
           end
         end
-        context 'cannot update stuff with invalid data' do
+        context 'with invalid data can not update stuff' do
+
           it 'assigns stuff' do
-            patch :update, params: { id: stuff, stuff: { price: '' } }
-            expect(assigns(:stuff).valid?).to be_falsey
+            patch :update, params: { id: stuff , stuff: { price: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(assigns(:stuff)).to eq stuff
           end
-          it 'does not change year of stuff' do
-            expect do
-              patch :update, params: { id: stuff, stuff: { price: '' } }
-              stuff.reload
-            end.to_not change(stuff, :price)
+
+          it 'does not change attributes' do
+            patch :update, params: { id: stuff , stuff: { price: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(stuff.price).to eq Stuff.find(stuff.id).price
           end
-          it 'render template edit' do
-            patch :update, params: { id: stuff, stuff: { price: '' } }
-            expect(assigns(:stuff)).to render_template :edit
+
+          it 'return status :unprocessable_entity' do
+            patch :update, params: { id: stuff , stuff: { price: '', brand: "F-ONE", madel: "Solo" } }, format: :json
+            expect(response).to have_http_status :unprocessable_entity
           end
         end
       end
-
       context 'not owner' do
         before { login(other_user) }
 
-        context 'cannot update stuff' do
+        it 'does not assign stuff' do
+          patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(assigns(:stuff)).to eq stuff
+        end
 
-          it 'assigns stuff' do
-            patch :update, params: { id: stuff, stuff: { price: '123' } }
-            expect(assigns(:stuff)).to eq stuff
-          end
-          it 'does not change price of stuff' do
-            expect do
-              patch :update, params: { id: stuff, stuff: { price: '123' } }
-              stuff.reload
-            end.to_not change(stuff, :price)
-          end
-          it 'redirect to root' do
-            patch :update, params: { id: stuff, stuff: { price: '123' } }
-            expect(assigns(:stuff)).to redirect_to root_path
-          end
+        it 'does not change attributes' do
+          patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(stuff.price).to eq Stuff.find(stuff.id).price
+        end
+
+        it 'return status :forbidden' do
+          patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+          expect(response).to have_http_status :forbidden
         end
       end
     end
-    context 'Guest' do
-      context 'cannot update stuff' do
 
-        it 'assigns stuff' do
-          patch :update, params: { id: stuff, stuff: { price: '123' } }
-          expect(assigns(:stuff)).to be_nil
-        end
-        it 'does not change price of stuff' do
-          expect do
-            patch :update, params: { id: stuff, stuff: { price: '123' } }
-            stuff.reload
-          end.to_not change(stuff, :price)
-        end
-        it 'redirect to log in' do
-          patch :update, params: { id: stuff, stuff: { price: '123' } }
-          expect(assigns(:stuff)).to redirect_to new_user_session_path
-        end
+    context 'Guest' do
+
+      it 'does not assign stuff' do
+        patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(assigns(:stuff)).to be_nil
+      end
+
+      it 'does not change attributes' do
+        patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(stuff.price).to eq Stuff.find(stuff.id).price
+      end
+
+      it 'return status :unauthorized' do
+        patch :update, params: { id: stuff , stuff: { price: 8, brand: "F-ONE", madel: "Solo" } }, format: :json
+        expect(response).to have_http_status :unauthorized
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:other_user) { create(:user, email: 'other@mail.com') }
     let(:owner_user) { create(:user) }
+    let(:other_user) { create(:user, email: 'other@mail.com') }
     let!(:stuff) { create(:stuff, user: owner_user) }
 
     context 'Authenticated user' do
-      before { login(owner_user) }
 
       context 'owner can delete stuff' do
+        before { login(owner_user) }
+
         it 'assigns stuff' do
           delete :destroy, params: { id: stuff }, format: :js
           expect(assigns(:stuff)).to eq stuff
         end
-        it 'render template destroy' do
-          delete :destroy, params: { id: stuff }, format: :js
-          expect(assigns(:stuff)).to render_template :destroy
-        end
+
         it 'change stuff count' do
           expect do
             delete :destroy, params: { id: stuff }, format: :js
           end.to change(Stuff, :count).by(-1)
         end
+
+        it 'render template destroy' do
+          delete :destroy, params: { id: stuff }, format: :js
+          expect(response).to render_template :destroy
+        end
       end
 
-      context 'not owner cannot delete stuff' do
+      context 'not owner can not delete stuff' do
         before { login(other_user) }
 
-        it 'assigns stuff' do
-          delete :destroy, params: { id: stuff }, format: :js
+        it 'assigns kite' do
+          delete :destroy, params: { id: stuff }
           expect(assigns(:stuff)).to eq stuff
         end
 
-        it 'return status forbidden' do
-          delete :destroy, params: { id: stuff }, format: :js
-          expect(response).to have_http_status :forbidden
-        end
-
         it 'does not change stuff count' do
           expect do
-            delete :destroy, params: { id: stuff }, format: :js
+            delete :destroy, params: { id: stuff }
           end.to_not change(Stuff, :count)
+        end
+
+        it 'redirect to root' do
+          delete :destroy, params: { id: stuff }
+          expect(response).to redirect_to root_path
         end
       end
     end
-
     context 'Guest' do
-      context 'cannot delete stuff' do
+      context 'can not delete stuff' do
 
-        it 'assigns stuff' do
-          delete :destroy, params: { id: stuff }, format: :js
+        it 'does not assigns stuff' do
+          delete :destroy, params: { id: stuff }
           expect(assigns(:stuff)).to be_nil
         end
 
-        it 'return status unauthorized' do
-          delete :destroy, params: { id: stuff }, format: :js
-          expect(response).to have_http_status :unauthorized
-        end
-
         it 'does not change stuff count' do
           expect do
-            delete :destroy, params: { id: stuff }, format: :js
+            delete :destroy, params: { id: stuff }
           end.to_not change(Stuff, :count)
+        end
+
+        it 'redirect to log in' do
+          delete :destroy, params: { id: stuff }
+          expect(response).to redirect_to new_user_session_path
         end
       end
     end
-
   end
 end

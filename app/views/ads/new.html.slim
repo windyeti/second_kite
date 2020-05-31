@@ -21,6 +21,7 @@
             = b.label do
               = b.text
               = b.check_box
+      = link_to 'Add board', new_board_path, remote: true, class: 'btn btn-info btn-sm'
     fieldset.scheduler-border
       legend.scheduler-border Choose bars for ad
       .form-group
@@ -29,6 +30,7 @@
             = b.label do
               = b.text
               = b.check_box
+      = link_to 'Add bar', new_bar_path, remote: true, class: 'btn btn-info btn-sm'
     fieldset.scheduler-border
       legend.scheduler-border Choose stuffs for ad
       .form-group
@@ -37,6 +39,7 @@
             = b.label do
               = b.text
               = b.check_box
+      = link_to 'Add stuff', new_stuff_path, remote: true, class: 'btn btn-info btn-sm'
     .form-group
       = f.label :description
       = f.text_area :description, class: 'form-control form-control-sm'

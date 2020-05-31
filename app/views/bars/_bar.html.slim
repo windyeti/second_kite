@@ -1,6 +1,8 @@
 .list-group-item.d-flex id=("bar_id_#{bar.id}")
-  span.mr-auto.board
-    span = link_to bar_string_link(bar), bar
+  span.mr-auto.bar
+    span => link_to bar_string_link(bar), bar
+    - unless bar.bar_name.approve
+      span need to appove
 
   - if can? :destroy, bar
     span.link-delete.mr-2 = link_to 'delete',
@@ -13,4 +15,5 @@
   - if can? :update, bar
     span.link-edit.mr-2 = link_to 'edit',
             edit_bar_path(bar),
+            remote: true,
             class: 'btn btn-outline-secondary btn-sm'

@@ -5,18 +5,26 @@ class StuffsController < ApplicationController
   authorize_resource
 
   def new
-    @stuff_name = StuffName.find(params[:stuff_name_id])
-    @stuff = @stuff_name.stuffs.new
+    @stuff = Stuff.new
   end
 
   def create
-    @stuff_name = StuffName.find(params[:stuff_name_id])
-    @stuff = @stuff_name.stuffs.new(stuff_params)
-    @stuff.user = current_user
-    if @stuff.save
-      redirect_to @stuff
-    else
-      render :new
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if stuff_params[:brand].empty? || stuff_params[:madel].empty?
+    @stuff = Stuff.custom_create(stuff_params, current_user)
+
+    respond_to do |format|
+      if @stuff.valid?
+        format.json { render json:
+                               {
+                                 equipment: {
+                                   stuff: @stuff,
+                                   stuff_name: @stuff.stuff_name.name,
+                                   approve_madel: @stuff.stuff_name.approve }
+                               }
+        }
+      else
+        format.json { render json: { errors: @stuff.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -25,10 +33,22 @@ class StuffsController < ApplicationController
   def edit; end
 
   def update
-    if @stuff.update(stuff_params)
-      redirect_to @stuff
-    else
-      render :edit
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if stuff_params[:brand].empty? || stuff_params[:madel].empty?
+    @stuff.custom_update(stuff_params)
+
+    respond_to do |format|
+      if @stuff.valid?
+        format.json { render json:
+                               {
+                                 equipment: {
+                                   stuff: @stuff,
+                                   stuff_name: @stuff.stuff_name.name,
+                                   approve_madel: @stuff.stuff_name.approve }
+                               }
+        }
+      else
+        format.json { render json: { errors: @stuff.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -43,7 +63,9 @@ class StuffsController < ApplicationController
   end
 
   def stuff_params
-    params.require(:stuff).permit(:price,
+    params.require(:stuff).permit(:brand,
+                                  :madel,
+                                  :price,
                                   :quality,
                                   :year,
                                   :description,

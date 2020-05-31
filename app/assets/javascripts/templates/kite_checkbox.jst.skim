@@ -1,8 +1,8 @@
 .control-group
   label for="ad_kite_ids_#{@id}"
     - if @approve_madel
-      span #{@kite_name} - #{@size}m2 - #{@price}&#8381;
+      span #{@kite_name} - #{@size}mм&#178; - #{@price}&#8381;
     - else
-      span #{@kite_name} - #{@size}m2 - #{@price}&#8381; need to approve
+      span #{@kite_name} - #{@size}mм&#178; - #{@price}&#8381; need to approve
     input type="checkbox" value="#{@id}" name="ad[kite_ids][]" id="ad_kite_ids_#{@id}"
 

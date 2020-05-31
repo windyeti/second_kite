@@ -15,9 +15,49 @@ class Board < ApplicationRecord
 
   validate :type_photos
 
+  # +++++++++++++++++++++++++++++++
+  def self.custom_create(board_params, current_user)
+    transaction do
+      new_params = custom_params(board_params)
+      board = current_user.boards.create( new_params )
+      board
+    end
+  end
+
+  def self.custom_params(board_params)
+    board_name = BoardName.find_board_name(board_params)
+
+    new_params = board_params
+    new_params.delete(:brand)
+    new_params.delete(:madel)
+    new_params[:board_name] = board_name
+    new_params
+  end
+
+  def custom_update(board_params)
+    transaction do
+      new_params = self.class.custom_params(board_params)
+      update( new_params )
+      self
+    end
+  end
+  # +++++++++++++++++++++++++++++++
+
   # method for f.collection_check_boxes
   def board_name_name
-    "#{board_name.name} - #{length}x#{width}см - #{price}&#8381;".html_safe
+    if board_name.approve
+      "#{board_name.name} - #{length}x#{width}см - #{price}&#8381;".html_safe
+    else
+      "#{board_name.name} - #{length}x#{width}см - #{price}&#8381; need to approve".html_safe
+    end
+  end
+
+  def brand
+    board_name.brand.name if board_name
+  end
+
+  def madel
+    board_name.name if board_name
   end
 
   private

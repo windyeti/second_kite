@@ -7,7 +7,7 @@ class BoardNamesController < ApplicationController
     @board_name = @brand.board_names.new(board_name_params)
     respond_to do |format|
       if @board_name.save
-        format.json { render json: { board_name: @board_name } }
+        format.json { render json: { board_name: @board_name, approve: @board_name.approve } }
       else
         format.json { render json: { errors: @board_name.errors.full_messages }, status: 422 }
       end
@@ -33,7 +33,7 @@ class BoardNamesController < ApplicationController
   private
 
   def board_name_params
-    params.require(:board_name).permit(:name)
+    params.require(:board_name).permit(:name, :approve)
   end
 
   def load_board_name

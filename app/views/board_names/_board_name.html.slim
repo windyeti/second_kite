@@ -1,18 +1,22 @@
 - if board_name.valid?
-  .list-group-item.d-flex.board-name__item id=("board_name_id_#{board_name.id}")
-    span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = link_to board_name.name, new_board_name_board_path(board_name)
+  .list-group-item.d-flex.board_name__item id=("board_name_id_#{board_name.id}")
 
-    - if can? :update, BoardName
+    - if can? :update, board_name
+      span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = link_to board_name.name, board_name
+      - unless board_name.approve
+        span.mr-2 need to approve
       span.mr-2 = link_to 'edit', edit_board_name_path(board_name), class: 'btn btn-outline-secondary btn-sm'
       span.mr-2 = link_to 'delete', board_name,
-              method: :delete,
-              remote: true,
-              data: { confirm: "Are you sure?" },
-              class: "btn btn-outline-danger btn-sm",
-              id: "board_name_id_link_delete_#{board_name.id}"
+                                    method: :delete,
+                                    remote: true,
+                                    data: { confirm: "Are you sure?" },
+                                    class: "btn btn-outline-danger btn-sm",
+                                    id: "board_name_id_link_delete_#{board_name.id}"
+    - else
+      span.board_name.mr-auto class=("board_name_#{board_name.name.downcase}") = board_name.name
 
     - if can?(:create, Subscription) && current_user.subscribable?(board_name)
-      span.mr-2 = link_to 'subscription',
+      span.mr-2 = link_to 'subscribe',
               board_name_subscriptions_path(board_name),
               method: :post,
               class: 'btn btn-outline-info btn-sm'

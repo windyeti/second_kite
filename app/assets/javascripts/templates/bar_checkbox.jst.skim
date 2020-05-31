@@ -1,0 +1,8 @@
+.control-group
+  label for="ad_bar_ids_#{@id}"
+    - if @approve_madel
+      span #{@bar_name} - #{@length}см - #{@price}&#8381;
+    - else
+      span #{@bar_name} - #{@length}см - #{@price}&#8381; need to approve
+    input type="checkbox" value="#{@id}" name="ad[bar_ids][]" id="ad_bar_ids_#{@id}"
+

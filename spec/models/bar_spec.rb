@@ -30,4 +30,25 @@ RSpec.describe Bar, type: :model do
       expect(subject.errors.full_messages).to include('Photo needs to be a jpeg or png!')
     end
   end
+
+  describe 'custom create' do
+    let!(:bar_params) { attributes_for(:bar, brand: "F-One", madel: "Bandit") }
+    let!(:user) { create(:user) }
+    it do
+      expect(Bar.custom_create(bar_params, user)).to eq Bar.first
+    end
+  end
+
+  describe 'custom update' do
+    let!(:bar) { create(:bar) }
+    let!(:bar_params) { { length: '148', brand: bar.bar_name.brand.name, madel: bar.bar_name.name } }
+    it do
+      expect(bar.custom_update(bar_params).length).to eq Bar.first.length
+    end
+  end
+
+  describe 'new params' do
+    let!(:params) { attributes_for(:bar, brand: "F-One", madel: "Bandit" ) }
+    it { expect(Bar.custom_params( params )[:bar_name]).to be_an_instance_of BarName }
+  end
 end

@@ -1,3 +1,8 @@
-h1
-  span Bar_name:
-  span => @bar_name.name
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "Back", brand_bar_names_path(@bar_name.brand), class: 'text-dark'
+  span.text-dark |
+h4
+  span Show bar_name:
+  span.bar-name =< @bar_name.name
+.approve Approve: #{@bar_name.approve}

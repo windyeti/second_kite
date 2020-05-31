@@ -4,18 +4,26 @@ class BarsController < ApplicationController
   authorize_resource
 
   def new
-    @bar_name = BarName.find(params[:bar_name_id])
     @bar = Bar.new
   end
 
   def create
-    @bar_name = BarName.find(params[:bar_name_id])
-    @bar = @bar_name.bars.new(bar_params)
-    @bar.user = current_user
-    if @bar.save
-      redirect_to @bar
-    else
-      render :new
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if bar_params[:brand].empty? || bar_params[:madel].empty?
+    @bar = Bar.custom_create(bar_params, current_user)
+
+    respond_to do |format|
+      if @bar.valid?
+        format.json { render json:
+                       {
+                         equipment: {
+                           bar: @bar,
+                           bar_name: @bar.bar_name.name,
+                           approve_madel: @bar.bar_name.approve }
+                       }
+        }
+      else
+        format.json { render json: { errors: @bar.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -24,10 +32,22 @@ class BarsController < ApplicationController
   def edit; end
 
   def update
-    if @bar.update(bar_params)
-      redirect_to @bar
-    else
-      render :edit
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if bar_params[:brand].empty? || bar_params[:madel].empty?
+    @bar.custom_update(bar_params)
+
+    respond_to do |format|
+      if @bar.valid?
+        format.json { render json:
+                               {
+                                 equipment: {
+                                   bar: @bar,
+                                   bar_name: @bar.bar_name.name,
+                                   approve_madel: @bar.bar_name.approve }
+                               }
+        }
+      else
+        format.json { render json: { errors: @bar.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -42,7 +62,9 @@ class BarsController < ApplicationController
   end
 
   def bar_params
-    params.require(:bar).permit(:length,
+    params.require(:bar).permit(:brand,
+                                :madel,
+                                :length,
                                 :year,
                                 :quality,
                                 :price,

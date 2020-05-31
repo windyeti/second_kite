@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User create board' do
+feature 'User create board', js: true do
   describe 'Authenticated user' do
     given!(:brand) { create(:brand, name: 'NP') }
     given!(:board_name) { create(:board_name, brand: brand, name: 'Quicker') }
@@ -12,8 +12,8 @@ feature 'User create board' do
       click_on 'account'
       click_on 'Add board'
 
-      click_on brand.name
-      click_on 'Quicker'
+      fill_in 'Brand', with: 'NP'
+      fill_in 'Madel', with: 'Quicker'
 
       fill_in 'Length', with: '143'
       fill_in 'Width', with: '35'
@@ -26,7 +26,7 @@ feature 'User create board' do
 
       click_on 'Create Board'
 
-      expect(page).to have_content board_name.boards.first.length
+      expect(page).to have_content 'Quicker'
     end
 
     scenario 'with invalid data can not create board' do
@@ -34,12 +34,13 @@ feature 'User create board' do
       click_on 'account'
       click_on 'Add board'
 
-      click_on brand.name
-      click_on 'Quicker'
+      fill_in 'Brand', with: 'NP'
+      fill_in 'Madel', with: 'Quicker'
 
       click_on 'Create Board'
 
-      expect(page).to have_content "New board of model #{board_name.name}"
+      expect(page).to have_content "New board"
+      expect(page).to have_content "Price can't be blank"
     end
   end
   describe 'Guest' do

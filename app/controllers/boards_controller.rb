@@ -1,6 +1,5 @@
 class BoardsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :load_board_name, only: [:new, :create]
   before_action :load_board, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
@@ -9,14 +8,21 @@ class BoardsController < ApplicationController
   end
 
   def create
-    @board_name = BoardName.find(params[:board_name_id])
-    @board = @board_name.boards.new(board_params)
-    @board.user = current_user
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if board_params[:brand].empty? || board_params[:madel].empty?
+    @board = Board.custom_create(board_params, current_user)
 
-    if @board.save
-      redirect_to @board
-    else
-      render :new
+    respond_to do |format|
+      if @board.valid?
+        format.json { render json:
+          {
+            equipment: {
+              board: @board,
+              board_name: @board.board_name.name,
+              approve_madel: @board.board_name.approve }
+          }
+        }      else
+                 format.json { render json: { errors: @board.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -25,10 +31,22 @@ class BoardsController < ApplicationController
   def edit; end
 
   def update
-    if @board.update(board_params)
-      redirect_to @board
-    else
-      render :edit
+    return render json: { errors: ['Brand and Madel can\'t be blank'] }, status: 422 if board_params[:brand].empty? || board_params[:madel].empty?
+    @board.custom_update(board_params)
+
+    respond_to do |format|
+      if @board.valid?
+        format.json { render json:
+          {
+            equipment: {
+              board: @board,
+              board_name: @board.board_name.name,
+              approve_madel: @board.board_name.approve }
+          }
+        }
+      else
+        format.json { render json: { errors: @board.errors.full_messages }, status: 422 }
+      end
     end
   end
 
@@ -47,7 +65,8 @@ class BoardsController < ApplicationController
   end
 
   def board_params
-    params.require(:board).permit(
+    params.require(:board).permit(:brand,
+                                  :madel,
                                   :length,
                                   :width,
                                   :pads,

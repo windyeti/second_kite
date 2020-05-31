@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User create bar',
   %q{ User create a bar that can
-be added to the ad for sale } do
+be added to the ad for sale }, js: true do
   describe 'Authenticated user' do
     given!(:brand) { create(:brand, name: 'Airush') }
     given!(:bar_name) { create(:bar_name, name: 'One-Two-size', brand: brand) }
@@ -13,13 +13,8 @@ be added to the ad for sale } do
       visit account_path(owner_user.account)
       click_on 'Add bar'
 
-      within '.brand_name.mr-auto' do
-        click_on brand.name
-      end
-
-      within "#bar_name_id_#{bar_name.id}" do
-        click_on bar_name.name
-      end
+      fill_in 'Brand', with: 'Airush'
+      fill_in 'Madel', with: 'One-Two-size'
 
       select("2012", from: "Year").select_option
       select("5", from: "Quality").select_option
@@ -29,19 +24,14 @@ be added to the ad for sale } do
 
       click_on 'Create Bar'
 
-      expect(page).to have_content Bar.all.first.length
+      expect(page).to have_content 'One-Two-size - 48см - 23000₽'
     end
     scenario 'can not create bar with invalid data' do
       visit account_path(owner_user.account)
       click_on 'Add bar'
 
-      within '.brand_name.mr-auto' do
-        click_on brand.name
-      end
-
-      within "#bar_name_id_#{bar_name.id}" do
-        click_on bar_name.name
-      end
+      fill_in 'Brand', with: 'Airush'
+      fill_in 'Madel', with: 'One-Two-size'
 
       select("2012", from: "Year").select_option
       select("5", from: "Quality").select_option
@@ -51,7 +41,8 @@ be added to the ad for sale } do
 
       click_on 'Create Bar'
 
-      expect(page).to have_content "New bar of model #{bar_name.name}"
+      expect(page).to have_content "New bar"
+      expect(page).to have_content "Length can't be blank"
     end
   end
 

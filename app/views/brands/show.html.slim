@@ -19,42 +19,42 @@ h4
     - if can? :create, KiteName
       p = render 'kite_names/form'
 
-/ - if @type_equipment.nil? || @type_equipment == 'board_names'
-/   .board-name__container
-/     ul.board-name__errors
-/     .card
-/       .card-header
-/         span List of board_names for brand
-/         strong =< @brand.name
-/       .list-group.list-group-flush.board-name__list
-/         = render @brand.board_names
-/
-/     - if can? :create, BoardName
-/       p.form_board_name = render 'board_names/form'
-/
-/ - if @type_equipment.nil? || @type_equipment == 'bar_names'
-/   .bar-name__container
-/     ul.bar-name__errors
-/     .card
-/       .card-header
-/         span List of bar_names for brand
-/         strong =< @brand.name
-/       .list-group.list-group-flush.bar-name__list
-/         = render @brand.bar_names
-/
-/     - if can? :create, BarName
-/       p.form_board_name = render 'bar_names/form'
-/
-/ - if @type_equipment.nil? || @type_equipment == 'stuff_names'
-/   .stuff-name__container
-/     ul.stuff-name__errors
-/     .card
-/       .card-header
-/         span List of stuff_names for brand
-/         strong =< @brand.name
-/       .list-group.list-group-flush.stuff-name__list
-/         = render @brand.stuff_names
-/
-/     - if can? :create, StuffName
-/       p.form_stuff_name = render 'stuff_names/form'
+- if @type_equipment.nil? || @type_equipment == 'board_names'
+  .board-name__container
+    ul.board-name__errors
+    .card
+      .card-header
+        span List of board_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.board-name__list
+        = render @brand.board_names
+
+    - if can? :create, BoardName
+      p.form_board_name = render 'board_names/form'
+
+- if @type_equipment.nil? || @type_equipment == 'bar_names'
+  .bar-name__container
+    ul.bar-name__errors
+    .card
+      .card-header
+        span List of bar_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.bar-name__list
+        = render @brand.bar_names
+
+    - if can? :create, BarName
+      p.form_board_name = render 'bar_names/form'
+
+- if @type_equipment.nil? || @type_equipment == 'stuff_names'
+  .stuff-name__container
+    ul.stuff-name__errors
+    .card
+      .card-header
+        span List of stuff_names for brand
+        strong =< @brand.name
+      .list-group.list-group-flush.stuff-name__list
+        = render @brand.stuff_names
+
+    - if can? :create, StuffName
+      p.form_stuff_name = render 'stuff_names/form'
 

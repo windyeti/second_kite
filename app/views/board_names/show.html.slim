@@ -1,3 +1,8 @@
-h1
-  span Board_name:
-  span => @board_name.name
+.link_control.pb-2
+  span.text-dark |
+  span.mr-2 =< link_to "Back", brand_board_names_path(@board_name.brand), class: 'text-dark'
+  span.text-dark |
+h4
+  span Show board_name:
+  span.board-name =< @board_name.name
+.approve Approve: #{@board_name.approve}

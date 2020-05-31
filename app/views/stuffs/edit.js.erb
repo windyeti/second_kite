@@ -1,0 +1,35 @@
+var form = new Form("<%= j render 'form' %>");
+form.render();
+
+//render success and error
+
+$('.stuff_form').on('ajax:success', function(e) {
+  var equipment = e.detail[0].equipment;
+  var stuff = {
+    price: equipment.stuff.price,
+    description: equipment.stuff.description,
+    id: equipment.stuff.id,
+    stuff_name: equipment.stuff_name,
+    approve_madel: equipment.approve_madel
+  }
+//  remove old
+  $('#account__stuffs #stuff_id_' + stuff.id).remove()
+
+  $('#account__stuffs').append(JST['templates/stuff_account'](stuff))
+
+  $(this).parent().remove();
+})
+ .on('ajax:error', function(e) {
+   var data = e.detail[0].errors;
+   $('.stuff__errors').remove();
+   $(this).prepend( $('<div>').addClass('stuff__errors') )
+   $('.stuff__errors').html(JST['templates/errors']({
+     errors: data
+   }))
+ })
+
+
+//autocomplete
+
+var autocomplete = new Autocomplete('#stuff_brand', '#stuff_madel');
+autocomplete.make();

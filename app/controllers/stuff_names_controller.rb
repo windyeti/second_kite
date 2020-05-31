@@ -7,7 +7,7 @@ class StuffNamesController < ApplicationController
     @stuff_name = @brand.stuff_names.new(stuff_name_params)
     respond_to do |format|
       if @stuff_name.save
-        format.json { render json: { stuff_name: @stuff_name } }
+        format.json { render json: { stuff_name: @stuff_name, approve: @stuff_name.approve } }
       else
         format.json { render json: { errors: @stuff_name.errors.full_messages }, status: 422 }
       end
@@ -33,7 +33,7 @@ class StuffNamesController < ApplicationController
   private
 
   def stuff_name_params
-    params.require(:stuff_name).permit(:name)
+    params.require(:stuff_name).permit(:name, :approve)
   end
 
   def load_brand
