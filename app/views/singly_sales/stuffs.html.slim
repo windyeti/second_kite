@@ -3,4 +3,4 @@
     .card-header Stuffs
     .list-group.list-group-flush
       - @stuffs.each do |stuff|
-        .list-group-item.stuff id=("stuff_id_#{stuff.id}") = link_to stuff_string_full_link(stuff), stuff_path(stuff)
+        .list-group-item.stuff id=("stuff_id_#{stuff.id}") = link_to stuff_string_full_link(stuff), stuff_path(stuff) if stuff.stuff_name.approve

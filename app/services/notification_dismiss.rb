@@ -7,6 +7,8 @@ class Services::NotificationDismiss
     UserNotifyDismissMailer.send_message(args).deliver_later
   end
 
+  private
+
   def dismiss_brand_and_madel(ad)
     links_dismiss = ''
     ad.kites.each do |kite|

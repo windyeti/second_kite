@@ -1,3 +1,7 @@
+include ActionView::Helpers
+include ActionDispatch::Routing
+include Rails.application.routes.url_helpers
+
 class UserNotifyDismissMailer < ApplicationMailer
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -8,7 +12,7 @@ class UserNotifyDismissMailer < ApplicationMailer
   def send_message(args)
     @email = args[:ad].user.email
     @links_dismiss = args[:links_dismiss]
-    @link_ad = args[:link_ad]
+    @link_ad = url_for(args[:ad])
     @message = args[:message]
 
     mail to: @email, subject: args[:subject]

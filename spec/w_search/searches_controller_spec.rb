@@ -4,8 +4,9 @@ RSpec.describe SearchesController, type: :controller do
 
   describe "GET #index" do
     let!(:user) { create(:user) }
-    let!(:kite_name) { create(:kite_name, name: 'Ozone') }
-    let!(:board_name) { create(:board_name, name: 'Liquid') }
+    let!(:brand) { create(:brand, approve: true) }
+    let!(:kite_name) { create(:kite_name, brand: brand, name: 'Ozone', approve: true) }
+    let!(:board_name) { create(:board_name, brand: brand, name: 'Liquid', approve: true) }
     let!(:kite) { create(:kite, user: user, kite_name: kite_name) }
     let!(:board) { create(:board, user: user) }
     let!(:bar) { create(:bar, user: user) }

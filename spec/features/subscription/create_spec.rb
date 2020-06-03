@@ -10,11 +10,14 @@ feature 'User can subscription for model of equipment' do
     scenario 'can subscription for model of kite' do
       visit account_path(user.account)
 
-      click_on 'Add kite'
+      within '.kites.mt-2.mb-4' do
+        click_on 'Subscribe'
+      end
+
       click_on brand.name
 
       within "#kite_name_id_#{kite_name.id}" do
-        click_on 'subscription'
+        click_on 'subscribe'
       end
 
       visit account_path(user.account)

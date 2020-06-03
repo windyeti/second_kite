@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can update bar' do
+feature 'User can update bar', js: true do
   describe 'Authenticated user' do
     given(:other_user) { create(:user, email: 'other@mail.com') }
     given(:owner_user) { create(:user) }
@@ -16,10 +16,10 @@ feature 'User can update bar' do
           click_on 'edit'
         end
 
-        select("2020", from: "Year").select_option
+        fill_in 'Length', with: '39'
         click_on 'Update Bar'
 
-        expect(page).to have_content 'Year: 2020'
+        expect(page).to have_content "#{bar.bar_name.name} - 39см - #{bar.price}₽"
       end
       scenario 'with invalid data can not update bar' do
         visit account_path(owner_user.account)
@@ -31,7 +31,7 @@ feature 'User can update bar' do
         fill_in 'Price', with: ''
         click_on 'Update Bar'
 
-        expect(page).to have_content 'Edit bar of model'
+        expect(page).to have_content 'Update bar'
       end
     end
     context 'not owner'

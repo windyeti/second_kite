@@ -3,13 +3,13 @@ require 'sphinx_helper'
 feature 'User can w_search for kite specify kite model' do
 
   given(:user) { create(:user) }
-  given!(:brand) { create(:brand, name: "Ozone") }
-  given!(:kite_name_Edge) { create(:kite_name, brand: brand, name: "Edge") }
-  given!(:kite_name_Zephyr) { create(:kite_name, brand: brand, name: "Zephyr") }
+  given!(:brand) { create(:brand, name: "Ozone", approve: true) }
+  given!(:kite_name_Edge) { create(:kite_name, brand: brand, name: "Edge", approve: true) }
+  given!(:kite_name_Zephyr) { create(:kite_name, brand: brand, name: "Zephyr", approve: true) }
   given!(:kite_1) { create(:kite, user: user, kite_name: kite_name_Edge) }
   given!(:kite_2) { create(:kite, user: user, size: 17, kite_name: kite_name_Edge) }
   given!(:kite_3) { create(:kite, user: user, kite_name: kite_name_Zephyr) }
-  given!(:ad) { create(:ad, user: user, kite_ids: [kite_2.id, kite_3.id]) }
+  given!(:ad) { create(:ad, user: user, kite_ids: [kite_2.id, kite_3.id], approve: true ) }
 
   scenario 'Guest can searche for ad', js: true, sphinx: true do
     visit root_path

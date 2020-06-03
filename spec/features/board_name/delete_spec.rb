@@ -13,8 +13,8 @@ feature 'Admin delete board_name', js: true do
       click_on 'Brands'
       click_on brand.name
 
-      within '.board-name__item' do
-        accept_alert { click_on 'delete' }
+      accept_alert do
+        find("#board_name_id_link_delete_#{board_name.id}").click
       end
 
       expect(page).to_not have_selector(:link_or_button, 'Liquid')

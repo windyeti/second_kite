@@ -15,9 +15,7 @@ feature 'Admin can delete kite name', js: true do
         click_on 'Brands'
       end
 
-      within '.brand_name' do
-        click_on 'PrettyBrand'
-      end
+      click_on 'PrettyBrand'
 
       within '.kite-name__item' do
         accept_alert { click_on 'delete' }

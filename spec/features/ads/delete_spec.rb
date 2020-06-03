@@ -4,7 +4,7 @@ feature 'User can delete ad' do
   describe 'Authenticated' do
     given(:author_user) { create(:user, email: 'author@mail.com') }
     given(:user) { create(:user) }
-    given!(:ad) { create(:ad, user: author_user) }
+    given!(:ad) { create(:ad, user: author_user, approve: true) }
 
     scenario 'author can delete ad' do
       sign_in(author_user)

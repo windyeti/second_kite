@@ -12,9 +12,7 @@ feature 'Admin can delete bar_name', js: true do
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       within "#bar_name_id_#{bar_name.id}" do
         accept_alert { click_on 'delete' }

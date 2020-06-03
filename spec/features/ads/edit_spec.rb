@@ -5,7 +5,7 @@ The user can edit his ad to update information.
 } do
   given(:user) { create(:user) }
   given(:other_user) { create(:user, email: "email_other_user@mail.com") }
-  given!(:ad) { create(:ad, user: user) }
+  given!(:ad) { create(:ad, user: user, approve: true) }
   describe 'Authenticated user' do
 
     scenario 'can edit his ad with valid data' do

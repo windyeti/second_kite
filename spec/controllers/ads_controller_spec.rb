@@ -4,7 +4,7 @@ RSpec.describe AdsController, type: :controller do
   let(:user) { create(:user) }
 
   describe "GET #index" do
-    let(:ads) { create_list(:ad, 3, user: user) }
+    let(:ads) { create_list(:ad, 3, user: user, approve: true) }
 
     before { get :index }
 
@@ -70,7 +70,10 @@ RSpec.describe AdsController, type: :controller do
 
         it 'ads count be more' do
           expect do
-            get :create, params: { ad: attributes_for(:ad, user: user)}
+            # p '>>>>>>>>>>>>>>>'
+            # p attributes_for(:ad, user: user)
+            # p '>>>>>>>>>>>>>>>'
+            post :create, params: { ad: attributes_for(:ad, user: user)}
           end.to change(Ad, :count).by(1)
         end
 
@@ -193,27 +196,27 @@ RSpec.describe AdsController, type: :controller do
       end
       context 'can update ad with valid data' do
         it 'title is updated' do
-          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
           ad.reload
           expect(ad.title).to eq 'New title'
         end
         it 'redirect to ad' do
-          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
           expect(response).to redirect_to ad_path(ad)
         end
         it 'return status redirect' do
-          patch :update, params: { id: ad, ad: { title: 'New title' } }
+          patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
           expect(response).to be_redirect
         end
       end
       context 'can not update ad with invalid data' do
         it 'title is not updated' do
-          patch :update, params: { id: ad, ad: { title: '' } }
+          patch :update, params: { id: ad, ad: attributes_for(:ad, title: '') }
           ad.reload
           expect(ad.title).to eq 'Old title'
         end
         it 'render template edit' do
-          patch :update, params: { id: ad, ad: { title: '' } }
+          patch :update, params: { id: ad, ad: attributes_for(:ad, title: '') }
           expect(response).to render_template :edit
         end
       end
@@ -228,16 +231,16 @@ RSpec.describe AdsController, type: :controller do
       end
 
       it 'can not update' do
-        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
         ad.reload
         expect(ad.title).to eq 'Old title'
       end
       it 'redirect to root' do
-        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
         expect(response).to redirect_to root_path
       end
       it 'return status redirect' do
-        patch :update, params: { id: ad, ad: { title: 'New title' } }
+        patch :update, params: { id: ad, ad: attributes_for(:ad, title: 'New title') }
         expect(response).to be_redirect
       end
     end

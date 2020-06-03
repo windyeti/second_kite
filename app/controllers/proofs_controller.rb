@@ -25,7 +25,6 @@ class ProofsController < ApplicationController
     @proof = Ad.find(params[:id])
     args = {
             ad: @proof,
-            link_ad: url_for(@proof),
             subject: params[:subject],
             message: params[:message]
             }

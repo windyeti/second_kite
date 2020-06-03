@@ -20,22 +20,22 @@ class Ad < ApplicationRecord
   def self.approve?(params)
     items_need_approve = []
 
-    kites = params[:kite_ids].reject(&:empty?)
+    kites = params[:kite_ids].reject { |e| e.to_s.empty? }
     kites.each do |k|
       items_need_approve << k unless Kite.find(k).kite_name.approve
     end
 
-    boards = params[:board_ids].reject(&:empty?)
+    boards = params[:board_ids].reject { |e| e.to_s.empty? }
     boards.each do |k|
       items_need_approve << k unless Board.find(k).board_name.approve
     end
 
-    bars = params[:bar_ids].reject(&:empty?)
+    bars = params[:bar_ids].reject { |e| e.to_s.empty? }
     bars.each do |k|
       items_need_approve << k unless Bar.find(k).bar_name.approve
     end
 
-    stuffs = params[:stuff_ids].reject(&:empty?)
+    stuffs = params[:stuff_ids].reject { |e| e.to_s.empty? }
     stuffs.each do |k|
       items_need_approve << k unless Stuff.find(k).stuff_name.approve
     end

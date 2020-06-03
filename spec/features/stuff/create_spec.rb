@@ -29,13 +29,8 @@ sleep 1
 
       click_on 'Add stuff'
 
-      within '.brand_name.mr-auto' do
-        click_on brand.name
-      end
-      within '.stuff_name.mr-auto' do
-        click_on stuff_name.name
-      end
-
+      fill_in 'Brand', with: 'F-One'
+      fill_in 'Madel', with: 'Solo'
       fill_in 'stuff_price', with: ''
       select("1999", from: 'Year').select_option
       select("5", from: 'Quality').select_option
@@ -43,7 +38,7 @@ sleep 1
       click_on 'Create Stuff'
 
       expect(page).to have_content 'Price can\'t be blank'
-      expect(page).to have_content 'New stuff model'
+      expect(page).to have_content 'New stuff'
     end
   end
 

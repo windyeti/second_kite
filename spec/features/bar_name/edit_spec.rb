@@ -11,9 +11,7 @@ feature 'Admin can edit bar_name' do
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       within '.bar-name__item' do
         click_on 'edit'
@@ -28,9 +26,7 @@ feature 'Admin can edit bar_name' do
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       within '.bar-name__item' do
         click_on 'edit'

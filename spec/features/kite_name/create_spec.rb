@@ -12,9 +12,7 @@ feature 'Admin can create kite_name', js: true do
         click_on 'Brands'
       end
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       fill_in 'kite_name_name', with: 'Edge'
       click_on 'Create Kite name'
@@ -29,9 +27,7 @@ feature 'Admin can create kite_name', js: true do
         click_on 'Brands'
       end
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       fill_in 'kite_name_name', with: ''
       click_on 'Create Kite name'

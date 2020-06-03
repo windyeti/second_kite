@@ -42,6 +42,8 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :model
   config.include FeatureHelper, type: :feature
 
+  config.include Rails.application.routes.url_helpers  # url_for
+
   # Capybara.javascript_driver = :selenium_chrome
   Capybara.javascript_driver = :selenium_chrome_headless
 

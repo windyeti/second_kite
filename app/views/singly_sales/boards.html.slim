@@ -3,4 +3,4 @@
     .card-header Boards
     .list-group.list-group-flush
       - @boards.each do |board|
-        .list-group-item.board id=("board_id_#{board.id}") = link_to board_string_full_link(board), board_path(board)
+        .list-group-item.board id=("board_id_#{board.id}") = link_to board_string_full_link(board), board_path(board) if board.board_name.approve

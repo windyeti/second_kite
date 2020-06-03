@@ -22,9 +22,7 @@ feature 'Authenticated user edit kite', js: true do
 
         click_on 'Update Kite'
 
-        # save_and_open_page
-
-        expect(page).to have_content 'My Kite - 9m2 - 340₽'
+        expect(page).to have_content 'My Kite - 9м² - 340₽'
       end
       scenario 'with invalid data can not edit his kite' do
         visit root_path

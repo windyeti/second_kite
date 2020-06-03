@@ -11,9 +11,7 @@ feature 'Admin create bar_name', js: true do
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       fill_in 'bar_name_name', with: 'DNA'
       click_on 'Create Bar name'
@@ -27,9 +25,7 @@ feature 'Admin create bar_name', js: true do
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       fill_in 'bar_name_name', with: ''
       click_on 'Create Bar name'

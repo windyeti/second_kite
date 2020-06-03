@@ -13,9 +13,7 @@ feature 'Admin edit board_name' do
       click_on 'Brands'
       click_on brand.name
 
-      within '.board-name__item' do
-        click_on 'edit'
-      end
+      click_on 'edit'
 
       fill_in 'board_name_name', with: 'Liquid NEW'
       click_on 'Update Board name'
@@ -28,9 +26,7 @@ feature 'Admin edit board_name' do
       click_on 'Brands'
       click_on brand.name
 
-      within '.board-name__item' do
-        click_on 'edit'
-      end
+      click_on 'edit'
 
       fill_in 'board_name_name', with: ''
       click_on 'Update Board name'

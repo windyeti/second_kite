@@ -2,7 +2,7 @@
   span.mr-auto.kite
     span
       a href="/kites/#{@id}"
-        span #{@kite_name} - #{@size}mм&#178; - #{@price}&#8381;
+        span #{@kite_name} - #{@size}м&#178; - #{@price}&#8381;
     - unless @approve_madel
       span.ml-1  need to approve
   span.link-delete.mr-2

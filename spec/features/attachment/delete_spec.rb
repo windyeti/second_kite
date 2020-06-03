@@ -13,15 +13,18 @@ feature 'User delete attached file', js: true do
         visit root_path
         click_on 'account'
 
+        click_on "#{kite.kite_name.name} - #{kite.size}м² - #{kite.price}₽"
 
-        find('.link-edit a').click
+        # find('.link-edit a').click
 
 
         accept_alert do
-          find('.photo_link__container a').click
+          find('a.link-delete').click
+          # find('.photo_link__container a').click
         end
 
-        expect(page).to_not have_css '.photo__container'
+        expect(page).to_not have_css '.photo__img'
+        # expect(page).to_not have_css '.photo__container'
       end
     end
 

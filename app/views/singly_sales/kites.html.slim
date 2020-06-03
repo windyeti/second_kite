@@ -3,4 +3,4 @@
     .card-header Kites
     .list-group.list-group-flush
       - @kites.each do |kite|
-        .list-group-item.kite id=("kite_id_#{kite.id}") = link_to kite_string_full_link(kite), kite_path(kite)
+        .list-group-item.kite id=("kite_id_#{kite.id}") = link_to kite_string_full_link(kite), kite_path(kite) if kite.kite_name.approve

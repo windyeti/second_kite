@@ -14,9 +14,7 @@ feature 'Admin create brand_name', %q{
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
         fill_in 'board_name_name', with: 'Liquid'
         click_on 'Create Board name'
@@ -29,9 +27,7 @@ feature 'Admin create brand_name', %q{
       visit root_path
       click_on 'Brands'
 
-      within '.brand_name' do
-        click_on brand.name
-      end
+      click_on brand.name
 
       fill_in 'board_name_name', with: ''
       click_on 'Create Board name'
