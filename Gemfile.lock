@@ -154,7 +154,9 @@ GEM
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
     middleware (0.1.0)
-    mimemagic (0.3.4)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -171,7 +173,8 @@ GEM
     pg (1.2.3)
     popper_js (1.16.0)
     public_suffix (4.0.4)
-    puma (3.12.4)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -364,7 +367,7 @@ DEPENDENCIES
   mini_magick (~> 4.8)
   mysql2 (= 0.4.9)
   pg (>= 0.18, < 2.0)
-  puma (~> 3.11)
+  puma (~> 4.3)
   rails (~> 5.2.4)
   rails-controller-testing
   rails-i18n
